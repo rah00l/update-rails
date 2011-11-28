@@ -1,0 +1,149 @@
+<html>
+  <head>
+    <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+    <meta name="ProgId" content="FrontPage.Editor.Document">
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>New Page 1</title>
+  </head>
+  <body >
+    <h1 align="center">COLLECTION</h1>
+<!--<P ALIGN=LEFT><b>Group : <%= @session[:ttclustername]%> <br>
+SHOP :<%= @session[:ttshopname]%><br>
+DATE: <%= session[:ttdate]%> </b></P>-->
+    <% form_tag :action => 'setFlag' do %>
+      <% submit_tag "  Set  ", :align=>"right"%>
+      <% @shopkeys=Machinedata.find_by_sql("select distinct GROUP_ID from machinedatas where SHOP_NAME='#{@session[:ttshopname]}' and TRANS_DATE='#{@session[:ttdate]}' group by GROUP_ID")%>
+      <%@shopkeys.each do |item|%>
+        <table  border="1" width ="95%"  >
+          <tr bgcolor="#E7CF7C">
+            <td align=left>SHOP :&nbsp;&nbsp;<b><%= @session[:ttshopname]%></b></td>
+            <td align=left>KEY :&nbsp;&nbsp;<b><%= item.GROUP_ID %></b></td>
+            <td align=right>DATE:&nbsp;&nbsp;<b> <%= session[:ttdate]%></b></td>
+          </tr>
+        </table>
+        <br>
+        <table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >
+          <tr >
+            <th scope=col nowrap >NO </font></th>
+            <th scope=col nowrap >NAME</font></th>
+            <th scope=col nowrap >SRIN</font></th>
+            <th scope=col nowrap >SROUT</font></th>
+            <th scope=col nowrap >MTRIN</font></th>
+            <th scope=col nowrap >MTROUT</font></th>
+            <th scope=col nowrap >TSRIN</font></th>
+            <th scope=col nowrap >TSROUT</font></th>
+            <th scope=col nowrap >M/S</font></th>
+            <th scope=col nowrap >REASON</font></th>
+            <th scope=col nowrap >COLL</font></th>
+            <th scope=col nowrap >DIFIN</font></th>
+            <th scope=col nowrap >DIFOUT</font></th>
+          </tr>
+          <% @machinesdata=Machinedata.find(:all,
+            :conditions=>["CLUSTER_NAME=? and SHOP_NAME=? and TRANS_DATE=? and CALCULATEBY=? and GROUP_ID='#{item.GROUP_ID}'",
+              @session[:ttclustername],@session[:ttshopname],session[:ttdate],'M'],:order => "CALCULATEBY,MACHINE_NO") %>
+
+          <% @TotalMCSHORT=0%>
+          <% @TotalCOLL=0%>
+          <% scroll = 0 %>
+          <% if @machinesdata!=nil%>
+            <% @machinesdata.each do |c| %>
+              <tr bgcolor=#F86049>
+                <td nowrap  align=center><%= c.MACHINE_NO %>&nbsp;</td>
+                <td nowrap  align=center><%= c.MACHINE_NAME %>&nbsp;</td>
+                <td nowrap align=center><%= c.SRIN.to_i %>&nbsp;</td>
+                <td nowrap align=center><%= c.SROUT.to_i %>&nbsp;</td>
+                <td nowrap align=center><%= c.MTRIN.to_i%>&nbsp;</td>
+                <td nowrap align=center><%= c.MTROUT.to_i %>&nbsp;</td>
+                <td nowrap  align=center><%= c.TMTRIN.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                <td nowrap align=center><%= c.TMTROUT.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
+                <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
+
+        <%#@COLL=((((c.TMTRIN.to_i*c.MTR_RATE_IN.to_i)-(c.TMTROUT.to_i*c.MTE_RATE_OUT.to_i))/10)*c.MULTIPLY_BY)+c.MTRSHORT.to_i%>
+                <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
+                <td nowrap  align=center><%= scroll = c.MTRCOLL.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                <% @TotalCOLL=@TotalCOLL.to_i+scroll.to_i %>
+                <td nowrap  align=center><%= c.MTRDIFFIN.to_i %>&nbsp;</td>
+                <td nowrap  align=center><%= c.MTRDIFFOUT.to_i %>&nbsp;</td>
+              </tr>
+            <% end %>
+          <% end %>
+          <% @machinesdata=Machinedata.find(:all,
+            :conditions=>["CLUSTER_NAME=? and SHOP_NAME=? and TRANS_DATE=? and CALCULATEBY!=? and GROUP_ID='#{item.GROUP_ID}'",
+              @session[:ttclustername],@session[:ttshopname],session[:ttdate],'M'],
+            :order => "CALCULATEBY,MACHINE_NO") %>
+
+          <% if @machinesdata!=nil%>
+            <% @machinesdata.each do |c| %>
+              <% if c.MTRDIFFIN.to_i<-3 or c.MTRDIFFIN.to_i>3 or c.MTRDIFFOUT.to_i<-3 or c.MTRDIFFOUT.to_i>3 %>
+                <tr bgcolor="#5FF375">
+                  <td nowrap  align=center><%= c.MACHINE_NO %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.MACHINE_NAME %>&nbsp;</td>
+                  <td nowrap align=center><%= c.SRIN.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.SROUT.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.MTRIN.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.MTROUT.to_i %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.TSRIN.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.TSROUT.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
+                  <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
+          <%#@COLL=(((((c.TSRIN.to_f*c.SCREEN_RATE_IN.to_f)-(c.TSROUT.to_f*c.SCREEN_RATE_OUT.to_f))/10)*c.MULTIPLY_BY).round)+c.MTRSHORT.to_i%>
+                  <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
+                  <td nowrap  align=center><%= scroll = c.SRCOLL*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <% @TotalCOLL=@TotalCOLL.to_i+scroll.to_i %>
+                  <td nowrap  align=center><%= c.MTRDIFFIN.to_i %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.MTRDIFFOUT.to_i %>&nbsp;</td>
+                </tr>
+              <% end %>
+            <% end %>
+          <% end %>
+          <% if @machinesdata!=nil%>
+            <% @machinesdata.each do |c| %>
+              <% if c.MTRDIFFIN.to_i<-3 or c.MTRDIFFIN.to_i>3 or c.MTRDIFFOUT.to_i<-3 or c.MTRDIFFOUT.to_i>3 %>
+
+              <% else %>
+                <tr>
+                  <td nowrap  align=center><%= c.MACHINE_NO %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.MACHINE_NAME %>&nbsp;</td>
+                  <td nowrap align=center><%= c.SRIN.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.SROUT.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.MTRIN.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.MTROUT.to_i %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.TSRIN.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.TSROUT.to_i*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <td nowrap align=center><%= c.MTRSHORT.to_i %>&nbsp;</td>
+                  <% @TotalMCSHORT=@TotalMCSHORT.to_i + c.MTRSHORT.to_i%>
+          <%#@COLL=(((((c.TSRIN.to_f*c.SCREEN_RATE_IN.to_f)-(c.TSROUT.to_f*c.SCREEN_RATE_OUT.to_f))/10)*c.MULTIPLY_BY).round)+c.MTRSHORT.to_i%>
+
+                  <td nowrap align=center><%= c.SHORTREASON %>&nbsp;</td>
+                  <td nowrap  align=center><%= scroll = c.SRCOLL*c.MULTIPLY_BY.to_i %>&nbsp;</td>
+                  <% @TotalCOLL=@TotalCOLL.to_i+scroll.to_i %>
+                  <td nowrap  align=center><%= c.MTRDIFFIN.to_i %>&nbsp;</td>
+                  <td nowrap  align=center><%= c.MTRDIFFOUT.to_i %>&nbsp;</td>
+                </tr>
+              <% end %>
+            <% end %>
+          <% end %>
+          <tr>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+            <td nowrap width="20%" height="10" align=center> &nbsp;</td>
+            <td nowrap width="20%" height="10" align=center> &nbsp;
+
+            </td>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+            <td nowrap width="20%" height="10" align=center><%= @TotalMCSHORT.to_i%></td>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+            <td nowrap width="20%" height="10" align=center><%= @TotalCOLL.to_i%></td>
+            <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+          </tr>
+        </table>
+        </br>
+        </br>
+      <%end%>
+    <% end %>
+  </body>
+</html>

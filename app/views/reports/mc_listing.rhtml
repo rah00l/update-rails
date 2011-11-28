@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+<%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+<%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+<%= javascript_include_tag 'calendar_date_select/format_db.js'%>
+
+
+</head>
+<body>
+<center>
+<table height="311" width="78%"  >
+<tr>
+<td height="311" width=100% align="center">
+
+<% form_tag :controller =>'reports' ,:action => 'search' do %>
+
+<%= error_messages_for 'machine' %>
+
+<font  size= "4">
+<% if session[:msg] %>
+	<div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+ 		background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+ 			<%= session[:msg] %>
+ 	</div>
+	<%session[:msg]=nil%>
+<% end %>
+</font>
+
+<fieldset style="width:700 ; height: 81 ; align:center">
+			
+
+			<h2 align=center>M/C LISTING REPORTS</h2>
+
+<table width="680" height="81"  >
+
+<tr>
+          <td width="253" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">FROM
+                    DATE</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
+
+       <% if(@session[:ttdate1]==nil) %>
+     <%= calendar_date_select_tag "date1",Date.today.to_s,  :popup => "force" %> 
+     <%else%>
+     <%= calendar_date_select_tag "date1",@session[:ttdate1].to_s,  :popup => "force" %> 
+	<%end%>
+     &nbsp;</tr>
+
+      </td>
+    </tr>
+  </tr>
+  
+					<tr>
+    				<td width="25%" height="16" align=right> 
+ 	 				<label for="shop_CompanyID"><b><font face="Arial" size="2">
+                    GROUP NAME</font></b></label>
+ 					</td>
+ 					<td width="286" height="16" align=left>
+ 					
+ 				<% if(@session[:rrclustername]==nil or @session[:rrclustername]=="") %>		
+ 						<% @s=Cluster.find(:all,:order=>"ClusterName") %>
+ 						<%= collection_select(:machinedata, :ClusterName,  @s,  :ClusterName, :ClusterName,
+                      {:prompt   => "Select ClusterName"}) %>
+            	<%else%>
+         			
+             	<% @cluster=Cluster.find(:all,:conditions=>["ClusterName<>?",@session[:rrclustername]],:order=>"ClusterName")%>      											
+					<select id="machinedata_ClusterName" name="machinedata[ClusterName]">
+													<option value="<%= @session[:rrclustername] %>"><%= @session[:rrclustername] %></option>			
+     	 											<% @cluster.each do |c| %>
+     	 											<option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+     	 											<% end %>
+     	 										</select>
+
+				
+            	<%end%>
+ 					
+ 					</td></tr>
+   
+        <!--<tr>
+         <td width="25%" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">
+                    SHOP NAME</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <div id="Shopdiv">
+	<%#= render :partial => 'shopmcsummary'%>
+
+</div></td>
+         
+        </tr>-->
+       
+       <!--<tr>
+         <td width="25%" align="right" >
+         	<b><font face="Arial" size="2">
+			KEY NO.</font></b>
+		</td>
+          <td width="25%" align="left" >
+          <div id="KeyIDdiv">
+	<%#= render :partial => 'group' %>
+
+</div></td>
+         
+        </tr>-->
+
+ 				</table>
+ 				<br>
+ 				<%= submit_tag "SHOW REPORT" ,:id=>'save'%>
+				
+				<% end %>
+			</fieldset>
+ 				</td>
+ 				</tr></table>
+ 				
+</center>
+ 				
+</body>
+</html>

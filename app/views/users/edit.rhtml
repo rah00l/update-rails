@@ -1,0 +1,216 @@
+<html>
+
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<head>
+
+<title>New Page 1</title>
+<script language = "Javascript">
+/**
+ * DHTML email validation script. Courtesy of SmartWebby.com (http://www.smartwebby.com/dhtml/)
+ */
+
+function echeck(str) {
+
+		var at="@"
+		var dot="."
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if (str.indexOf(at)==-1){
+		   alert("Invalid E-mail ID")
+		   return false
+		}
+
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+		   alert("Invalid E-mail ID")
+		   return false
+		}
+
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+		    alert("Invalid E-mail ID")
+		    return false
+		}
+
+		 if (str.indexOf(at,(lat+1))!=-1){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+
+		 if (str.indexOf(dot,(lat+2))==-1){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+		
+		 if (str.indexOf(" ")!=-1){
+		    alert("Invalid E-mail ID")
+		    return false
+		 }
+
+ 		 return true					
+	}
+
+function ValidateForm(){
+	var emailID=document.frmSample.txtEmail
+	
+	if ((emailID.value==null)||(emailID.value=="")){
+		alert("Please Enter your Email ID")
+		emailID.focus()
+		return false
+	}
+	if (echeck(emailID.value)==false){
+		emailID.value=""
+		emailID.focus()
+		return false
+	}
+	return true
+ }
+</script>
+
+</head>
+
+<body>
+<center>
+<br>
+<table width="650" height="300">
+	<tr><td width="650" height="1" align="center"><%= error_messages_for 'user' -%>
+</td></tr>
+	<tr>
+		<td width="650" height="290" align=center>
+			<fieldset style="width:600 ; height: 250 ; align:center">
+			
+
+			<h1 align=center>Editing user</h1>
+<!--<form name="frmSample" method="post" action="update" onSubmit="return ValidateForm()">-->
+<% form_tag :action => 'update', :id => @user do %>
+			
+			<table width="562" height="159" align=center  cellpadding="3" cellspacing="3">
+				<tr>
+    				<td width="67" height="10" align=left> 
+ 	 				<b><font face="Arial" size="2">
+ 	 				<label for="user_firstname">Firstname:</label>
+ 					</td>
+ 					<td width="184" height="10" align=left>
+				 	 <%= text_field "user", "firstname", :size => 20 %> </font></b>
+ 					 
+ 					</td>
+ 					<td height="14" width="78" align=left>
+ 	 				<b><font face="Arial" size="2">
+ 	 				<label for="user_login">Login: </label>
+ 	 				</td>
+ 	 				<td width="215" height="14" align=left>
+ 	    			
+ 	 				<%= text_field "user", "login", :size => 20%></font></b>
+ 	 				
+ 	 				</td>
+
+				</tr>
+				<tr>
+					<td height="8" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="user_lastname">Lastname: </label>
+  					</td>
+  					<td width="184" height="8" align=left>
+	 	 			<%= text_field "user", "lastname", :size => 20 %></font></b>
+ 					 
+  					</td>
+  					<td width="78" height="5" align=left>
+	 				<b>
+	 				<font face="Arial" size="2">
+	 				<label for="user_type">Usertype: </label>
+					</td>
+					<td width="215" height="5" align=left>	 
+	 				<font face="Zurich BT" size="2" color="#800000"> 
+					<!--<%#*<select  id="user_usertype" name="user[usertype]" style="font-family: Zurich BT">%>
+					<%# @z=User.find(params[:id])%>
+					<%# @type=@z.usertype %>
+					<%# if @type=="Admin" %>
+					<%#*<option value="Admin">Admin</option>%>
+					<%#*<option value="Operator">Operator</option>%>
+					<%#*<option value="Supervisor">Supervisor</option>%>
+					<%#*><% elsif @type=="Operator" %>%>
+					<%#*<option value="Operator">Operator</option>%>
+					<%#*<option value="Admin">Admin</option>%>
+					<%#*<option value="Supervisor">Supervisor</option>%>
+					<%# else %>
+					<%#*<option value="Supervisor">Supervisor</option>%>
+					<%#*<option value="Operator">Operator</option>%>
+					<%#*<option value="Admin">Admin</option>%>
+
+					
+					<%# end %>
+					</select> %>-->
+
+                                          <select  id="user_usertype" name="user[usertype]" style="font-family: Zurich BT; ">
+					<option value="SuperAdmin">SuperAdmin</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Operator">Operator</option>
+					<!--<option value="Customer">Customer</option>-->
+
+	 				</select> 
+                                          </font>
+					</td>
+
+				</tr>
+				<tr>
+					
+  					<td width="78" height="1" align=left> 
+	 				<b> 
+	 				<font size="2" face="Arial">
+	 				<label for="user_status">Userstatus:</label></font>
+	 				</b>
+	 				</td>
+	 				<td width="215" height="1" align=left>
+	 				<% @a= User.find(params[:id])%>
+					<% @b=@a.userstatus %>
+					<% if @b.to_i== 1 %> </font>
+					<input type="radio" id="user_userstatus" name="user[userstatus]" value="1" checked="checked"  /><font face="Arial" size="2">Active &nbsp;&nbsp;&nbsp;
+					</font>
+					<input type="radio" id="user_userstatus" name="user[userstatus]" value="0" unchecked/><font face="Arial" size="2">In Active<br/>
+					<% else %> 
+					<input type="radio" id="user_userstatus" name="user[userstatus]" value="1" unchecked/>Active
+					<input type="radio" id="user_userstatus" name="user[userstatus]" value="0" checked="checked"/>In Active<br/>
+					<% end %><!--[eoform:user]-->
+ 					</td>
+ 					
+ 					
+ 					<td height="1" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="user_emailid">Email ID:</label>
+  					</td>
+  					<td width="184" height="1" align=left>
+     				
+					<%= text_field 'user', 'emailid', :size =>20 %>
+					
+  					</td>
+  					
+	 				
+
+
+				</tr>
+				
+			
+				<tr>
+					
+					<td width="518" height="21" align=center colspan=4>
+					<input type="submit" value=" Save  " class="primary" style="font-family: Zurich BT; font-size: 10pt; float:center"  /> <%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'users',:action => "cancel" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+					</td>
+ 				</tr> 
+		</table>
+ 
+ <% end %>
+
+</fieldset><p>&nbsp;</form>
+            </td>
+
+</tr>
+</table>
+&nbsp;
+</center>
+</body></html>

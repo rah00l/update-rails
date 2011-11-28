@@ -1,0 +1,118 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Data Entering</title>
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+<%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+<%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+<%= javascript_include_tag 'calendar_date_select/format_db.js'%>
+
+<script language="JavaScript">
+
+</script>  
+
+
+<script type="text/javascript">
+
+
+
+</script>
+          
+</head>
+
+<body >
+<% form_tag :controller=>"purge",:action => "Machinedata" do %>
+
+<div align="center">
+  <table border="0" cellspacing="1" width="73%" id="AutoNumber1" height="112" align="center" style="border-collapse: collapse" bordercolor="#6C3401">
+    <tr>
+      <td width="100%" colspan="4" height="10" align=center>
+      <% error_messages_for 'entry' %>
+      <%if session[:msg]%>
+			<font color=red size= "4" align=center>
+
+				<div id="msg" style="width:300;border: 2px solid blue; align:center; padding-bottom: 12px; margin-bottom: 20px; align:center
+ 					background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px"><%=session[:msg] %>
+ 					</div>
+				<%session[:msg]=nil%>
+					</font>
+			<% end %></td></tr><tr>
+ <td width="100%" bgcolor="#6C3401" colspan="4" height="19" align=center>
+
+      <font color="#FFFFFF"><b>Purge Machine Data</b></font></td>
+    </tr>
+    <tr>
+      <td width="100%" colspan="4" height="65">
+      <table border="1" cellpadding="3" cellspacing="3" style="border-collapse: collapse" bordercolor="#6C3401" width="741" id="AutoNumber2" bgcolor="#C0C0C0">
+       
+
+
+ 
+          
+   
+        
+       
+                <tr>
+          <td width="253" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">FROM
+                    DATE</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
+
+       
+     <%= calendar_date_select_tag "startdate",Date.today.to_s,  :popup => "force" %> 
+     
+     &nbsp;</tr>
+
+      </td>
+    </tr>
+  </tr>
+       
+                <tr>
+          <td width="253" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">TO
+                    DATE</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
+
+      
+     <%= calendar_date_select_tag "enddate",Date.today.to_s,  :popup => "force" %> 
+     
+     
+     &nbsp;</tr>
+
+      </td>
+    </tr>
+
+      
+       
+	
+	
+
+
+      </td>
+         
+    </tr>
+      <tr bgcolor="#C0C0C0">
+      <td width="727" height="26" colspan=4 >
+     
+      <p align=center>
+     <%= submit_tag "Purge Data"  %>		
+      </td>
+      
+ <%end%>        
+    </tr>
+    
+    </table>
+</div>
+
+</body>
+  
+
+</html>

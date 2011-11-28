@@ -1,0 +1,15 @@
+<% if(@session[:clustername]!=nil) %>
+<%@shop111=Shop.find_all(["ClusterName=? ",@session[:clustername]])%>
+<% @shop=Shop.find_by_sql("select * from shops where ClusterName='#{@session[:clustername]}' and ShopName not in
+ (select shopname from groups where ClusterName='#{@session[:clustername]}') order by ShopName")%>
+ 			<select id="group_ShopName" name="group[ShopName]">
+													<option value="">Select a ShopName</option>			
+     	 											<% @shop.each do |c| %>
+     	 											<option value="<%= c.ShopName %>"><%= c.ShopName %></option>
+     	 											<% end %>
+     	 										</select>
+     	 						<%else%>
+		<select id="group_ShopName" name="group[ShopName]">
+		<option value="&nbsp;">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+	</select>
+	<%end%>

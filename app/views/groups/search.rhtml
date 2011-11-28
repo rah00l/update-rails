@@ -1,0 +1,136 @@
+<html>
+<head>
+<script>
+function checkkey1()
+{
+
+var key1=document.getElementById("group1_GroupID");
+
+
+if(key1.checked==false)
+	{
+	alert("Please select Key1");
+	key1.focus();
+	return false;
+	}
+else
+	{
+		
+		return true;
+	}
+	
+}
+
+function checkkey2()
+{
+var key2=document.getElementById("group2_GroupID");
+if(key2.checked==false)
+	{
+	alert("Please select Key2 first");
+	key2.focus();
+	return false;
+	}
+else
+	{
+		
+		return true;
+	}
+	
+}
+	
+function checkkey3()
+{
+var key3=document.getElementById("group3_GroupID");
+if(key3.checked==false)
+	{
+	alert("Please select Key3 first");
+	key3.focus();
+	return false;
+	}
+else
+	{
+		
+		return true;
+	}
+	
+}
+
+</script>
+</head>
+<body>
+<center>
+
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="951" height="252" align="center">
+  <tr>
+    <td width="951" height="252" align="center">
+
+<form id="form1" name="form1" method="POST" action="search" align="center">
+<fieldset style="width:700 ; height: 150 ; align:center">
+
+ 		<h2>SEARCH GROUP</h2>
+
+ <%= error_messages_for 'group' %>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="88%" height="169">
+  						<tr width=100%>
+    						<td width="47%" align=right height="42">
+								<b><font face="Arial" size="2" >
+								<label for="group_CompanyID">GROUP NAME </label>
+								</font></b>
+							</td>
+							<td width="2%" height="42" >
+							</td>
+
+							<td width="60%" align=left height="42">
+<% @cluster=Cluster.find(:all,:order => "ClusterName") %>
+
+ <%= collection_select(:group,:ClusterName,  @cluster, :ClusterName , :ClusterName,
+ 
+                     {:prompt   => "Please select Group"},
+                      {:onchange => "#{remote_function(:url  => { :action => "getShopName1"},
+                                                       :with => "'ClusterName='+value")}"}) %>
+ 
+
+
+</td>
+ 						</tr>
+						<tr width=100%>
+
+							<td width="47%" align=right height="48" >
+							<b><font face="Arial" size="2" >
+								<label for="group_CompanyName">SHOP NAME </label>
+								</font></b>
+
+							</td>
+							<td width="2%" height="48" >
+							</td>
+							<td width="52%" align=left height="48">
+
+<div id="shopnamediv">
+<%= render :partial => 'shopname' %>
+
+</div>
+</td>
+						</tr>
+						
+						<tr width=100%>
+
+							<td width="100%" align=center colspan=3 height="43" >
+							<br>
+  <input type="submit" value="SEARCH" name="B1">
+  <%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'groups',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+
+
+</td>
+  						</tr>
+				</table>
+</fieldset >
+
+</form>
+</td>
+  </tr>
+</table>
+</center>
+</body>
+</html>

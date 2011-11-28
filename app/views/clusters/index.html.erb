@@ -1,0 +1,44 @@
+<html>
+  <head>
+  </head>
+  <body topmargin=0 bottommargin=0>
+    <center>
+      <table width=90% align=center height="400"><tr>
+          <td width="100%" height="300" align="center">
+            <table width=100% align=center height="280">
+              <tr><td width="100%" height="270" align="center">
+                  <!--fieldset style="width:90% ; height: 209 ; align:center;">-->
+                  <h2 align=center><font face="Arial">LISTING GROUP</font></h2>
+                  <!--<div class=clsDataGrid id=divList bgcolor=white>-->
+                  <div class=clsDataGrid id=divList bgcolor=white>
+                    <table border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black" align=center  id="AutoNumber1"  height="24"  >
+                      <tr>
+                        <th  nowrap width="5%" height="20">
+                          GROUP ID</font></th>
+                        <th  nowrap width="35%" height="20">
+                          GROUP NAME</font>
+                        </th>
+                        <th  nowrap width="15%"  height="20" >
+                          </font>Edit</th>
+                        <th  nowrap width="15%"  height="20" >
+                          </font>Delete</th>
+                      </tr>
+                      <% @clusters.each do |cluster| %>
+                        <tr>
+                          <td nowrap width="5%" height="5" align=center><%= cluster.id%></td>
+                          <td nowrap width="35%" height="5" align=center><%= cluster.ClusterName%>&nbsp;</td>
+                          <td width="15%" height="5" align=center><%=link_to  image_tag("edit.gif", :border=>0), edit_cluster_path(cluster) %></td>
+                          <td><%= link_to  image_tag("delete.gif", :border=>0), cluster, :confirm => 'Are you sure?', :method => :delete %></td>
+                        </tr>
+                      <% end %>
+                    </table>
+                  </div>
+                  <%= link_to 'ADD NEW GROUP', new_cluster_path %>
+                  <br />
+                </td></tr></table>
+            <%#= link_to 'Previous page', { :page => @cluster_pages.current.previous } if @cluster_pages.current.previous %>
+            <%#= link_to 'Next page', { :page => @cluster_pages.current.next } if @cluster_pages.current.next %>
+          </td></tr></table>
+    </center>
+  </body>
+</html>

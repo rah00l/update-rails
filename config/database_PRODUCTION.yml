@@ -1,0 +1,9 @@
+
+
+production:
+  adapter: mysql
+  database: gamingstation
+  username: root
+  password: password
+  host: localhost
+

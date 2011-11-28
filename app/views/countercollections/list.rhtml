@@ -1,0 +1,27 @@
+<h1>Listing countercollections</h1>
+
+<table>
+  <tr>
+  <% for column in Countercollection.content_columns %>
+    <th><%= column.human_name %></th>
+  <% end %>
+  </tr>
+  
+<% for countercollection in @countercollections %>
+  <tr>
+  <% for column in Countercollection.content_columns %>
+    <td><%=h countercollection.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => countercollection %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => countercollection %></td>
+    <td><%= link_to 'Destroy', { :action => 'destroy', :id => countercollection }, :confirm => 'Are you sure?', :method => :post %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to 'Previous page', { :page => @countercollection_pages.current.previous } if @countercollection_pages.current.previous %>
+<%= link_to 'Next page', { :page => @countercollection_pages.current.next } if @countercollection_pages.current.next %> 
+
+<br />
+
+<%= link_to 'New countercollection', :action => 'new' %>

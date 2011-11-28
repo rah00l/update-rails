@@ -1,0 +1,107 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Select User</title>
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+
+</head>
+
+<body topmargin=0 bottommargin=0>
+<center>
+<table width=90% align=center height="350"><tr><td width="100%" height="300">
+      <div align="center">
+        <center>
+        <table border="0" cellspacing="1" width="100%" id="AutoNumber2" height="49">
+          <tr><% start_form_tag :controller=>'reports', :action => 'showshort' do %>
+            <td width="100%" height="250" align=center>
+            <fieldset style="width: 422; height: 230; ">
+             <br>
+
+            <h2 align="center"> Selection Criteria </h2>
+           
+            <table width="250" height="112" align=center><tr>
+            <td width="50%" height="42" align="center"><font face="Zurich BT" size="2" fontcolor="#014D7A">
+<b> SELECT MONTH :</b></font>            
+            </td>
+            <td width="50%" height="42">
+           
+            <%=  select_month(Date.today) %>
+          
+		    
+            </td></tr>
+            <tr>
+            <td width="50%" height="42" align="center">
+           <font face="Zurich BT" size="2" fontcolor="#014D7A">
+			<b> SELECT YEAR :</b></font>            
+            </td>
+            <td width="50%" height="42">
+           
+		    <%=select_year(Date.today.year, :prompt => 'Choose year')%>
+
+
+
+            </td>
+            </tr>
+            <tr>
+    				<td width="253" height="16" align=right> 
+ 	 				<label for="shop_CompanyID"><b><font face="Arial" size="2">
+                    GROUP NAME</font></b></label>
+ 					</td>
+ 					<td width="286" height="16" align=left>
+ 					
+ 				<% if(@session[:rrclustername]==nil or @session[:rrclustername]=="") %>		
+ 						<% @s=Cluster.find(:all,:order=>"ClusterName") %>
+ 						<%= collection_select(:machinedata, :ClusterName,  @s,  :ClusterName, :ClusterName,
+                      {:prompt   => "Select ClusterName"}) %>
+            	<%else%>
+         			
+             	<% @cluster=Cluster.find(:all,:conditions=>["ClusterName<>?",@session[:rrclustername]],:order=>"ClusterName")%>      											
+					<select id="machinedata_ClusterName" name="machinedata[ClusterName]">
+													<option value="<%= @session[:rrclustername] %>"><%= @session[:rrclustername] %></option>			
+     	 											<% @cluster.each do |c| %>
+     	 											<option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+     	 											<% end %>
+     	 										</select>
+
+				
+            	<%end%>
+ 					
+ 					</td></tr>
+				<!--<tr>
+        
+         <td width="253" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">
+                    SHOP NAME</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <div id="Shopdiv">
+	<%#= render :partial => 'shopse'%>
+
+</div></td>
+						</tr>-->
+
+           
+            <td width="250" height="37" colspan=2 align="center">
+            
+            <%= submit_tag "Generate" %></td></tr></td>
+           </tr>
+           <% if @message %><div align=center><font face=arial size=2 color=red><b><br/><%= @message %></b></font></div><% end %>
+            </table>
+            </fieldset>
+            </td>
+           <% end %>
+          
+          </tr>
+        </table>
+        </center>
+      </div>
+      </td>
+    </tr>
+   
+  </table>
+  </center>
+</body>
+</html>

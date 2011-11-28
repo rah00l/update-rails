@@ -1,0 +1,124 @@
+<script>
+
+function calculatetotal1(obj)
+{
+	
+	if(obj.value.length<1)
+	{
+	alert(obj.name)
+	alert("Please enter value");
+	obj.focus();
+	return false;
+	}
+	else
+	{
+	
+	var total1=document.getElementById("total1");
+	var cash=document.getElementById("countercollection_Cash").value;
+	var Exp=document.getElementById("countercollection_Exp").value;
+	var hc=document.getElementById("countercollection_HC").value;
+	var cr=document.getElementById("countercollection_Credit").value;
+	var sht_ext=document.getElementById("countercollection_short_Ext").value;
+	
+	
+
+	var sum=parseInt(cash)+parseInt(Exp)+parseInt(hc)+parseInt(cr)+parseInt(sht_ext);
+	total1.value=sum;
+	return true;
+	}
+	
+}
+
+
+function calculatetotal2(obj)
+{
+	if(obj.value.length<1)
+	{
+	alert("Please Enter Value");
+	obj.focus();
+	return false;
+	}
+	else
+	{	
+	var total2=document.getElementById("total2");
+	
+	var OPENBAL='<%= "#{@session['obal']}" %>'
+	
+	//document.getElementById("countercollection_openingbal").value;
+	var KEY1=document.getElementById("countercollection_KEY1").value;
+	var KEY2=document.getElementById("countercollection_KEY2").value;
+	var KEY3=document.getElementById("countercollection_KEY3").value;
+	var KEY4=document.getElementById("countercollection_KEY4").value;
+	var outstd=document.getElementById("countercollection_outstanding").value;
+
+
+	var sum=parseInt(OPENBAL)+parseInt(KEY1)+parseInt(KEY2)+parseInt(KEY3)+parseInt(KEY4)+parseInt(outstd);
+	total2.value=sum;
+	return true;
+	}
+	
+	
+}
+
+</script>
+<body>
+<%= error_messages_for 'countercollection' %>
+
+<!--[form:countercollection]-->
+<p><label for="countercollection_ShopID">Shopid</label><br/>
+<input type=text id='countercollection_ShopID' name='countercollection[ShopID]' value=<%= "#{@session['shop']}" %> readonly size="20">
+</p>
+
+<p><label for="countercollection_Date">Date</label><br/>
+<%= text_field 'countercollection', 'Date', :readonly=>'true' %></p>
+
+<p><label for="countercollection_Cash">Cash</label><br/>
+
+
+<%= text_field 'countercollection', 'Cash',:onblur=>"calculatetotal1(this);"%>
+</p>
+
+<p><label for="countercollection_Credit">Credit</label><br/>
+<%= text_field 'countercollection', 'Credit',:onblur=>"calculatetotal1(this);"%>
+</p>
+
+<p><label for="countercollection_Exp">Exp</label><br/>
+<%= text_field 'countercollection', 'Exp',:onblur=>"calculatetotal1(this);"%></p>
+
+<p><label for="countercollection_HC">Hc</label><br/>
+<%= text_field 'countercollection', 'HC', :onblur=>"calculatetotal1(this);" %></p>
+
+
+
+<p><label for="countercollection_Short_Ext">Short ext</label><br/>
+<%= text_field 'countercollection', 'Short_Ext', :onblur=>"calculatetotal1(this);"  %></p>
+
+<p><label for="countercollection_Openingbal">Openingbal</label><br/>
+<input type=text id='countercollection_Openingbal' name='countercollection[Openingbal]' value=<%= "#{@session['obal']}" %> readonly size="20">
+</p>
+
+<p><label for="countercollection_KEY1">Key1</label><br/>
+<%= text_field 'countercollection', 'KEY1' , :onblur=>"calculatetotal2(this);" %></p>
+
+<p><label for="countercollection_KEY2">Key2</label><br/>
+<%= text_field 'countercollection', 'KEY2', :onblur=>"calculatetotal2(this);"  %></p>
+
+<p><label for="countercollection_KEY3">Key3</label><br/>
+
+
+
+<%= text_field 'countercollection', 'KEY3' , :onblur=>"calculatetotal2(this);" %></p>
+
+<p><label for="countercollection_KEY4">Key4</label><br/>
+<%= text_field 'countercollection', 'KEY4', :onblur=>"calculatetotal2(this);"  %></p>
+
+<p><label for="countercollection_Outstanding">Outstanding</label><br/>
+<%= text_field 'countercollection', 'Outstanding', :onblur=>"calculatetotal2(this);"  %></p>
+
+<p>&nbsp;
+
+
+ <td width="25%" height="33" align="right"><label for="countercollection_total1">Total</label></td>
+          			 <td width="25%" height="34"><input type=text name="total1" id="total1" value="<%= @session['total1'] %>" size="20" ></td>
+					 <td width="25%" height="33" align="right"><label for="countercollection_total1">Total</label></td>
+					 <td width="25%" height="34"><input type=text name="total2" id="total2" value="<%= @session['total2'] %>" size="20" ></td>

@@ -1,0 +1,232 @@
+<html>
+<head>
+
+<script>
+
+
+function checkkey1()
+{
+var key1=document.getElementById("group1_GroupID");
+if(key1.checked==false)
+	{
+	alert("Please select Key1 first");
+	key1.focus();
+	return false;
+	}
+else
+	{
+		
+		return true;
+	}
+	
+}
+
+function checkkey2()
+{
+var key2=document.getElementById("group2_GroupID");
+if(key2.checked==false)
+	{
+	alert("Please select Key2 first");
+	key2.focus();
+	return false;
+	}
+else
+	{
+		
+		return true;
+	}
+	
+}
+	
+function checkkey3()
+{
+var key3=document.getElementById("group3_GroupID");
+if(key3.checked==false)
+	{
+	alert("Please select Key3 first");
+	key3.focus();
+	return false;
+	}
+else
+	{
+		
+		return true;
+	}
+	
+}
+
+</script>
+</head>
+<body>
+<center>
+
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="951" height="290" align="center">
+  <tr>
+    <td width="951" height="290" align="center">
+
+<% form_tag :action => 'update', :id => @group do %>
+<fieldset style="width:710 ; height: 230 ; align:center">
+<h2>Edit group</h2>
+
+<%= error_messages_for 'group' %>
+
+<!--[form:group]-->
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="88%" height="185">
+  						<tr width=100%>
+    						<td width="47%" align=right height="39">
+								<label for="group_CompanyID"><b>
+                                <font face="Arial" size="2">GROUP NAME</font></b></label><b><font face="Arial" size="2" ><label for="group_CompanyID"> </label>
+									</font></b>
+							</td>
+							<td width="2%" height="39" >
+							</td>
+
+							<td width="60%" align=left height="39">
+							<%= text_field 'group', 'ClusterName' ,:readonly=>true,:size=>15 %>
+
+
+<% @shop=Shop.find(:all) %>
+
+ <%= collection_select(:group, :ClusterName,  @shop,  :ClusterName, :ClusterName,
+                      {:prompt   => @group.ClusterName},
+                      {:onchange => "#{remote_function(:url  => { :action => "getShopName1"},
+                                                       :with => "'ClusterName='+value")}"}) %>
+ 
+ 
+                                                       
+                    
+
+</td>
+ 						</tr>
+						<tr width=100%>
+
+							<td width="47%" align=right height="51" >
+							<label for="group_CompanyName"><b>
+                            <font face="Arial" size="2">SHOP </font></b></label>
+							<b><font face="Arial" size="2" >
+ 									<label for="group_CompanyName">NAME</label>
+ 									</font></b>
+
+							</td>
+							<td width="2%" height="51" >
+							</td>
+							<td width="52%" align=left height="51">
+							
+
+<div id="shopnamediv">
+<%= render :partial => 'editshopname' %>
+
+</div>
+<tr width=100%>
+<td width="46%" align=right  height="1" >
+<label for="group_GroupID"><b><font face="Arial" size="2">KEY NO</font></b></label><b><font face="Arial" size="2" >
+
+	</font></b>
+
+	</td>
+<td width="2%" height="1" >
+							</td>
+							<td width="52%" align=left height="1">
+
+	<% @z=Group.find(params[:id])%>
+
+	<% @t = Group.find_by_sql("select count(*) as 'count',ShopID,ShopName from groups where ShopID='JC' group by ShopID" ) %>
+	<% @c =Group.count(["ShopName=?",@z.ShopName]) %>
+	
+	<% if(@c==4) %>
+	<label for="group_Key1">Key1</label>
+	<input type="checkbox" id="group1_GroupID" name="group1[GroupID]" value="Key1" checked=checked>
+	<input name="group1[GroupID]" type=hidden value=0>
+	
+	
+	<label for="group_Key2">Key2</label>
+	<input type="checkbox" id="group2_GroupID" name="group2[GroupID]" value="Key2" checked=checked >
+	<input name="group2[GroupID]" type=hidden value=0>
+
+	<label for="group_Key3">Key3</label>
+	<input type="checkbox" id="group3_GroupID" name="group3[GroupID]" value="Key3" checked=checked >
+	<input name="group3[GroupID]" type=hidden value=0>
+
+	<label for="group_Key4">Key4</label>
+	<input type="checkbox" id="group4_GroupID" name="group4[GroupID]" value="Key4" checked=checked >
+	<input name="group4[GroupID]" type=hidden value=0>
+	<% end %>
+	
+	<% if(@c==3) %>
+	<label for="group_Key1">Key1</label>
+	<input type="checkbox" id="group1_GroupID" name="group1[GroupID]" value="Key1" checked=checked>
+	<input name="group1[GroupID]" type=hidden value=0>
+	
+	
+	<label for="group_Key2">Key2</label>
+	<input type="checkbox" id="group2_GroupID" name="group2[GroupID]" value="Key2" checked=checked >
+	<input name="group2[GroupID]" type=hidden value=0>
+
+	<label for="group_Key3">Key3</label>
+	<input type="checkbox" id="group3_GroupID" name="group3[GroupID]" value="Key3" checked=checked >
+	<input name="group3[GroupID]" type=hidden value=0>
+
+	<label for="group_Key4">Key4</label>
+	<input type="checkbox" id="group4_GroupID" name="group4[GroupID]" value="Key4"  >
+	<input name="group4[GroupID]" type=hidden value=0>
+	<% end %>
+
+<% if(@c==2) %>
+	<label for="group_Key1">Key1</label>
+	<input type="checkbox" id="group1_GroupID" name="group1[GroupID]" value="Key1" checked=checked>
+	<input name="group1[GroupID]" type=hidden value=0>
+	
+	
+	<label for="group_Key2">Key2</label>
+	<input type="checkbox" id="group2_GroupID" name="group2[GroupID]" value="Key2" checked=checked >
+	<input name="group2[GroupID]" type=hidden value=0>
+
+	<label for="group_Key3">Key3</label>
+	<input type="checkbox" id="group3_GroupID" name="group3[GroupID]" value="Key3"  >
+	<input name="group3[GroupID]" type=hidden value=0>
+
+	<label for="group_Key4">Key4</label>
+	<input type="checkbox" id="group4_GroupID" name="group4[GroupID]" value="Key4"  >
+	<input name="group4[GroupID]" type=hidden value=0>
+	<% end %>
+<% if(@c==1) %>
+	<label for="group_Key1">Key1</label>
+	<input type="checkbox" id="group1_GroupID" name="group1[GroupID]" value="Key1" checked=checked>
+	<input name="group1[GroupID]" type=hidden value=0>
+	
+	
+	<label for="group_Key2">Key2</label>
+	<input type="checkbox" id="group2_GroupID" name="group2[GroupID]" value="Key2"  >
+	<input name="group2[GroupID]" type=hidden value=0>
+
+	<label for="group_Key3">Key3</label>
+	<input type="checkbox" id="group3_GroupID" name="group3[GroupID]" value="Key3" >
+	<input name="group3[GroupID]" type=hidden value=0>
+
+	<label for="group_Key4">Key4</label>
+	<input type="checkbox" id="group4_GroupID" name="group4[GroupID]" value="Key4"  >
+	<input name="group4[GroupID]" type=hidden value=0>
+	<% end %>
+	</td>
+						</tr>
+						<tr width=100%>
+
+							<td width="100%" align=center colspan=3 height="43" >
+							<br>
+<input type="submit" value="Update" name="B1">
+  <%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'groups',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+
+	
+	<% end %>
+		</td>
+  						</tr>
+				</table>
+</fieldset >
+
+</td>
+  </tr>
+</table>
+</center>
+</body>
+</html>

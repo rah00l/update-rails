@@ -1,0 +1,310 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+<body>
+<h2>DAILY REPORT</h2><%= @session[:clustarray]%><%= @session[:shoparray1]%><%= @session[:shoparray]%>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="39%" id="AutoNumber2" height="85">
+  <tr>
+    <td width="34%" height="19"><font size="2">GROUP/TOT/HC</font></td>
+    <td width="32%" height="19"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+    <%= @c[0].totalHC %>
+</td>
+    <td width="34%" height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">AVG</font><font size="2">/HC</font></td>
+    <td width="32%" height="19"><% @c1= Counterdata.find_by_sql("select avg(HC) as 'totalavgHC' from counterdatas where  Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+     <%= @c[0].totalHC.to_i/@session[:datediff].to_i %>
+    <% @c1[0].totalavgHC.to_i.round %>
+</td>
+    <td width="34%" height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="34%" height="19"><font size="2">TODAY'S HC</font></td>
+    <td width="32%" height="19"><% @cc= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where  Date='#{session[:dailyvalue]}'")%>
+    <%= @cc[0].totalHC %>
+    </td>
+    <td width="34%" height="19"> 
+</td>
+  </tr>
+  <tr>
+    <td width="34%" height="16"><font size="2">TOTAL S/GROUP HC</font></td>
+    <td width="32%" height="16"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='#{@session[:rrclustername]}' and ShopName in (#{@session[:shoparray]}) and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+    <%= @c[0].totalHC %>
+</td>
+    <td width="34%" height="16"><font size="2">AVG:<%= @cc[0].totalHC.to_i/@session[:datediff].to_i%>
+</font></td>
+  </tr>
+  <tr>
+    <td width="34%" height="23"><font size="2">TODAYS S/GROUP HC</font></td>
+    <td width="32%" height="23"><% @c= Counterdata.find_by_sql("select sum(HC) as 'totalHC' from counterdatas where ClusterName='#{@session[:rrclustername]}' and Date='#{@session[:enddatehc]}'")%>
+    <%= @c[0].totalHC %>
+</td>
+    <td width="34%" height="23"></td>
+  </tr>
+</table>
+<%len=@session[:shoparray1].length %>
+ 
+
+
+<br>
+ 
+<% total_tsrin=0%>
+<% total_tsrout=0%>
+<% shopcount=0 %>
+<%for i in 0..len-1 do %> </p>
+<% @countvalue=0 %>
+<% @lossval=0%>
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="792" id="AutoNumber3" height="33">
+ 
+ 
+  <tr>
+  <td bgcolor="#FFA500" width="58" height="19">SHOP</td>
+    <td width="157" height="19"  ><%= @session[:shoparray1][i].to_s%>&nbsp;</td>
+    <td bgcolor="#FFA500" width="90" height="19">HCAVG</td>
+    <td width="102" height="19"  >
+    <% @hc= Counterdata.find_by_sql("select avg(HC) as 'HC' from counterdatas where ClusterName='#{@session[:rrclustername]}' and ShopName='#{@session[:shoparray1][i].to_s}' and Date>='#{@session[:startdatehc]}' and Date<='#{@session[:enddatehc]}'")%>
+    <%= @hc[0].HC %>
+
+    
+    &nbsp;</td>
+ 	<% @c= Counterdata.find(:first,:conditions=>["ClusterName='#{@session[:rrclustername]}' and Date='#{@session[:enddatehc]}' and ShopName='#{@session[:shoparray1][i].to_s}'"])%>
+  <td bgcolor="#FFA500" width="64" height="19">T' HC</td>
+    <td width="128" height="19"  ><%= @c.HC%>&nbsp;</td>
+ 	<td bgcolor="#FFA500" width="64" height="19">T' CR</td>
+    <td width="128" height="19"  >
+<%= @c.Credit%>&nbsp;</td>
+    <td bgcolor="#FFA500" width="75" height="19">Y' CR</td>
+    <td width="117" height="19"  ><% @c1= Counterdata.find(:first,:conditions=>["ClusterName='#{@session[:rrclustername]}' and Date='#{@session[:enddatehc]-1}' and ShopName='#{@session[:shoparray1][i].to_s}'"])%>
+<% if(@c1!=nil)%>
+<% ycredit=@c1.Credit%>
+<%else%>
+<% ycredit=0%>
+<%end%>
+<%= ycredit%>
+&nbsp;</td>
+    
+ <td bgcolor="#FFA500" width="109" height="19">total diff</td>
+    <td width="463" height="19"  >
+    
+    <%= @c.Credit.to_i-ycredit.to_i%>
+    
+    &nbsp;</td>
+ 
+  </tr>
+  
+  
+  <tr>
+ <td bgcolor="#FFA500" width="58" height="13">Date</td>
+   <td width="157" height="13"><%= session[:dailyvalue] %></td>
+ 
+  </tr>
+
+</table><br>
+<% @key=Group.find(:all,:conditions=>["CLUSTERNAME in (?) and SHOPNAME=?",@session[:clustarray],@session[:shoparray1][i].to_s])%>
+<% @key.each do |key| %>
+
+<% @TotalTSRIN=0%>
+<% @TotalTSROUT=0%>
+<% @TotalMCSHORT=0%>
+<h2>Total % <% @c= Machinedata.find_by_sql("select TSRIN,TSROUT,TMTRIN,TMTROUT,SRCOLL,MTRCOLL,CALCULATEBY from machinedatas where CLUSTER_NAME='#{@session[:rrclustername]}' and GROUP_ID='#{key.GroupID}' and SHOP_NAME ='#{@session[:shoparray1][i].to_s}' and TRANS_DATE>='#{@session[:startdatehc]}' and TRANS_DATE<='#{@session[:enddatehc]}'")%>
+<% @in=0 %>
+<% @out=0 %>
+
+<%for c in @c %>
+	<% if(c.CALCULATEBY=='S')%>
+	<% @in=@in.to_i+c.TSRIN.to_i%>
+	<% @out=@out.to_i+c.TSROUT.to_i%>
+	<% else%>
+	<% @in=@in.to_i+c.TMTRIN.to_i%>
+	<% @out=@out.to_i+c.TMTROUT.to_i%>
+	<%end%>
+	
+	
+<% end %>
+<% @totalper=(@out.to_f*100)/@in.to_f%>
+
+<%= @totalper.round %>
+<BR>
+
+<table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >  
+<tr><th><%= @session[:shoparray1][i].to_s%>&nbsp;</th><th><%= key.GroupID %> &nbsp;</th></tr>
+<tr >
+		<th scope=col nowrap width="50%"  height="20">MACHINE NO </font></th>
+     	<th scope=col nowrap width="50%" height="1"  >MACHINE NAME</font></th>
+     	<th scope=col nowrap width="50%" height="1"  >SRIN</font></th>
+		<th scope=col nowrap width="50%" height="1"  >SROUT</font></th>
+		<th scope=col nowrap width="50%" height="1"  >SR %</font></th>
+		<th scope=col nowrap width="50%" height="1"  >TSRIN</font></th>
+		<th scope=col nowrap width="50%" height="1"  >TSROUT</font></th>
+		<th scope=col nowrap width="50%" height="1"  >M/S</font></th>
+		<th scope=col nowrap width="50%" height="1"  >COLL</font></th>
+		<th scope=col nowrap width="50%" height="1"  >LOSS</font></th>
+		<th scope=col nowrap width="50%" height="1"  >LOSS AMT</font></th>
+		<th scope=col nowrap width="50%" height="1"  >10 AVG</font></th>
+		<th scope=col nowrap width="50%" height="1"  >SR AVG</font></th>
+		<th scope=col nowrap width="50%" height="1"  >T SET</font></th>
+   		<th scope=col nowrap width="50%" height="1"  >P SET</font></th>
+		<th scope=col nowrap width="50%" height="1"  >PM %</font></th>
+</tr>
+
+
+<% @machinesdata=Machinedata.find(:all,:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? AND GROUP_ID=? and TRANS_DATE=?",@session[:clustarray],@session[:shoparray1][i].to_s,key.GroupID,session[:dailyvalue]],:order => "MACHINE_NO") %>
+
+<% @machinesdata.each do |c| %>
+<% @pmper=Machinedata.find(:all,:conditions=>["CLUSTER_NAME in (?) and SHOP_NAME=? AND GROUP_ID=? and MACHINE_NO='#{c.MACHINE_NO}'",@session[:clustarray],@session[:shoparray1][i].to_s,key.GroupID],:order => "MACHINE_NO") %>
+<% @tin=0%>
+<% @tout=0%>
+<% @coll=0%>
+<% for i1 in @pmper %>
+<%if(i1.CALCULATEBY=='S')%>
+<%@tin=@tin.to_i+i1.TSRIN.to_i%>
+<%@tout=@tout.to_i+i1.TSROUT.to_i%>
+<%else%>
+<%@tin=@tin.to_i+i1.TMTRIN.to_i%>
+<%@tout=@tout.to_i+i1.TMTROUT.to_i%>
+
+
+<%end%>
+<% end %>
+  <tr>
+	<td nowrap width="20%" height="10" align=center><%= c.MACHINE_NO %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.MACHINE_NAME %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SRIN %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SROUT %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SRPER %>&nbsp;</td>
+
+<td nowrap width="20%" height="10" align=center><%= c.TSRIN %>
+<% @TotalTSRIN=@TotalTSRIN.to_i+c.TSRIN.to_i%>
+
+
+
+&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.TSROUT %>
+<% @TotalTSROUT=@TotalTSROUT.to_i+c.TSROUT.to_i%>
+
+&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.MTRSHORT %>&nbsp;</td>
+<% @TotalMCSHORT=@TotalMCSHORT.to_i+c.MTRSHORT.to_i%>
+<% if c.CALCULATEBY=='S'%>
+					<% @sr=c.SRCOLL %>
+				<% else %>	
+					<% @sr=c.MTRCOLL %>
+				<% end %>
+
+<td nowrap width="20%" height="10" align=center><%= @sr %>&nbsp;</td>
+<% olddate=Date.parse("#{session[:dailyvalue]}")-5%>
+<% @flagval="false" %>
+<% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE<=? and TRANS_DATE>=?',@session[:shoparray1][i].to_s,key.GroupID,c.MACHINE_NO,session[:dailyvalue],olddate])%>
+
+<%@machinevalues.each do |item|%>
+           <%if((item.SETTING==item.LASTSETTING) and ((item.SRIN==item.PSRINVALUE or (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE or (item.SROUT!=0 and item.PSROUTVALUE!=0)))) %>
+                
+				<% if item.CALCULATEBY=='S'%>
+					<% @srval=item.SRCOLL %>
+				<% else %>	
+					<% @srval=item.MTRCOLL %>
+				<% end %>
+				
+				<% if @srval.to_i < 0  %>
+					<% @flagval="true" %>
+					<% if @lossval.to_s=='0' %>
+                   		<% @lossval="*"%>
+                   	<% else %>
+                   		<% @lossval=@lossval.to_s+"*"%>
+                   	<%end%>			
+                <% else %>
+                	<% if @flagval=="true" %>
+                			<% if @lossval.to_s=='0' %>
+                   					<% @lossval="+"%>
+                   			<% else %>
+                   					<% @lossval=@lossval.to_s+"+"%>
+                   			<%end%>
+                   		
+                	<% end %>
+                	
+				<% end %>
+                   		
+           <% end%>
+           
+   <%end%>
+   <% if @lossval==0%>
+   <td nowrap width="20%" height="10" align=center>&nbsp;</td>
+   <%else%>
+   <td nowrap width="20%" height="10" align=center><%= @lossval%>&nbsp;</td>
+   <% end %>
+
+<% @lossval=0%>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.TENDAYSAVG%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SRAVG%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SETTING%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.LASTSETTING%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>
+
+<% @totalper=(@tout.to_f*100)/@tin.to_f%>
+
+<%= @totalper.round %>
+
+
+
+
+&nbsp;</td>
+
+
+
+
+
+
+
+  </tr>
+	<% end %>
+	
+	
+	
+
+<tr>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>
+	
+	
+	<%= @TotalTSRIN%>
+ &nbsp;</td>
+	<td nowrap width="20%" height="10" align=center><%= @TotalTSROUT%></td>
+	<td nowrap width="20%" height="10" align=center><%= @TotalMCSHORT%>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+
+</tr>
+</table>
+
+	<% @total_tsrin=@total_tsrin.to_i+@TotalTSRIN.to_i%>
+	<% @total_tsrout=@total_tsrout.to_i+@TotalTSROUT.to_i%>
+<%end%>
+<% shopcount=shopcount.to_i+1%>
+
+<% end %>
+
+
+
+
+<% @TOTALSHOPPER=((@total_tsrout.to_f*100)/@total_tsrin.to_f).round %>
+<h1>TOTAL % FOR <%= shopcount%> COMPANIES : <%= @TOTALSHOPPER %>% </h1>
+</body>
+
+</html>

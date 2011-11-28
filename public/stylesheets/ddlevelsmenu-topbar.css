@@ -1,0 +1,131 @@
+
+links a:link{
+	 	color:"#6C3401";
+	 	font-style:bold;
+	 	}
+	 	
+links a:visited{
+	 	color:"#6C3401";
+	 	font-style:bold;
+	 	}
+	 	
+	 	
+links a:active{
+	 	color:"#6C3401";
+	 	font-style:bold;
+	 	}
+.fieldWithErrors {
+  padding: 2px;
+  background-color:#6C3401 ;
+  display: table;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid#6C3401;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f2f2f2;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 3px 5px 15px;
+  font-size: 15px;
+  margin: -7px;
+  background-color: #6C3401;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 15px;
+  list-style: square;
+ 
+ 
+}
+#background {
+background: url('images/Flashy_Ubuntu_by_KiTTy_RaWr.jpg');
+}
+
+td
+{
+font-family:Arial;
+font-size:10pt;
+color:#6C3401;
+}
+h1
+{
+font-family:Arial;
+color:#6C3401;
+}
+
+th {
+color: white;
+font-family:Arial;
+background-color:#6C3401;
+font-size:14px;
+font-style:bold;
+}
+.pretty-table { border-collapse: collapse; }
+.pretty-table th, .pretty-table td { padding: 0.5em; }
+.pretty-table { border: 0px solid #333; }
+.pretty-table th, .pretty-table td { border: 1px dotted #666; }
+.pretty-table th[scope=col]
+{
+  border-bottom: 2px solid #333;
+  border-right: 2px solid #333;
+ }
+ DIV.clsDataGrid1 { 
+border:medium none; 
+WIDTH: 680px;
+HEIGHT:200px;
+
+overflow-x: scroll;
+overflow-y:scroll;
+ } 
+
+DIV.clsDataGrid { 
+border:medium none;
+ WIDTH: 884px;
+HEIGHT:200px;
+
+overflow-x: scroll;
+overflow-y:scroll;
+ } 
+DIV.clsDataGrid3 { 
+border:medium none;
+ WIDTH: 750px;
+HEIGHT:170px;
+
+overflow-x: scroll;
+overflow-y:scroll;
+ } 
+
+DIV.clsDataGridheight { 
+border:medium none;
+ WIDTH: 884px;
+HEIGHT:350px;
+}
+
+DIV.clsDataGrid2 { 
+border:medium none;
+ WIDTH: 150px;
+HEIGHT:100px;
+
+overflow-x: scroll;
+overflow-y:scroll;
+ } 
+
+#screen {
+background: url('images/bg.jpg') no-repeat;)
+}
+
+ 

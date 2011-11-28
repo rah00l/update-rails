@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Admin</title>
+<STYLE type="text/css"> 
+  
+DIV.clsDataGrid { 
+BORDER-RIGHT:none; 
+BORDER-TOP: none; 
+BORDER-LEFT: none; 
+BORDER-BOTTOM: none; 
+OVERFLOW: scroll; 
+WIDTH: 875px; 
+HEIGHT:200px;
+} 
+
+</STYLE> 
+
+</head>
+
+<body>
+	<p>&nbsp;</p>
+		<table border=0  align="center" width="100%"><tr>
+ 			 <td bgcolor="#FFFFFF" width="90%" align=center >
+				<table align=center border=0 bordercolor="#08176C"width="90%" left="5%"><tr>
+ 					 <td width="870">
+					<p>
+						<h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">Listing Users</font></h1>
+						<p>&nbsp;</p>
+							<div class=clsDataGrid id=divList bgcolor=white style="width: 96%; height: 201 ">
+								<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >  
+									<tr  bgcolor="#E1CEA2" align=center>
+  								      	<th nowrap width="111" height="22" >
+									        <font color=white face="Zurich BT" size="2">Login</font></th>
+								      	<th  nowrap  width="83" height="22" >
+									        <font color=white face="Zurich BT" size="2">User Type </font></th>
+										<th  nowrap width="100" height="22">
+									        <font color=white face="Zurich BT" size="2">User Status </font></th>
+										<th  nowrap width="87" height="22" >
+									        <font color=white face="Zurich BT" size="2">Login Status </font></th>
+		 								<th  nowrap width="87" height="22">
+        								        <font color=white face="Zurich BT" size="2">First Name </font></th>
+								         <th  nowrap width="87" height="22">
+        								        <font color=white face="Zurich BT" size="2">Last Name </font></th>
+        									<th width="5"  >
+								        &nbsp; </th>
+
+									 </tr>
+<!--RUBY CODE FOR FETCHING USERS DATA--> 
+<% @t = User.find_by_sql("select * from users" ) %>
+<% @t.each do |c| %>
+  <tr>
+  
+	<td nowrap align="center" width="111"><font face="Zurich BT"  size="2"><%=  link_to c.login, :action => 'edit', :id => c.id %>&nbsp;</td>	
+	<td nowrap align="center" width="83"><font face="Zurich BT" size="2"><%= c.usertype %>&nbsp;</td>
+	<td nowrap align="center" width="100">
+<% @b=c.userstatus %><font face="Zurich BT"  size="2">
+<% if @b.to_i== 1 %> </font><font face="Zurich BT" size="2">Active
+<%else%>
+In Active
+<%end%>
+
+</td>
+	<td nowrap align="center" width="87"><font face="Zurich BT"  size="2"><%= c.loginstatus %>&nbsp;</td>
+	
+	<td nowrap align="center" width="87"><font face="Zurich BT"   size="2"><%= c.firstname %>&nbsp;</td>
+	<td nowrap align="center" width="87"><font face="Zurich BT"  size="2"><%= c.lastname%>&nbsp;</td>
+<!--	<td align="center" width="111"><font face="Zurich BT" size="2">&nbsp;</td>
+	<td align="center" width="73"><font face="Zurich BT" size="2">&nbsp;</td>-->
+	<td nowrap align="center" width="5"><font face="Zurich BT"  size="2"><%=  link_to image_tag("delete.gif", :border=>0),{ :action => "delete", :id => c.id },:confirm =>"Are you sure want to delete this item?" %>&nbsp;</td>
+    
+  
+
+</tr><% end %>	
+</table></div>
+<br/>
+<div align=center>
+<font face="Zurich BT" size="3"><b><%= link_to 'Add New User', :controller => 'users', :action => 'new' %></div></b></font>
+<p>&nbsp;</p>
+ 
+
+</td></tr></table>
+</td></tr></table>
+</body>
+</html>

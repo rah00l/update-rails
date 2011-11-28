@@ -1,0 +1,204 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+<script>
+function focusbutton()
+{
+	var short = document.getElementById("clientdata_Machineshort");
+      
+      
+		short.select();
+	 	short.focus();
+
+}
+
+function Check()
+{
+	var short = document.getElementById("clientdata_Machineshort");
+	var shortreason = document.getElementById("clientdata_Shortreason");
+/*
+	if(parseInt(short.value)==0)
+ 	{
+ 	alert("PLEASE ENTER MACHINE SHORT");
+ 	short.focus();
+ 	return(false);
+ 	}
+*/
+	 if(short.value.length<1)
+ 	{
+ 	alert("PLEASE ENTER MACHINE SHORT");
+ 	short.focus();
+ 	return(false);
+ 	}
+ 	
+	
+	else if(shortreason.options[shortreason.selectedIndex].text=="")
+	{
+ 	alert("PLEASE ENTER MACHINE SHORT REASON !");
+ 	shortreason.focus();
+ 	return(false);
+ 	}
+ 	else
+ 	{ 	
+
+ 	return(true);
+ 	}
+
+}
+function onlyNumbers(evt)
+{
+	var e = event || evt; // for trans-browser compatibility
+	var charCode = e.which || e.keyCode;
+	
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+		return false;
+    
+	return true;
+
+}
+</script>
+</head>
+
+<body onload="focusbutton();" align=center>
+	
+<div align="center">
+  <center>
+<table  border=1 bordercolor=#6C3401 cellpadding=2 cellspacing=0>
+	<tr>
+		<td width=25% align=right>SHOP NAME:
+		</td>
+		<td width=25% align=left><%=@session['shortshop']%> &nbsp;</td>
+		<td width=25% align=right>KEY ID:
+		</td>
+		<td width=25% align=left><%= @session['shortgroupid']%> &nbsp;</td>
+	<tr>
+	<tr>
+		<td width=25% align=right>MACHINE NAME/NO:
+		</td>
+		<td width=25% align=left><%=@session['shortmachinename']%>/<%=@session['shortmachineno']%> &nbsp;</td>
+		<td width=25% align=right>DATE:
+		</td>
+		<td width=25% align=left><%=@session['shortdate']%> &nbsp;</td>
+	<tr>
+
+<%@s=Clientdata.find_first(["ShopName=? and GroupID=? and MachineNo=? and Date='#{@session['shortdate']}'",@session['shortshop'],@session['shortgroupid'],@session['shortmachineno']])    %>
+
+
+</table>
+<br>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="53%" id="AutoNumber1" bgcolor=#C0C0C0>
+  <form method="POST" action="saveshort" onSubmit="return Check();" >
+  <tr>
+      <td width="100%" bgcolor="#6C3401" height="19" align="left"><b><font color=white>SHORT</font></b></td>
+      <td width="100%" bgcolor="#6C3401" height="19">&nbsp;</td>
+
+    </tr>
+  <tr>
+   
+  <td align="left">
+  	Short Amount : 
+  </td>
+    <td width="100%">
+    <%if(@s!=nil)%>
+
+<% @s1=@s.Machineshort%>
+<% @d=@s1.to_s.split('-') %>
+<% @d[0]%>
+
+	<input type="text" name="clientdata[Machineshort]" id="clientdata_Machineshort" size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.clientdata_Shortreason.focus();" maxlength="6" value="<%= @d[1].to_i*10%>">
+	
+	<%else%>
+	<input type="text" name="clientdata[Machineshort]" id="clientdata_Machineshort" size="20" onkeypress="return onlyNumbers();" maxlength="6" onKeyDown="if(event.keyCode==13)  this.form.clientdata_Shortreason.focus();" ></td>
+    <%end%>
+	
+	
+	  </tr>
+  <tr>
+  <td align="left">
+  ShortReason
+  </td>
+    
+<td width="100%">
+   
+    <%if(@s!=nil)%>
+   
+	   	 <% if(@s.Shortreason!="" or @s.Shortreason!=nil) %>
+     
+    			<% @REASONS=Shop.find_by_sql("select * from shortreasons where McShortReason<>'Admin' and McShortReason<>'Refund' and McShortReason<> '#{@s.Shortreason}' order by McShortReason ") %>
+			    
+			    <select size="1" name="clientdata[Shortreason]" id="clientdata_Shortreason" onKeyDown="if(event.keyCode==13)  this.form.ok.focus();">
+			    <option value="<%= @s.Shortreason %>"><%= @s.Shortreason %></option>	
+
+				<% @REASONS.each do |r| %>
+				
+				<option value="<%= r.McShortReason %>"><%= r.McShortReason %></option>	
+			
+			    <% end %>
+			    </select>
+
+    <%else%>
+
+    <% @REASONS=Shop.find_by_sql("select * from shortreasons where McShortReason<>'Admin' and McShortReason<>'Refund' ") %>
+			    
+			    <select size="1" name="clientdata[Shortreason]" id="clientdata_Shortreason" >
+			    
+				<% @REASONS.each do |r| %>
+				
+				<option value="<%= r.McShortReason %>"><%= r.McShortReason %></option>	
+			
+			    <% end %>
+			    </select>
+	
+	<%end%>
+	<%else%>
+	   <% @REASONS=Shop.find_by_sql("select * from shortreasons where McShortReason<>'Admin' and McShortReason<>'Refund' ") %>
+			    
+			    <select size="1" name="clientdata[Shortreason]" id="clientdata_Shortreason" >
+			    <option value=""></option>
+				<% @REASONS.each do |r| %>
+				
+				<option value="<%= r.McShortReason %>"><%= r.McShortReason %></option>	
+			
+			    <% end %>
+			    </select>
+	
+	<%end%>	
+	</td>
+	
+	  </tr>	  
+  <tr>
+    <td width="100%" align="left">
+    
+      <p align="center">
+       <%if(@s!=nil)%>
+
+     <input type=submit value="SAVE SHORT" ID="ok" >
+     <%else%>
+      <%= submit_to_remote ' OK ',' Create Short ',:url => {:controller=>'clientdatas',:action => "saveshort" },:id=>'ok' %>
+      <%end%>
+     
+
+	  <%= button_to_function ' RESET ' , remote_function(:url => {:controller=> 'clientdatas', :action => 'resetdata'}),:id=>'cancel',:style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+ <%= button_to_function ' BACK ' , remote_function(:url => {:controller=> 'clientdatas', :action => 'entrydata'}),:id=>'cancel',:style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+</p>
+    </form>
+    </td>
+  </tr>
+ 
+</table>
+
+  </center>
+</div>
+
+  </center>
+</div>
+
+</body>
+
+</html>

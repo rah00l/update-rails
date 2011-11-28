@@ -1,0 +1,150 @@
+<html>
+<body>
+<form>
+<table  height=280 width="100%">
+    <tr>
+       <td width="100%"  height=280>
+  			<table  height=100>
+    			<tr>
+      				 <td width="100%"  height=100>
+ 							<table  height=100>
+          						<tr>
+            						<td width="100%"  >
+            							<div class=clsDataGrid id=divList height=56>
+		         								 <table border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black" align=center  id="AutoNumber1"  height="56"  >  
+													<tr >
+														 <th  scope=col nowrap  width="30%" height="10" >ShopName</th>
+					        							 <th  scope=col nowrap  width="30%" height="10" >KEY No.</th>
+					     	 							 <th scope=col nowrap width="25%"  height="10">MachineNo </th>
+	     					 							  <th scope=col nowrap width="130" height="10"  >MachineName</th>
+	     											</tr>
+					<% @machines=Entry.find_all("status=0 and Date='#{session[:dateval]}'") %>
+					<% @machines.each do |c| %>
+													<tr>
+															<td nowrap width="30%" height="1" align=center><%= c.ShopName %></td>
+															<td nowrap width="30%" height="1" align=center><%= c.GroupID %></td>
+															<td nowrap width="20%" height="1" align=center><%= c.MachineNo %></td>
+															<td nowrap width="20%" height="1" align=center><%= c.MachineName %></td>
+													</tr>
+					<% end %>	
+												</table>
+										</div>
+									</td>
+								 </tr>
+							</table>
+						</td>
+     			 </tr>
+      			<tr>
+     			 	<td>
+      <% @machines=Entry.find_by_sql("select distinct ShopName from Entries where status=0 and Date='#{session[:dateval]}' ") %>
+      
+		<% @machines.each do |c| %>
+		
+		<% @counter=Countercollection.find_first(["ShopName=? and status=0 and Date='#{session[:dateval]}'",c.ShopName]) %>
+		<% if(@counter==nil) %>
+		<font color="#FFFFFF">
+			Counter Collection not entered for Shop <%= c.ShopName %>
+		</font>
+		
+		<%end%>
+		<%end%>
+		
+     		 		</td>
+     		 </tr>
+     		 <tr>
+       			 <td width="100%" >
+        				<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="white" width="100%" id="AutoNumber4" >
+          					<tr>
+            					<td width="100%" height="25" colspan="4">&nbsp;</td>	
+          					</tr>
+          					<tr>
+            					<td width="100%" height="24" colspan="4">The Following Records will be sent:
+            					</td>
+         					 </tr>
+          					<tr bgcolor=#6C3401>
+            						<td width="25%" height="24" align="center" ><font color="#FFFFFF"><b>Select</b></font></td>
+           							<td width="25%" height="24" align="center" ><font color="#FFFFFF"><b>ShopName</b></font></td>
+            						<td width="25%" height="24" align="center"> &nbsp;</td>
+           						    <td width="25%" height="24" align="center" >&nbsp;</td>
+           					</tr>
+						</table>
+        		 </td>
+      		</tr>
+			<tr >
+		  <% @shops=Shop.find(:all)%>
+      	  <% @count=1 %>
+		  <% @shops.each do |shop| %>
+		  
+
+		  <%@mcount=Machine.count(["ShopName=?",shop.ShopName])%>
+        	<% @c =Entry.count(["ShopName=? and status=0 and Date='#{session[:dateval]}'",shop.ShopName])%>
+		<% @counter=Countercollection.count(["ShopName=?",shop.ShopName]) %>
+        	
+			<td >
+         			<table width=100% border=1>
+		  				<tr><% if(@mcount==@c and @mcount>0 and @c>0 and @counter>0)%>
+		  		 <% @count+=1 %>
+        					<td width=25% align=center >
+        						<input type="checkbox" id=Entries_ShopName name=Entries[ShopName][] checked value="<%= shop.ShopName %>">
+        					</td>
+        					<td width=25% align=center >
+       							 <label><%= shop.ShopName %></label> &nbsp;</td>
+       				 
+        					<td width=25% align=center >
+       
+       						 </td>
+       						 <td width=25% align=center>
+        
+       						 </td>	
+       						 <% end %>	
+       					  </tr>
+				 </table>
+			</td>
+        </tr>
+	<%end %> 
+      
+      <tr>
+      <td >
+		  <table width=100%>
+		  	<tr>
+
+       			 <td width="56%" height="20" align=right >
+        
+       		<% if(@count>1) %>
+
+          <%= submit_to_remote 'Send','Send',:url => {:controller=>'entries',:action => "createdata" },:confirm=>"ARE YOU SURE YOU WANT TO SEND DATA?"%>
+			<%else%>
+          			<input type=button value="Send" disabled>
+			<%end%>
+       
+
+        <%= button_to_function 'Back' , remote_function(:url=> {:controller=>'entries',:action => "cancelentry" }), :style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+       			 </td>
+       			 <td width="44%" height="20" align=left>
+
+        		<div id="aux_div" style=" visibility:hidden; align:center; width:10%;
+  									border: 2px solid white;
+  									padding-bottom: 0px;
+  									margin-bottom: 0px;
+  									background-color: #f0f0f0; height:28; padding-left:2px; padding-right:2px; padding-top:2px" >
+                                 
+
+                                    <%= image_tag('spinner.gif') %>
+                                   			
+				</div>
+
+				</td>
+      		</tr>
+      
+   	 </table>
+ </td>
+</tr>
+    </table>
+  
+   </td>
+      </tr>
+    </table>
+      </form>
+
+    </body>
+    </html>

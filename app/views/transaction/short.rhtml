@@ -1,0 +1,150 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+<script>
+function focusbutton()
+{
+	var short = document.getElementById("entry_Machineshort");
+      
+        
+
+	 	short.focus();
+
+}
+function Check()
+{
+	var short = document.getElementById("entry_Machineshort");
+	if(short.value==0)
+ 	{
+ 	alert("PLEASE ENTER MACHINE SHORT");
+ 	short.focus();
+ 	return(false);
+ 	}
+
+	if(short.value.length<1)
+ 	{
+ 	alert("PLEASE ENTER MACHINE SHORT");
+ 	short.focus();
+ 	return(false);
+ 	}
+	var shortreason = document.getElementById("Shortreason");
+	if(shortreason.value.length<1)
+ 	{
+ 	alert("PLEASE ENTER MACHINE SHORT REASON !");
+ 	shortreason.focus();
+ 	return(false);
+ 	}
+ 	
+ 	return(true);
+}
+function onlyNumbers(evt)
+{
+	var e = event || evt; // for trans-browser compatibility
+	var charCode = e.which || e.keyCode;
+	
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+		return false;
+    
+	return true;
+
+}
+</script>
+</head>
+
+<body onload="focusbutton();" align=center>
+	
+<div align="center">
+  <center>
+<table  border=1 bordercolor=#6C3401 cellpadding=2 cellspacing=0>
+	<tr>
+		<td width=25% align=right>SHOP NAME:
+		</td>
+		<td width=25% align=left><%=@session['shortshop']%> &nbsp;</td>
+		<td width=25% align=right>KEY ID:
+		</td>
+		<td width=25% align=left><%= @session['shortgroupid']%> &nbsp;</td>
+	<tr>
+	<tr>
+		<td width=25% align=right>MACHINE NAME:
+		</td>
+		<td width=25% align=left><%=@session['shortmachinename']%> &nbsp;</td>
+		<td width=25% align=right>DATE:
+		</td>
+		<td width=25% align=left><%=@session['shortdate']%> &nbsp;</td>
+	<tr>
+<%@s=Entry.find_first(["ShopName=? and GroupID=? and MachineName=? and Date='#{@session['date']}'",@session['shortshop'],@session['shortgroupid'],@session['shortmachinename']])    %>
+</table>
+<br>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="53%" id="AutoNumber1" bgcolor=#C0C0C0>
+  <form method="POST" action="saveshort" onSubmit="return Check();">
+  <tr>
+      <td width="100%" bgcolor="#6C3401" height="19" align="left"><b><font color=white>SHORT</font></b></td>
+      <td width="100%" bgcolor="#6C3401" height="19">&nbsp;</td>
+
+    </tr>
+  <tr>
+   
+  <td align="left">
+  	Short Amount : 
+  </td>
+    <td width="100%">
+    <%if(@s!=nil)%>
+	
+	<input type="text" name="entry[Machineshort]" id="entry_Machineshort" size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.entry_Shortreason.focus();" maxlength="6" value=<%= @s.Machineshort.to_i%>>
+	
+	<%else%>
+	<input type="text" name="entry[Machineshort]" id="entry_Machineshort" size="20" onkeypress="return onlyNumbers();" maxlength="6" onKeyDown="if(event.keyCode==13)  this.form.entry_Shortreason.focus();" ></td>
+    <%end%>
+	
+	
+	  </tr>
+  <tr>
+  <td align="left">
+  ShortReason
+  </td>
+    
+<td width="100%">
+    <%if(@s!=nil)%>
+   	 	
+    	<input type="text" name="entry[Shortreason]" id="Shortreason" size="20"  onKeyDown="if(event.keyCode==13)  this.form.ok.focus();" maxlength="25" value=<%= @s.Shortreason %>>
+    	
+    <%else%>
+	<input type="text" name="entry[Shortreason]" id="Shortreason" size="20"  onKeyDown="if(event.keyCode==13)  this.form.ok.focus();" maxlength="25" >
+	<%end%>	
+	</td>
+	
+	  </tr>	  
+  <tr>
+    <td width="100%" align="left">
+    
+      <p align="center">
+       <%if(@s!=nil)%>
+
+     <input type=submit value="SAVE Short">
+     <%else%>
+      <%= submit_to_remote ' OK ',' Create Short ',:url => {:controller=>'entries',:action => "saveshort" },:id=>'ok' %>
+      <%end%>
+      <%= button_to_function ' Back ' , remote_function(:url => {:controller=> 'entries', :action => 'entrydata'}),:id=>'cancel',:style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+
+</p>
+    </form>
+    </td>
+  </tr>
+ 
+</table>
+
+  </center>
+</div>
+
+  </center>
+</div>
+
+</body>
+
+</html>

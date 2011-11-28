@@ -1,0 +1,48 @@
+<!--<html>
+<head>
+</head>
+<body topmargin=0 bottommargin=0>
+<center>
+<table width=90% align=center height="400"><tr>
+  <td width="100%" height="300" align="center">
+<table width=100% align=center height="280">
+<tr><td width="100%" height="270" align="center">
+<!--fieldset style="width:90% ; height: 209 ; align:center;">-->
+<h2 align=center><font face="Arial">Listing Shops for Group <%= session['cluster'].upcase %></font></h2>
+<!--<div class=clsDataGrid id=divList bgcolor=white>-->
+<div class=clsDataGrid id=divList bgcolor=white>
+<table border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black" align=center  id="AutoNumber1"  height="24"  >
+<tr>
+        <th  scope=col nowrap  width="30%" height="20" >
+    SHOP NAME </font></th>
+    <th scope=col nowrap width="25%"  height="20">
+     O/B </font></th>
+		<th scope=col nowrap width="25%"  height="20">
+     ADDRESS </font></th>
+		<th  nowrap width="15%"  height="20" >
+        </font>Edit</th>
+        <th  nowrap width="15%"  height="20" >
+        </font>Delete</th>
+</tr>
+<% @shops.each do |c| %>
+  <tr>
+	<td nowrap width="30%" height="5" align=center><%= c.ShopName %>&nbsp;</td>
+	<td nowrap width="20%" height="5" align=center><%= c.OpeningBal %>&nbsp;</td>
+	<td nowrap width="20%" height="5" align=center><%= c.Address %>&nbsp;</td>
+	<td width="15%" height="5" align=center><%=link_to  image_tag("edit.gif", :border=>0), :action => 'edit', :id=>c.id %></td>
+    <td width="15%" height="5" align=center><%=link_to  image_tag("delete.gif", :border=>0),{ :action => 'destroy', :id => c.id }, :confirm => 'Are you sure?', :method => :post  %>
+</td>
+	</tr><% end %>
+</table>
+</div>
+<%= link_to 'Add Shop', new_shop_path %>
+<br />
+<!--</td></tr></table>
+<%#= link_to 'Previous page', { :page => @shop_pages.current.previous } if @shop_pages.current.previous %>
+<%#= link_to 'Next page', { :page => @shop_pages.current.next } if @shop_pages.current.next %>
+</td></tr></table>
+
+</center>
+<!--</div>--
+</body>
+</html>-->

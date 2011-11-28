@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+
+
+</head>
+<body>
+<center>
+<table height="311" width="78%"  >
+<tr>
+<td height="311" width=100% align="center">
+
+<% form_tag :action => 'search' do %>
+
+<%= error_messages_for 'machine' %>
+
+<font  size= "4">
+<% if session[:msg] %>
+	<div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+ 		background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+ 			<%= session[:msg] %>
+ 	</div>
+	<%session[:msg]=nil%>
+<% end %>
+</font>
+
+<fieldset style="width:700 ; height: 81 ; align:center">
+			
+
+			<h2 align=center>SEARCH MACHINE</h2>
+
+<table width="680" height="81"  >
+				<tr>
+    				<td width="25%" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_ShopID">GROUP NAME :</label></font></b>
+ 					</td>
+ 					<td width="25%" height="16" align=left>
+ 					
+				 	<% @cluster=Cluster.find(:all,:order => "ClusterName") %>
+					<% if( @session[:clustername]==nil or  @session[:clustername]=="")%>
+ 					<%= collection_select(:machine, :ClusterName,  @cluster,  :ClusterName, :ClusterName,
+                      {:prompt   => "PLEASE SELECT GROUPNAME"},
+                      {:onchange => "#{remote_function(:url  => { :action => "getShop"},
+                                                       :with => "'ClusterName='+value")}"}) %>
+					<%else%>
+					<%= collection_select(:machine, :ClusterName,  @cluster,  :ClusterName, :ClusterName,
+                      {:prompt   => "#{@session[:clustername]}"},
+                      {:onchange => "#{remote_function(:url  => { :action => "getShop"},
+                                                       :with => "'ClusterName='+value")}"}) %>
+					
+					<%end%>
+ 					
+ 					</td>
+ 					
+ 	 				</tr>
+ 	 				<tr>
+ 	 				<td height="25%" width="121" align=right>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_ShopName">SHOP NAME : </label></font></b>
+ 	 				
+ 	 				</td>
+ 	 				<td width="25%" height="20" align=left>
+ 	    			<div id="ShopNamediv">
+					<%= render :partial => 'shopname' %>
+
+					</div>
+ 	 				
+ 	 				</td>
+ 	 				</tr>
+ 	 				
+ 	 				<tr>
+ 	 				<td align=right>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_GroupID">GROUP ID :</label></font></b>
+
+ 	 				</td>
+ 	 				<td>
+ 	 				<div id="KeyIDdiv">
+					<%= render :partial => 'groupID' %>
+
+					</div>
+
+ 	 				</td>
+ 	 				<td align="right">
+ 	 				&nbsp;</td>
+ 	 				<td>
+ 	 				
+ 	 				</td>
+
+
+				</tr>
+				
+
+ 				</table>
+ 				<br>
+ 				<%= submit_tag "SEARCH MACHINE" %>
+				<%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'machines',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+				<% end %>
+			</fieldset>
+ 				</td>
+ 				</tr></table>
+ 				
+</center>
+ 				
+</body>
+</html>

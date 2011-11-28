@@ -1,0 +1,278 @@
+<html>
+
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<head>
+
+<title>New Page 1</title>
+<script type="text/javascript">
+//ONLOAD FUNCTION FOR SETTING DEFAULT VALUES SELECTED AND DATE DISPLAY 18 HOURS BEFORE DATE
+
+window.onload=function()
+{
+
+var mcno = document.getElementById("clientdata_ScreenIN");
+
+mcno.focus();
+mcno.select();
+}
+
+
+function checkScreenin()
+{
+	var screenin=document.getElementById("clientdata_ScreenIN");
+	if(screenin.value.length<=0)
+	{
+		alert("PLEASE ENTER  VALUE FOR SCREENIN ");
+		screenin.focus();
+		return false;
+	}
+	else
+	{
+		return true;
+	}	
+
+ 
+}
+
+
+function checkScreenout()
+{
+	var screenout=document.getElementById("clientdata_ScreenOUT");
+	if(screenout.value.length<=0)
+	{
+		alert("PLEASE ENTER  VALUE FOR SCREENOUT ");
+		screenout.focus();
+		return false;
+	}
+	else
+	{
+		return true;
+	}	
+
+ 
+}
+
+
+function checkMeterin()
+{
+	var meterin=document.getElementById("clientdata_MeterIN");
+	if(meterin.value.length<=0)
+	{
+		alert("PLEASE ENTER  VALUE FOR METERIN ");
+		meterin.focus();
+		return false;
+	}
+	else
+	{
+		return true;
+	}	
+
+ 
+}
+
+function checkMeterout()
+{
+	var meterout=document.getElementById("clientdata_MeterOUT");
+	if(meterout.value.length<=0)
+	{
+		alert("PLEASE ENTER  VALUE FOR METEROUT ");
+		meterout.focus();
+		return false;
+	}
+	else
+	{
+		return true;
+	}	
+
+ 
+}
+
+
+
+function checkMachineName()
+{
+	var mcname=document.getElementById("clientdata_MachineName");
+	var mcno=document.getElementById("clientdata_MachineNo");
+
+	if(mcno.value=="")
+	{
+		alert("PLEASE ENTER  VALUE FOR MACHINENO ");
+		mcno.focus();
+		return false;
+	}
+	else
+	{
+	
+
+		return true;
+	}	
+
+ 
+}
+
+</script>
+</head>
+
+<body>
+<center>
+<br>
+<table width="650" height="300">
+	<tr><td width="650" height="1" align="center"><%= error_messages_for 'clientdata' %>
+</td></tr>
+	<tr>
+		<td width="650" height="290" align=center>
+			<fieldset style="width:600 ; height: 250 ; align:center">
+			
+
+			<h1 align=center>Editing Entry</h1>
+
+<% form_tag :id => @clientdata do %>
+			
+			<table width="562" height="159" align=center  cellpadding="3" cellspacing="3" border=1>
+				<tr>
+    				<td height="0" width="67" align=left>
+  					&nbsp;
+ 		 			 </td>
+  					<td width="184" height="0" align=left>
+     				
+										
+  					</td>
+  					 					<td height="14" width="78" align=left>
+ 	 				<b><font face="Arial" size="2">
+ 	 				<label for="clientdata_Date">Date</label> 	 				</td>
+ 	 				<td width="215" height="14" align=left>
+ 	    			
+ 	 				<%= text_field 'clientdata', 'Date',:readonly=>true , :style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%></font></b>
+ 	 				
+ 	 				</td>
+
+				</tr>
+				<tr>
+				<td width="67" height="10" align=left> 
+ 	 				<b><font face="Arial" size="2">
+ 	 				<label for="clientdata_ShopID">ShopName</label>
+ 					</td>
+ 					<td width="184" height="10" align=left>
+				 	<%= text_field 'clientdata', 'ShopName' ,:readonly=>true ,:style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%></font></b>
+ 					 
+ 					</td>
+					<!--</tr>
+					<tr>-->
+					<td height="8" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="clientdata_GroupID">GroupID</label>  					</td>
+  					<td width="184" height="8" align=left>
+	 	 			<%= text_field 'clientdata', 'GroupID',:readonly=>true, :style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%></font></b>
+ 				</tr>
+				<tr> 
+  					</td>
+  					<td width="78" height="5" align=left>
+	 				<b>
+	 				<font face="Arial" size="2">
+	 				<label for="clientdata_MachineNo">MachineNo</label>					</td>
+					<td width="215" height="5" align=left>	
+					
+					 <%= text_field 'clientdata', 'MachineNo',:readonly=>true,:style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%>
+	 				<font face="Zurich BT" size="2" color="#800000"> 
+					 </font>
+					</td>
+
+				<!--</tr>
+					<tr>-->
+
+					
+  					<td width="78" height="1" align=left> 
+	 				<b> 
+	 				<font size="2" face="Arial">
+	 				<label for="clientdata_MachineName">MachineName</label></font>
+	 				</b>
+	 				</td>
+	 				<td width="215" height="1" align=left>
+	 				<%= text_field 'clientdata', 'MachineName' ,:readonly=>true,:style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF" %>
+ 					</td>
+ 				</tr>
+				<tr>	
+ 					
+ 					<td height="1" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="clientdata_ScreenIN">ScreenIn</label> </font>
+ 		 			 </td>
+  					<td width="184" height="1" align=left>
+     				
+					<%= text_field 'clientdata', 'ScreenIN' ,:style=>"color: black ; border: 3px solid #6C3401; background-color: #FFFFFF",:onKeyDown=>"if(event.keyCode==13)  this.form.clientdata_ScreenOUT.focus();",:onfocus=>"this.form.clientdata_ScreenIN.select();" %>					
+  					</td>
+  					
+	 			
+					<tr>
+	 			</tr>
+  					<td width="78" height="1" align=left> 
+	 				<b> 
+	 				<font size="2" face="Arial">
+	 				<label for="clientdata_ScreenOUT">ScreenOut</label></font>
+	 				</b>
+	 				</td>
+	 			
+	 				<td width="215" height="1" align=left>
+	 				<%= text_field 'clientdata', 'ScreenOUT' ,:style=>"color: black ; border: 3px solid #6C3401; background-color: #FFFFFF",:onKeyDown=>"if(event.keyCode==13)  this.form.clientdata_MeterIN.focus();"  ,:onfocus=>"checkScreenin();this.form.clientdata_ScreenOUT.select();"%>
+ 					</td>
+ 					
+ 				</tr>
+				<tr>	
+ 					<td height="1" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="clientdata_MeterIN">MeterIn</label> 		 			
+ 		 			 </td>
+  					<td width="184" height="1" align=left>
+     				
+					<%= text_field 'clientdata', 'MeterIN' ,:style=>"color: black ; border: 3px solid #6C3401; background-color: #FFFFFF",:onKeyDown=>"if(event.keyCode==13)  this.form.clientdata_MeterOUT.focus();"  ,:onfocus=>"checkScreenout();this.form.clientdata_MeterIN.select();" %>					
+  					</td>
+  				<tr>
+	 			</tr>
+
+  					<td width="78" height="1" align=left> 
+	 				<b> 
+	 				<font size="2" face="Arial">
+	 				<label for="clientdata_MeterOUT">MeterOut</label></font>
+	 				</b>
+	 				</td>
+	 				<td width="215" height="1" align=left>
+	 				<%= text_field 'clientdata', 'MeterOUT' ,:style=>"color: black ; border: 3px solid #6C3401; background-color: #FFFFFF" ,:onKeyDown=>"if(event.keyCode==13)  this.form.EDIT.focus();"  ,:onfocus=>"checkMeterin();this.form.clientdata_MeterOUT.select();" %>					
+
+ 					</td>
+ 					
+ 				
+	 				
+
+
+				</tr>
+
+				
+			
+				<tr>
+					
+					<td width="100%" height="21" colspan=4 align=center>
+					
+	 <%= submit_to_remote 'EDIT','EDIT',:url => {:controller=>'clientdatas',:action => "update" },:id=>'update',:before=>'checkMeterout();' %>
+	
+
+<%= button_to_function 'DELETE' , remote_function(:url=> {:controller=>'clientdatas',:action => "destroy" }),:id=>'destroy', :style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+<%= button_to_function 'BACK' , remote_function(:url=> {:controller=>'clientdatas',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+
+<% end %>
+
+					</td>
+ 				</tr> 
+		</table>
+ 
+
+
+</fieldset>
+            </td>
+
+</tr>
+</table>
+&nbsp;
+</center>
+</body></html>

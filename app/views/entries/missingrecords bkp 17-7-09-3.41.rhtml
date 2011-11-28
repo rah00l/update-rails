@@ -1,0 +1,66 @@
+
+<html>
+<head>
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+</head>
+<body topmargin=0 bottommargin=0>
+<center>
+<table width=90% align=center height="400"><tr>
+  <td width="100%" height="300" align="center">
+<table width=100% align=center height="280">
+<tr><td width="100%" height="270" align="center">
+<!--fieldset style="width:90% ; height: 209 ; align:center;">-->
+<h2 align=center><font face="Arial">Missing Records</font></h2>
+<!--<div class=clsDataGrid id=divList bgcolor=white>-->
+
+Shop ID : <input type=text value=<%= @session['shop'] %> size="20">   Date : <input type=text value=<%=@session['date'] %> size="20">
+<div class=clsDataGrid id=divList bgcolor=white>
+<table border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black" align=center  id="AutoNumber1"  height="24"  >  
+<tr >
+
+      	<th  nowrap width="15%" height="20">
+       Sr.No</font>       
+        </th>
+        <th  scope=col nowrap  width="30%" height="20" >
+     GroupID </font></th>
+		<th scope=col nowrap width="25%"  height="20">
+     MachineNo </font></th>
+     <th scope=col nowrap width="130" height="1"  >
+       MachineName</font></th>
+        <!--<th scope=col nowrap width="91" height="1"  >
+       User Type</font></th>
+        <th scope=col nowrap width="93" height="1"  >
+       Email ID</font></th>
+        <th scope=col nowrap width="72" height="1"  >
+        UserStatus</font></th>
+		<th nowrap width="72" height="1" >
+        LoginStatus</font></th>-->
+		<th  nowrap width="25%"  height="20" colspan=2>
+        </font>&nbsp;</th>
+
+</tr>
+<% @machines= Machine.find_by_sql("select * from machines where ShopID='#{@session['shop']}' and MachineName not in (select MachineName from entries where ShopID='#{@session['shop']}' and Date='#{@session['date']}') ")  %>
+<% @count=1 %>
+<% @machines.each do |c| %>
+  <tr>
+	<td nowrap width="20%" height="10" align=center><%=@count %>&nbsp;</td>	
+	<td nowrap width="30%" height="10" align=center><%= c.GroupID %>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center><%= c.MachineNo %>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center><%= c.MachineName %>&nbsp;</td>
+</td>
+<% @count=@count+1 %>
+	</tr><% end %>	
+</table>
+</div>
+<%= link_to 'Back', :action => 'dataentry' %>
+<br />
+<!--</fieldset>-->
+</td></tr></table>
+
+
+</td></tr></table>
+
+</center>
+<!--</div>-->
+</body>
+</html>

@@ -1,0 +1,87 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+<body>
+<h2>DAILY REPORT</h2>
+<table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >  
+
+<tr >
+		<th scope=col nowrap width="50%"  height="20">MACHINE NO </font></th>
+     	<th scope=col nowrap width="50%" height="1"  >MACHINE NAME</font></th>
+     	<th scope=col nowrap width="50%" height="1"  >SRIN</font></th>
+		<th scope=col nowrap width="50%" height="1"  >SROUT</font></th>
+		<th scope=col nowrap width="50%" height="1"  >SR %</font></th>
+		<th scope=col nowrap width="50%" height="1"  >TSRIN</font></th>
+		<th scope=col nowrap width="50%" height="1"  >TSROUT</font></th>
+		<th scope=col nowrap width="50%" height="1"  >M/S</font></th>
+		<th scope=col nowrap width="50%" height="1"  >COLL</font></th>
+		<th scope=col nowrap width="50%" height="1"  >LOSS</font></th>
+		<th scope=col nowrap width="50%" height="1"  >LOSS AMT</font></th>
+		<th scope=col nowrap width="50%" height="1"  >10 AVG</font></th>
+		<th scope=col nowrap width="50%" height="1"  >SR AVG</font></th>
+		<th scope=col nowrap width="50%" height="1"  >T SET</font></th>
+   		<th scope=col nowrap width="50%" height="1"  >P SET</font></th>
+		<th scope=col nowrap width="50%" height="1"  >PM %</font></th>
+</tr>
+<% @machinesdata=Machinedata.find(:all,:conditions=>["CLUSTER_NAME=? and SHOP_NAME=? and TRANS_DATE=?",@session[:rrclustername],@session[:rrshopname],session[:dailyvalue]],:order => "MACHINE_NO") %>
+<% @TotalTRSIN=0%>
+<% @TotalTSROUT=0%>
+<% @machinesdata.each do |c| %>
+  <tr>
+	<td nowrap width="20%" height="10" align=center><%= c.MACHINE_NO %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.MACHINE_NAME %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SRIN %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SROUT %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SRPER %>&nbsp;</td>
+<% @TotalTSRIN=@TotalTSRIN.to_i+c.TSRIN.to_i%>
+
+<td nowrap width="20%" height="10" align=center><%= c.TSRIN %>&nbsp;</td>
+<% @TotalTSROUT=@TotalTSROUT.to_i+c.TSROUT.to_i%>
+<td nowrap width="20%" height="10" align=center><%= c.TSROUT %>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.LOSS%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.TENDAYSAVG%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SRAVG%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.SETTING%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center><%= c.LASTSETTING%>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+
+
+
+
+
+
+
+  </tr>
+	<% end %>	
+<tr>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center><%= @TotalTSRIN%> &nbsp;</td>
+	<td nowrap width="20%" height="10" align=center><%= @TotalTSROUT%></td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center>&nbsp;</td>
+
+</tr>
+</table>
+
+</body>
+
+</html>

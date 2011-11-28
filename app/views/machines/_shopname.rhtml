@@ -1,0 +1,19 @@
+<% if(@session[:shopname]==nil) %>
+
+<% @shop=Shop.find(:all,:conditions=>["ClusterName=?",@session[:clustername]],:order => "ShopName") %><%= collection_select(:machine, :ShopName,  @shop,  :ShopName, :ShopName,
+                      {:prompt   => " "},
+                      {:onchange => "#{remote_function(:url  => { :action => "getGroup"},
+                                                       :with => "'ShopName='+value")}"}) %>
+<%else%>
+                                                       
+                                                   
+        <% @shop=Shop.find(:all,:conditions=>["ClusterName=? and ShopName<>?",@session[:clustername],@session[:shopname]],:order => "ShopName")%>      											
+			<select id="machine_ShopName" name="machine[ShopName]" onchange="<%=remote_function(:url => {:action => 'getGroup'},:with => "'ShopName='+value")-%>">
+													<option value="<%= @session[:shopname] %>"><%= @session[:shopname] %></option>			
+     	 											<% @shop.each do |c| %>
+     	 											<option value="<%= c.ShopName %>"><%= c.ShopName %></option>
+     	 											<% end %>
+     	 										</select>
+
+                                                       
+<%end %>

@@ -1,0 +1,15 @@
+<% if(@session[:clustername]!=nil) %>
+<%@shop=Shop.find(:all,:conditions=>["ClusterName=? ",@session[:clustername]],:order => "ShopName")%>
+
+
+ 			<select id="group_ShopName" name="group[ShopName]">
+													<option value="">Select a ShopName</option>			
+     	 											<% @shop.each do |c| %>
+     	 											<option value="<%= c.ShopName %>"><%= c.ShopName %></option>
+     	 											<% end %>
+     	 										</select>
+     	 						<%else%>
+		<select id="group_ShopName" name="group[ShopName]">
+		<option value="&nbsp;">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+	</select>
+	<%end%>

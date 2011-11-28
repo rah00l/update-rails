@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+
+<script type="text/javascript">
+//on load event to make save button disabled
+
+window.onload=function()
+{
+	
+	var save=document.getElementById('save');
+	save.disabled=true;
+	var txtshopname=document.getElementById('shop_ShopName');
+	txtshopname.select();
+	txtshopname.focus();
+}
+</script>
+
+<script language="JavaScript">
+
+//DISPLAY SAVE BUTTON ON FILLING ALL VALUES
+function showsave()
+{
+	
+	if(event.keyCode==13)
+	{
+	 	var btsave1 = document.getElementById("save");
+      
+        btsave1.disabled=false;
+
+	 	btsave1.focus();
+	 }	
+}
+</script>
+<script>
+//ADD OPENING BAL VALUE
+function cal()
+{
+	var cash=document.getElementById('shop_Cash').value;
+	var credit=document.getElementById('shop_Credit').value;
+	var ob=document.getElementById('shop_OpeningBal');
+
+	if(document.getElementById('shop_Cash').value.length<1)
+	{
+		cash=0;
+	}
+	if(document.getElementById('shop_Credit').value.length<1)
+	{
+		credit=0;
+	}
+	
+
+	ob.value=parseInt(cash)+parseInt(credit);
+	
+
+	return true;
+}
+
+//ONLY NUMBERS ALLOWED TO ENTER IN CASH AND CREDIT FIELD
+function onlyNumbers(evt)
+{
+	var e = event || evt; // for trans-browser compatibility
+	var charCode = e.which || e.keyCode;
+	
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+		return false;
+    
+	return true;
+
+}
+
+ function ValidateCredit()
+{
+
+	
+	var credit=document.getElementById("Shop_Credit");
+
+	
+	
+
+	if(credit.value.length<1)
+	{
+		alert('Please Enter Value for Credit')
+		credit.value=0;
+		credit.focus();
+		return(false);		
+	}
+	else
+	{
+				cal();
+				var btsave1 = document.getElementById("save");
+      
+        btsave1.disabled=false;
+
+	 	btsave1.focus();
+		return(true);
+
+	}
+
+}
+
+//VALIDATE CASH FIELD
+ function ValidateCash()
+{
+	var cash=document.getElementById("Shop_Cash");
+	if(cash.value.length<1)
+	{
+		alert('Please Enter Value for CASH')
+		cash.focus();
+		cash.value=0;
+		return(false);		
+	}
+	else
+	{
+		cal();
+		return(true);
+
+	}
+
+}
+</script>
+
+
+
+</head>
+<body>
+<center>
+<table height="400" width="82%"  >
+<tr>
+<td height="400" width=100% align="center">
+
+<% form_tag :action => 'update', :id => @shop do %>
+<%= error_messages_for 'shop' %>
+
+<font  size= "4">
+<% if session[:msg] %>
+	<div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+ 		background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+ 			<%= session[:msg] %>
+ 	</div>
+	<%session[:msg]=nil%>
+<% end %>
+</font>
+
+<fieldset style="width:700 ; height: 81 ; align:center">
+			
+
+			<h2 align=center>Edit Shop</h2>
+<table width="893" height="81"  >
+
+				<tr>
+    				<td width="179" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="shop_CompanyID">GROUP NAME</label></font></b>
+ 					</td>
+ 					<td width="124" height="16" align=left>
+ 					
+				
+
+				 	<%= text_field 'shop', 'ClusterName' ,:readonly=>true %> 					
+ 					</td>
+ 					</tr>
+ 					<tr>
+ 					<td height="21" width="179" align=right>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="shop_CompanyName">SHOP NAME</label></font></b>
+ 	 				
+ 	 				</td>
+ 	 				<td width="135" height="20" align=left>
+ 	    			
+ 	 				<%= text_field 'shop', 'ShopName'  %> 	 				
+ 	 				</td>
+
+				</tr>
+				<tr>
+					<td height="1" width="179" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="shop_Address">ADDRESS</label></font></b>
+  					</td>
+  					<td width="124" height="1" align=left>
+   					
+	 	 			<%= text_area 'shop', 'Address'  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_Cash.focus();"%> 					
+					
+  					</td>
+  					<td height="1" width="160" align=right>
+ 	 				</td>
+ 	 				<td width="160" height="1" align=left>
+ 	    			
+ 	 				
+ 	 				
+
+ 	 				</td>
+ 	 				
+				</tr>
+
+                                 <tr>
+					<td height="1" width="238" align=right><b> <font face="Arial" size="2" ><label for="shop_Address">OS</label></font></b>  					</td>
+  					<td width="196" height="1" align=left>
+	 	 			<%= text_field 'shop', 'os'  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_Cash.focus();"%>
+  					</td>
+                                </tr>
+				
+				<tr>
+					<td width="218"></td>
+					<td align=center width="117">
+					CASH
+  	
+					</td>
+					<td align=center width="166">
+					CREDIT
+				  	</td>
+				
+					<td align=center width="300">
+					OPENING BALANCE
+  					</td>
+  					
+			  </tr>
+				
+				<tr>
+					<td height="1" width="218" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="shop_Address">O/B</label></font></b>
+
+  					</td>
+  					<td width="196"><%= text_field 'shop', 'Cash' , :onkeypress=>"return onlyNumbers();" ,:onblur=>"return ValidateCash();",:onKeyDown=>"if(event.keyCode==13)  this.form.shop_Credit.focus();" %>+</td>
+  					<td width="166"><%= text_field 'shop', 'Credit' ,:onblur=>"cal(this);", :onkeypress=>"return onlyNumbers();",:onblur=>"return ValidateCredit();" ,:onKeyDown=>"showsave();"%>=</td>
+					<td width="275" height="1" align=left><%= text_field 'shop', 'OpeningBal', :readonly=>true%></td>
+	  					
+				</tr>
+				
+
+ 				</table>
+ 				  <%= submit_tag '  Edit  ',:id=>"save"  %>  
+<%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'shops',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+
+
+				<% end %>
+			</fieldset>
+ 				</td>
+ 				</tr></table>
+ 				
+
+ <center>				
+<p></p>
+</body>
+</html>

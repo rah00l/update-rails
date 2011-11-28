@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Admin</title>
+
+</head>
+
+<body>
+		<table border=0  align="center" width="100%"><tr>
+ 			 <td bgcolor="#FFFFFF" width="90%" align=center >
+				<table align=center border=0 bordercolor="#08176C"width="90%" left="5%"><tr>
+ 					 <td width="870">
+					
+						<h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">HC Report</font></h1>
+						
+						 <% @a=@session[:startdatehc].strftime("%d-%B-%Y") %>
+						  <% @m1=@a.split('-')%>
+						 
+						 
+						<h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%= @m1[1] %> - <%= @m1[2]%></font></h1>
+						
+
+								
+								<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >  
+									<tr  bgcolor="#E1CEA2" align=center>
+											<th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">Date</font></th>
+									      <% @t =Counterdata.find_by_sql("select distinct(shopname) from shops  order by shopname " )%>
+											
+											<% @t.each do |c| %> 
+											<th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2"><%=c.shopname%></font></th>
+									        <%end%>
+							  			</tr>
+							  
+									<%@m=@session[:dayshc] %>
+									
+									
+										
+										<%1.upto(@m.to_i) do |@i|%>
+											<tr>    
+												<td><%=@i%> &nbsp;</td>
+											
+												<% @date1=Date.parse(@i.to_s+'-'+@session[:monthhc].to_s+'-'+@session[:yearhc].to_s) %>
+													<%= puts @date1 %>
+													
+													
+													<% @dshop =Counterdata.find_by_sql("select distinct(shopname) from shops  order by shopname  " )%>
+							 	
+													<% @dshop.each do |@ds| %> 
+														<%=  puts @ds.shopname %>
+											  		
+															<% @hcvalue =Counterdata.find_by_sql("select hc from counterdatas where date='#{@date1}' 
+																												and shopname='#{@ds.shopname}'
+																												order by shopname" )%>
+																		
+																		<% @count=0 %>
+
+																		<% @hcvalue.each do |@hv| %>	
+												
+																			<% @count=@count+1%>
+																			<% @d=(@date1).to_s.split('-')%>
+																			<%= puts @hv.hc%>
+																			
+																		
+																		<%end%>
+																		
+																			<% if @count==0%>
+																				<%= puts "not present"%>
+																					<td nowrap align="center">-</td>	
+																			<% else %>
+																				<%= puts "present"%>
+																				<%= puts @d[2]%>
+																				<%= puts @hv.hc %>
+																				<%= puts @i %>
+								
+																					<% if @i.to_i==@d[2].to_i %>
+																							<td nowrap align="center"><%= @hv.hc %>&nbsp;</td>
+																					<%end%>										      
+																			<% end %>		
+																			
+													<%end%> <!-- end of dis_shop do loop -->						
+								      	
+								      	<% end %>	
+								      	
+								      	</tr>
+											   
+</table>
+<br/>
+<div align=center>
+<p>&nbsp;</p>
+ 
+
+</td></tr></table>
+</td></tr></table>
+          </table>
+</body>
+</html>

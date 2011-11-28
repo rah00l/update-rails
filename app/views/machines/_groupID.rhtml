@@ -1,0 +1,3 @@
+<%@group=Group.find(:all,:conditions=>["ClusterName=? and ShopName=?",@session[:clustername],session[:shopname]],:order => "GroupID")%>
+ 			<%= collection_select(:machine, :GroupID,  @group,  :GroupID, :GroupID,
+                      {:onchange => ""}) %>

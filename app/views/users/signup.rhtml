@@ -1,0 +1,105 @@
+<!-- An unpublished work of Sprylogic Technologies Ltd.  -->
+<!-- ? Copyright Sprylogic Technologies Ltd. 2008. All rights reserved  -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ICICI Admin : Users List</title>
+
+</head>
+
+<body>
+
+
+<%= start_form_tag :action=> "signup" %>
+<table border=1 width="987" bordercolor="#800000" height="495"><tr>
+  <td bgcolor="#FFFFFF" width="981" height="489">
+<table align="center" border=5 bordercolor="#800000" width="475"><tr>
+  <td width="457">
+<h3 align="center"><span style="font-weight: 400"><u>
+<font face="Zurich BT" color="#990000">Add New User</font></u></span></h3>
+<table width="458" height="87"><tr><td width="215" rowspan="3" height="83">
+  
+  <%= error_messages_for 'user' %><font color="#990000"><br/>
+  </font>
+  <p align=left>
+  <font face="Zurich BT" size="2" color="#990000">
+  <label for="user_firstname">Enter first name:</label></font><b><font face="Arial" size="2" color="#990000"><br/>
+  <%= text_field "user", "firstname", :size => 20 %><br/></font></b></p>
+	<p align=left>
+  <font face="Zurich BT" size="2" color="#990000">
+  <label for="user_lastname">Enter last name:</label></font><b><font face="Arial" size="2" color="#990000"><br/>
+  <%= text_field "user", "lastname", :size => 20 %><br/></font></b></p>
+
+	 <p align=left>
+  <font face="Zurich BT" size="2" color="#990000">
+  <label for="user_login">Enter login name:</label></font><b><font face="Arial" size="2" color="#990000"><br/>
+  <%= text_field "user", "login", :size => 10 %><br/></font></b></p>
+ <p align=left>
+
+  <font face="Zurich BT" size="2" color="#990000">
+
+  <label for="user_password">Choose password:</label></font><b><font face="Arial" size="2" color="#990000"><br/>
+  <%= password_field "user", "password", :size => 10 %><br/></font></b></p>
+ <p align=left>
+
+  <font face="Zurich BT" size="2" color="#990000">
+
+ 
+  </b></p>
+ 
+
+ <font face="Arial"><b><font color="#990000">
+
+ </font></b>
+ </font>
+<p>&nbsp;</p>
+</td><td width="237" height="47">
+   <p align=left>
+ <font face="Zurich BT" size="2" color="#990000">
+ <label for="user_type">User Type:</label></font><b><font face="Arial" size="2" color="#990000"><br/>
+ 
+
+<select  id="user_usertype" name="user[usertype]" style="font-family: Zurich BT; font-size: 8pt">
+<option value="Operator">Operator</option>
+
+<option value="Admin">Admin</option>
+</select></font><font face="Arial" size="2" color="#990000">
+
+<br/></font></b></p>
+
+  
+  </td></tr><tr>
+  <td width="237" height="1">
+  
+
+ <p align="left">
+  
+
+ <font color="#990000">
+
+ <label for="user_status"><font size="2" face="Zurich BT">User Status:</font></label><b><font face="Arial"><font size="2"><br/>
+ </font>
+ <input type="radio" id="user_userstatus" name="user[userstatus]" value="1" checked="checked" /></font></b></font><font size="2" color="#990000"><font face="Zurich BT">Active  </font><b>
+
+ <font face="Arial">&nbsp;&nbsp;&nbsp; </font></b>
+ </font><b>
+
+ <font face="Arial"><font color="#990000">
+ <input type="radio" id="user_userstatus" name="user[userstatus]" value="0" /></font></font></b><font size="2" color="#990000"><font face="Zurich BT">In Active </font><b>
+
+ 
+  </td></tr><tr><td width="237" height="70">
+  
+<input type="submit" value="Create User &#187;" class="primary" style="font-family: Zurich BT; font-size: 10pt; float:left" /></font>
+ <%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'users',:action => "cancel" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 8pt align=left" %>
+
+  
+  </td></tr></table>
+
+	</td></tr></table>
+<%= end_form_tag %><font color="#990000"> </font>
+ </td></tr></table>
+</body>
+</html>

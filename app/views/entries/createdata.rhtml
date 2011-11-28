@@ -1,0 +1,128 @@
+<html>
+<head>
+<%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+<%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+<%= javascript_include_tag 'calendar_date_select/format_db.js'%>
+<script>
+	function capturedate()
+	{
+		alert("dfdfdfg");
+		new Ajax.Request("<%= url_for :controller=> :entries,:action=>:getDate %>",{method:'post'})
+	}
+</script>
+
+
+<script type="text/javascript">
+
+/*
+window.onload=function()
+{
+var output=document.getElementById('datevalue');
+
+//output.disabled=true;
+var mydate=new Date(),
+month=mydate.getMonth(),
+month1=month+1,
+day=mydate.getDate(),
+year=mydate.getYear(),
+hours=mydate.getHours();
+
+if(hours<18)
+{
+
+
+var next_day=day-1;
+output.value= next_day;
+//output.value= (next_day<10?'0'+next_day:next_day)+'-'+(month1<10?'0'+month1:month1)+'-'+year;
+output.value = year +'-'+ (month1<10?'0'+month1:month1) +'-'+(next_day<10?'0'+next_day:next_day);
+
+
+}
+else
+{
+
+//output.value = (day<10?'0'+day:day) +'-'+ (month1<10?'0'+month1:month1) +'-'+year;
+output.value = year +'-'+ (month1<10?'0'+month1:month1) +'-'+(day<10?'0'+day:day);
+
+}
+
+}
+function hi()
+{
+alert("Hi");
+var output=document.getElementById('datevalue');
+alert(output.value);
+
+new Ajax.Request("<%= url_for :controller=> :entries,:action=>:showdata %>",{method:'post'});
+}
+*/
+</script>
+
+</head>
+<body>
+
+
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height=390 >
+  <tr>
+    <td width="100%"  align=center height=390>
+   
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#6C3401" width="90%" id="AutoNumber2" height=370 bgcolor="#C0C0C0">
+      <tr>
+        <td width="100%" height="24"><b>Create &amp; Send</b></td>
+      </tr>
+      <tr>
+        <td width="100%" >
+        <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber3">
+          <tr>
+            <td width="74%" height="10">
+            		  
+            </td>
+            
+
+            
+            <td width="26%" height="10">
+            		Date : 
+            	
+            		<% todate=Time.now()%>
+	           		<% 
+	           		times=((Time.now().strftime("%H:%M:%S")).to_s).split(':')
+	           			if times[0].to_i>=18
+	           			    @date=Date.today.strftime("%Y-%m-%d")
+	           			else
+		           		    @date=(Date.today-1).strftime("%Y-%m-%d")
+		           		end
+	           		%>
+            	
+
+            		&nbsp;
+            		<%= calendar_date_select_tag "datevalue",@date, :popup => "force" %>
+
+            		<!--<%= button_to_function 'Show' , remote_function(:url=> {:controller=>'entries',:action => "redirectmethod" }), :style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>-->
+					
+
+          <!--<input type=text id=Date name=Date size="20" > -->
+          <%= observe_field :datevalue,
+                  :frequency => 0.5,
+                  :url => {:action => :showdata, :only_path=> :false},
+                  :with => "'datevalue='+encodeURIComponent(value)" %> 
+           &nbsp;</td>
+			
+          
+          </tr>
+          <!--<tr>
+            <td width="100%" height=3 colspan="2">
+            Missing Records</td>
+          </tr>-->
+<tr>
+            <td width="100%" colspan="2"  >
+              <div id="griddisp"  height=280><%= render :partial => 'edetails' %></div></td>
+ </tr>
+</table>
+ 
+
+</td>
+          </tr>
+</table>
+</body>
+</html>

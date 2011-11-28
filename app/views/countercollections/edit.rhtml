@@ -1,0 +1,45 @@
+<h2><p align=center>Modifying Counter Collection</p></h2>
+<script>
+function show()
+{
+	alert("ajshas");
+}
+function Check()
+{
+	var total1=document.getElementById("total1").value;
+	var total2=document.getElementById("total2").value;
+	//var x=document.getElementByID("total1"); 
+	var cash=document.getElementById("countercollection_Cash");
+
+	if(total1==0 || total2==0)
+	{
+		alert("Please fill form values");
+		cash.focus();
+		return(false);
+	}
+	else
+	{
+		if(total1!=total2)
+			{
+				alert("Both total not matching");
+				cash.focus();
+				return(false);
+			}
+		return(true);
+	}
+
+}
+
+</script>
+
+<% form_tag :action => 'update', :id => @countercollection,:onload=>"show();" do %>
+  <%= render :partial => 'form' %>
+  
+
+  <p align=center>
+  <%= submit_tag '  Save  ', :id=>"save",:onclick=>"return Check();" %>
+<%= submit_to_remote 'Delete','Delete',:url => {:controller=>'countercollections',:action => "destroy" },:confirm=>'Are You Sure you want to delete the record? ' %>
+    <%= submit_to_remote '  Back  ','Back',:url => {:controller=>'clientdatas',:action => "cancelentry" }%></p>
+
+
+<% end %>

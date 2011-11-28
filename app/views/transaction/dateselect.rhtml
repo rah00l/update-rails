@@ -1,0 +1,51 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+<%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+<%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+<%= javascript_include_tag 'calendar_date_select/format_db.js'%>
+
+
+</head>
+
+<body>
+<div align="center">
+  <center>
+
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="53%" id="AutoNumber1" bgcolor=#C0C0C0>
+  <tr>
+      <td width="100%" bgcolor="#6C3401" height="19"><b><font color=white>Please Select Date To Send Data For </font></b></td>
+    </tr>
+  <tr>
+    <td width="100%">
+    <br>
+    <form><h4><p align="center"><font color=red>Date : <% todate=Time.now()%>
+
+          <%= calendar_date_select_tag "Date","#{todate.strftime('%Y-%m-%d')}", :popup => "force"%> &nbsp;
+</font></p></h4></td>
+  </tr>
+  <tr>
+    <td width="100%">
+   
+      <p align="center">
+     
+      <%= submit_to_remote 'Go','Go',:url => {:controller=>'entries',:action => "getdate" }%>
+
+</p>
+    </form>
+    </td>
+  </tr>
+ 
+</table>
+
+  </center>
+</div>
+
+</body>
+
+</html>

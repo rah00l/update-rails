@@ -1,0 +1,33 @@
+<head>
+<script>
+function cal()
+{
+	var cash=document.getElementById('previousrecord_Xcash').value;
+	var credit=document.getElementById('previousrecord_Xcredit').value;
+	var ob=document.getElementById('previousrecord_Openingbal');
+
+	
+	
+	ob.value=parseInt(cash)+parseInt(credit);
+	return true;
+}
+</script>
+</head>
+
+<body>
+
+<%= error_messages_for 'previousrecord' %>
+
+<!--[form:previousrecord]-->
+<p><label for="previousrecord_ShopName">Shopid</label><br/>
+<%= text_field 'previousrecord', 'ShopName' ,:readonly=>true %></p>
+
+<p><label for="previousrecord_Date">Date</label><br/>
+<%= "#{@session['date']}" %>
+<%= text_field 'previousrecord', 'Date', :default=>{:date=>"#{@session['date']}"} %></p>
+  					<p><%= text_field 'previousrecord', 'Xcash', :onblur=>"cal(this);"   %>+
+  					<%= text_field 'previousrecord', 'Xcredit' ,:onblur=>"cal(this);" %>=
+
+  					
+	 	 			<%= text_field 'previousrecord', 'Openingbal', :readonly=>true%></p><!--[eoform:previousrecord]-->
+	 	 			</body>

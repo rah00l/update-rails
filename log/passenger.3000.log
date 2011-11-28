@@ -1,0 +1,114 @@
+/home/rahul/workspace/deep-hool/config/boot.rb:26:Warning: Gem::SourceIndex#search support for String patterns is deprecated, use #find_name
+[ pid=9453 thr=-607729448 file=utils.rb:176 time=2011-11-16 00:52:33.477 ]: *** Exception RuntimeError in PhusionPassenger::ClassicRails::ApplicationSpawner (RubyGem version error: rack(1.3.5 not ~> 1.0.1)
+) (process 9453, thread #<Thread:0xb78d91b0>):
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:271:in `require_frameworks'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:134:in `process'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:113:in `send'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:113:in `run'
+	from /home/rahul/workspace/deep-hool/config/environment.rb:14
+	from /usr/lib/ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+	from /usr/lib/ruby/1.8/rubygems/custom_require.rb:31:in `require'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:222:in `preload_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:181:in `initialize_server'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/utils.rb:572:in `report_app_init_status'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:174:in `initialize_server'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:204:in `start_synchronously'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:180:in `start'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:149:in `start'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:219:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:132:in `lookup_or_add'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:214:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:82:in `synchronize'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:79:in `synchronize'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:213:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:132:in `spawn_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:275:in `handle_spawn_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:357:in `__send__'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:357:in `server_main_loop'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:206:in `start_synchronously'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/helper-scripts/passenger-spawn-server:99
+
+      *******************************************************************
+      * config.breakpoint_server has been deprecated and has no effect. *
+      *******************************************************************
+      
+[ pid=2081 thr=-608411428 file=utils.rb:176 time=2011-11-20 08:49:34.505 ]: *** Exception NoMethodError in PhusionPassenger::ClassicRails::ApplicationSpawner (undefined method `cache_template_extensions=' for ActionView::Base:Class) (process 2081, thread #<Thread:0xb778c1b8>):
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:602:in `send'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:602:in `initialize_framework_settings'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:601:in `each'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:601:in `initialize_framework_settings'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:598:in `each'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:598:in `initialize_framework_settings'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:155:in `process'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:113:in `send'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:113:in `run'
+	from /home/rahul/workspace/deep-hool/config/environment.rb:14
+	from /usr/lib/ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+	from /usr/lib/ruby/1.8/rubygems/custom_require.rb:31:in `require'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:222:in `preload_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:181:in `initialize_server'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/utils.rb:572:in `report_app_init_status'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:174:in `initialize_server'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:204:in `start_synchronously'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:180:in `start'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:149:in `start'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:219:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:132:in `lookup_or_add'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:214:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:82:in `synchronize'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:79:in `synchronize'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:213:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:132:in `spawn_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:275:in `handle_spawn_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:357:in `__send__'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:357:in `server_main_loop'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:206:in `start_synchronously'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/helper-scripts/passenger-spawn-server:99
+
+      *******************************************************************
+      * config.breakpoint_server has been deprecated and has no effect. *
+      *******************************************************************
+      
+[ pid=2530 thr=-607735588 file=utils.rb:176 time=2011-11-22 00:22:02.205 ]: *** Exception NoMethodError in PhusionPassenger::ClassicRails::ApplicationSpawner (undefined method `cache_template_extensions=' for ActionView::Base:Class) (process 2530, thread #<Thread:0xb78d61b8>):
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:602:in `send'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:602:in `initialize_framework_settings'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:601:in `each'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:601:in `initialize_framework_settings'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:598:in `each'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:598:in `initialize_framework_settings'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:155:in `process'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:113:in `send'
+	from /home/rahul/workspace/deep-hool/vendor/rails/railties/lib/initializer.rb:113:in `run'
+	from /home/rahul/workspace/deep-hool/config/environment.rb:14
+	from /usr/lib/ruby/1.8/rubygems/custom_require.rb:31:in `gem_original_require'
+	from /usr/lib/ruby/1.8/rubygems/custom_require.rb:31:in `require'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:222:in `preload_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:181:in `initialize_server'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/utils.rb:572:in `report_app_init_status'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:174:in `initialize_server'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:204:in `start_synchronously'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:180:in `start'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/classic_rails/application_spawner.rb:149:in `start'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:219:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:132:in `lookup_or_add'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:214:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:82:in `synchronize'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server_collection.rb:79:in `synchronize'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:213:in `spawn_rails_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:132:in `spawn_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/spawn_manager.rb:275:in `handle_spawn_application'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:357:in `__send__'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:357:in `server_main_loop'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/lib/phusion_passenger/abstract_server.rb:206:in `start_synchronously'
+	from /home/rahul/.passenger/standalone/3.0.9-x86-ruby1.8.7-linux-gcc4.5.2-1002/support/helper-scripts/passenger-spawn-server:99
+[ pid=2528 thr=3069709168 file=ext/nginx/HelperAgent.cpp:931 time=2011-11-22 00:22:02.326 ]: Uncaught exception in PassengerServer client thread:
+   exception: write() failed: Broken pipe (32)
+   backtrace:
+     in 'void Client::handleRequest(Passenger::FileDescriptor&)' (HelperAgent.cpp:826)
+     in 'void Client::threadMain()' (HelperAgent.cpp:950)
+
+
+      *******************************************************************
+      * config.breakpoint_server has been deprecated and has no effect. *
+      *******************************************************************
+      

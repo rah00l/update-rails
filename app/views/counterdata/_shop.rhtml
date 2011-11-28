@@ -1,0 +1,17 @@
+
+     		<% if(@session[:tshopname]==nil or @session[:tshopname]=="") %>		
+ 			<% @shop=Shop.find_all(["ClusterName=?",@session[:tclustername]])%>
+ 			<%= collection_select(:counterdata, :ShopName,  @shop,  :ShopName, :ShopName,
+                      {:prompt   => "Please select ShopName"},
+                      {:onkeypress => "#{remote_function(:url  => {:controller=>'counterdata', :action => "setShop"},
+                                                       :with => "'ShopName='+value")}",:onchange => "#{remote_function(:url  => {:controller=>'counterdata', :action => "setShop"},
+                                                       :with => "'ShopName='+value")}"}) %>
+            <%else%>
+           			<% @shop=Shop.find_all(["ClusterName=?",@session[:tclustername]])%>
+           			<%= collection_select(:counterdata, :ShopName,  @shop,  :ShopName, :ShopName,
+                      {:prompt   => "#{@session[:tshopname]}"},
+                      {:onkeypress => "#{remote_function(:url  => {:controller=>'counterdata', :action => "setShop"},
+                                                       :with => "'ShopName='+value")}",:onchange => "#{remote_function(:url  => {:controller=>'counterdata', :action => "setShop"},
+                                                       :with => "'ShopName='+value")}"}) %>
+            
+            <%end%>

@@ -1,0 +1,48 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+
+<body>
+<form action="updateob">
+<table>
+			<tr>
+				<td width="218"></td>
+				<td align=center width="117">
+					CASH
+  	
+					</td>
+					<td align=center width="166">
+					CREDIT
+				  	</td>
+				
+					<td align=center width="275">
+					OPENING BALANCE
+  					</td>
+  					
+			  	</tr>
+				
+				<tr>
+					<td height="1" width="218" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="shop_Address">O/B</label></font></b>
+
+  					</td>
+  					<td width="117">	<%= text_field 'shop', 'Cash', :onblur=>"cal(this);"   %>+</td>
+  					<td width="166">    <%= text_field 'shop', 'Credit' ,:onblur=>"cal(this);" %>=</td>
+
+  					<td width="275" height="1" align=left>
+   					
+	 	 			<%= text_field 'shop', 'OpeningBal', :readonly=>true%> 					
+  					</td>
+  					
+				</tr>
+</table>
+</form>
+</body>
+
+</html>

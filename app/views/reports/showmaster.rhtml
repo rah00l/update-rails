@@ -1,0 +1,598 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Admin</title>
+<script>
+window.onload=function()
+{
+	new Ajax.Request("<%= url_for :controller=> :reports,:action=>:exreport %>",{method:'post'})
+
+}
+</script>
+</head>
+
+<body>
+			<table border=0  align="center" width="100%" height="100%">
+			<tr>
+ 			 <td bgcolor="#FFFFFF" width="90%" align=center >
+				<table align=center border=0 bordercolor="#08176C" width="90%" left="5%" height="194">
+				<tr>
+ 					 <td width="870" height="100%">
+				
+								<p>
+						<h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">
+                        Master Report</font>
+						
+						 
+						<h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%= session[:cname]%>&nbsp;From:- <%= Date.parse(session[:msdate]).strftime("%d-%m-%Y") %> To <%= Date.parse(session[:medate]).strftime("%d-%m-%Y")%></font></h1>
+					
+						<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% > 
+								<tr  bgcolor="#E1CEA2" align=center>
+									<th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">SHOP</font></th>
+									        
+									  <th nowrap width="2%" height="22" >
+									        <font color=white face="Zurich BT" size="2">MONTH</font></th>
+
+									  <th nowrap width="2%" height="22" >
+									        <font color=white face="Zurich BT" size="2">KEY</font></th>
+									  <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">IN</font></th>
+
+									    <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">OUT</font></th>
+									     <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">REFUND</font></th>
+									      <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">BONUS</font></th>
+									       <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">XYZ</font></th>
+											 <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">CREDIT</font></th>
+											<th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">%</font></th>
+										   <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">T COLL</font></th>
+										     <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">PM COLL</font></th>
+									        <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">NO M/C</font></th>
+									        <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">AVR</font></th>
+										   <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">T EXP</font></th>
+									        <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">PD EXP</font></th>
+									        <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">P M/C EXP</font></th>
+										   <th nowrap width="1%" height="22" >
+										    <font color=white face="Zurich BT" size="2">T HC</font></th>
+									        <th nowrap width="1%" height="22" >
+											<font color=white face="Zurich BT" size="2">PD HC</font></th>
+									        <th nowrap width="1%" height="22" >
+											<font color=white face="Zurich BT" size="2">S/E</font></th>
+
+
+									 </tr>
+								<% @smonth=((Date.parse(session[:msdate])).strftime("%m")).to_i%>
+								<% @emonth=((Date.parse(session[:medate])).strftime("%m")).to_i%>
+								<% @syear=((Date.parse(session[:msdate])).strftime("%Y")).to_i%>
+								<% @eyear=((Date.parse(session[:medate])).strftime("%Y")).to_i%>
+						<% @gtotalIN=0%>
+						<% @gtotalOUT=0%>
+						<% @gtotalRefund=0%>
+						<% @gtotalBonus=0%>
+						<% @gtotalMF=0%>
+						<% Shop.find(:all, :conditions=>["ClusterName=? ",@session[:cname]],:order => "ShopName").each do |@shp|%>
+							<% @flag=false %>
+							<% Group.find(:all,:conditions=>["ClusterName=? and ShopName=?", @session[:cname],@shp.ShopName],:order=>"GroupID").each do |key|%>
+						<!--<h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%#= key.GroupID %></font></h3>-->
+							
+
+							
+							<%# @keyflag=false%>
+					
+								
+								 
+									
+
+									
+									
+
+										<% if @smonth.to_i<= @emonth.to_i and @syear==@eyear%>
+									   	<% @count=@smonth.to_i %>
+									      <% for m in @smonth.to_i..@emonth.to_i%>
+									      	<% if @smonth.to_i==@emonth.to_i%>
+									      		<%@sdate=session[:msdate]%>
+									      		<%@edate=session[:medate]%>
+									      	<% else %>
+									      		
+									      			<%
+									      			if @count<=@smonth.to_i
+									      				month= m
+									      				year=((Date.parse(session[:msdate])).strftime("%Y"))
+									      				#day=
+									      				days=(Date.new(year.to_i, 12, 31) << (12-month.to_i)).day
+									      				@sdate=Date.parse(((Date.parse(session[:msdate])).strftime("%d")).to_s+'-'+month.to_s+'-'+year.to_s)
+														@edate=Date.parse(days.to_s+'-'+month.to_s+'-'+year.to_s)
+													elsif @count==@emonth.to_i
+														month= m
+									      				year=((Date.parse(session[:msdate])).strftime("%Y"))
+									      				#day=
+									      				days=(Date.new(year.to_i, 12, 31) << (12-month.to_i)).day
+									      				@sdate=Date.parse(01.to_s+'-'+month.to_s+'-'+year.to_s)
+														@edate=Date.parse(((Date.parse(session[:medate])).strftime("%d")).to_s+'-'+month.to_s+'-'+year.to_s)
+
+													else
+														month= m
+									      				year=((Date.parse(session[:msdate])).strftime("%Y"))
+									      				#day=
+									      				days=(Date.new(year.to_i, 12, 31) << (12-month.to_i)).day
+									      				@sdate=Date.parse(01.to_s+'-'+month.to_s+'-'+year.to_s)
+									      				
+														@edate=Date.parse(days.to_s+'-'+month.to_s+'-'+year.to_s)
+
+													end
+													 @count=@count.to_i+1
+									      		%>
+									      	<% end %>
+									         <tr>
+											<% if @flag==false%>
+												<th><%= @shp.ShopName %>&nbsp;</th>
+											<% else %>
+												<td>&nbsp;</td>
+											<% end %>
+											<%# puts m%>
+											<td width="2%" height="22" nowrap align="center" ><b><%= ((Date.parse("2010-#{m}-01")).strftime("%b")) %> </b>&nbsp;</td>
+											<%# if @keyflag==false%>
+											<td width="2%" height="22"nowrap align="center" ><b><%= key.GroupID %></b>&nbsp;</td>
+											<%# else %>
+											<!--<td>&nbsp;</td>-->
+											<%# end %>
+											<% @flag=true %> 
+											<%# @keyflag=true%>
+										
+										
+											
+
+	
+									
+										<%       
+										    @colldata = Machinedata.find(:all, :conditions=> ["Cluster_Name=? and Shop_Name=? and TRANS_DATE>=? and TRANS_DATE<=? and GROUP_ID=?",@session[:cname],@shp.ShopName,@sdate,@edate,key.GroupID])
+										    @GSRINTOTAL=0
+										    @totalOUT=0
+										    @COLL=0
+										    @colldata.each do |data|
+       
+										        if data.CALCULATEBY=='S'
+        		 									# @COLL=@COLL.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i)
+                  									@totalIN=@totalIN.to_i+data.TSRIN.to_i
+                  									
+                  									@GSRINTOTAL=@GSRINTOTAL.to_i+((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)/10).round
+                  									
+                  									#@SRINTOTAL=@SRINTOTAL.to_i+((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)/10).round
+                  									@totalOUT=@totalOUT.to_i+data.TSROUT.to_i
+
+             									 else
+									              	   @COLL=@COLL.to_i+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i)
+									                 # @totalIN=@totalIN.to_i+data.TMTRIN.to_i
+									                 
+									                 @GSRINTOTAL=@GSRINTOTAL.to_i+((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)/10).round
+									                 
+									                 #@SRINTOTAL=@SRINTOTAL.to_i+((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)/10).round
+									                  @totalOUT=@totalOUT.to_i+data.TMTROUT.to_i
+										     end    
+       											
+										    end%>
+										    <%@gtotalIN=@gtotalIN.to_i+@totalIN.to_i%>
+										    <%@gtotalOUT=@gtotalOUT.to_i+@totalOUT.to_i%>
+										    <% @bonus=0%>
+										    <% @refund=0%>
+										   <% @mf=0%>
+										   
+										    <%# Counterdata.find(:all,:conditions=>["ClusterName=? and ShopName=? and DATE>=? and DATE<=? and #{(key.GroupID).gsub(/ /,'')}=?",@session[:cname],@shp.ShopName,session[:msdate],session[:medate],key.GroupID]).each do |counter| %>
+										    <%# @shortreasons=Shop.find_by_sql("select * from shortreasons")%>
+										    <%# for sr in @shortreasons%>
+										    		<% @sum=Machinedata.find_by_sql("select MTRSHORT,SHORTREASON from Machinedatas where CLUSTER_NAME='#{@session[:cname]}' 
+													and TRANS_DATE>='#{@sdate}' and TRANS_DATE<='#{@edate}' and SHOP_NAME='#{@shp.ShopName}' and GROUP_ID='#{key.GroupID}'" ) %>
+												<% for mr in @sum%>
+													<% if mr.SHORTREASON=="CE" or mr.SHORTREASON=="XYZ" or mr.SHORTREASON=="BONUS"%>	
+										    				<% @bonus=@bonus.to_i+mr.MTRSHORT.to_i%>
+										    			<% end %>
+										    			<% if mr.SHORTREASON=="ADMIN" or mr.SHORTREASON=="REFUND" %>	
+										    				<% @refund=@refund.to_i+mr.MTRSHORT.to_i%>
+										    			<% end %>
+										    			<% if mr.SHORTREASON=="CZ" or mr.SHORTREASON=="MF" or mr.SHORTREASON=="MT" or mr.SHORTREASON=="PF" or mr.SHORTREASON=="ROK" %>	
+										    				<% @mf=@mf.to_i+mr.MTRSHORT.to_i%>
+										    			<% end %>
+										    		<% end %>
+										    		<% @gtotalRefund=@gtotalRefund.to_i+@refund.to_i%>
+										    		<% @gtotalBonus=@gtotalBonus.to_i+@bonus.to_i%>
+										    		<% @gtotalMF=@gtotalMF.to_i+@mf.to_i%>										    												    		
+										    <%# end %>
+											
+
+											<td nowrap align="center"><b><%= @GSRINTOTAL%></b>&nbsp;</td>	
+											<td nowrap align="center"><b><%= @totalOUT %></b>&nbsp;</td>	
+											<td nowrap align="center"><b><%= @refund %></b>&nbsp;</td>	
+											<td nowrap align="center"><b><%= @bonus %></b>&nbsp;</td>							
+											<td nowrap align="center"><b><%=@mf %></b>&nbsp;</td>
+											<td nowrap align="center"><b>Credit</b>&nbsp;</td>							
+											<td nowrap align="center"><b>
+											<% if @totalIN.to_i!=0%>
+												<%= ((@totalOUT.to_f*100)/(@totalIN.to_i)).round%>
+											<% else %>
+											0
+											<% end %>%
+											</b>&nbsp;</td>
+											<td nowrap align="center"><b><%= @COLL %></b>&nbsp;</td>
+											<%
+												@mccountsingle=Machine.count(:conditions=>["ClusterName=? and ShopName=? and GroupID=? and MachineType='single'",@session[:cname],@shp.ShopName,key.GroupID])
+											%>
+											<%
+												@mccountDD=Machine.count(:conditions=>["ClusterName=? and ShopName=? and GroupID=? and MachineType='DD'",@session[:cname],@shp.ShopName,key.GroupID])
+											%>
+											<%
+												@mccountDG=Machine.count(:conditions=>["ClusterName=? and ShopName=? and GroupID=? and MachineType='DG'",@session[:cname],@shp.ShopName,key.GroupID])
+											%>					
+											<td nowrap align="center"><b>
+											
+											<%# fp=File.new("txt1.txt",'a')
+											fp.write("\n")
+											fp.write("ShopName-"+@shp.ShopName)
+											fp.write("\t")
+											fp.write("Single:-"+@mccountsingle.to_s)
+											fp.write("\t")
+											fp.write("DD:-"+@mccountDD.to_s)
+											fp.write("\t")
+											fp.write("DG:-"+@mccountDG.to_s)
+											fp.write("\n")
+											%>
+											<% @mcount=((@mccountsingle.to_i)+(@mccountDD.to_i*2)+(@mccountDG.to_i*2))%>
+											<% if @mcount.to_i!=0%>
+												
+											<%= (@COLL.to_f/@mcount.to_f).round %>
+											<% else %>
+											0
+											<% end %>
+											</b>&nbsp;</td>
+											<td nowrap align="center"><b><%= @tot=(@mccountsingle.to_i+@mccountDD.to_i+@mccountDG.to_i) %></b>&nbsp;</td>
+											<td nowrap align="center"><b>
+											<% if @tot.to_i!=0%>
+											<%=  (@COLL.to_f/@tot.to_f).round%>
+											<% else%>
+											0
+											<% end %></b>&nbsp;</td>
+											<% @totalEXP=0 %>
+											<% @totalHC=0 %>
+											<% @totalvalues=0%>
+											<% @keyval=0%>
+											<% Counterdata.find(:all,:conditions=>["ClusterName=? and ShopName=? and DATE>=? and DATE<=? ",@session[:cname],@shp.ShopName,@sdate,@edate]).each do |counter| %>
+												<% @totalEXP=@totalEXP.to_i+counter.Exp.to_i %>
+												<% @totalHC=@totalHC.to_i+counter.HC.to_i %>
+												<% @totalvalues=@totalvalues.to_i+1%>
+												
+												<% if key.GroupID=='KEY 1'%>
+													<% @keyval=@keyval.to_i+counter.KEY1.to_i%>
+												<% end %>
+												<% if key.GroupID=='KEY 2'%>
+													<% @keyval=@keyval.to_i+counter.KEY2.to_i%>
+												<% end %>
+												<% if key.GroupID=='KEY 3'%>
+													<% @keyval=@keyval.to_i+counter.KEY3.to_i%>
+												<% end %>
+												<% if key.GroupID=='KEY 4'%>
+													<% @keyval=@keyval.to_i+counter.KEY4.to_i%>
+												<% end %>
+
+											<% end %>
+											<td nowrap align="center"><b><%= @totalEXP %></b>&nbsp;</td>
+											<td nowrap align="center"><b><% if @totalvalues.to_i!=0%>
+											<%= (@totalEXP.to_f/@totalvalues.to_f).round %>
+											<%else%>0
+											<% end %></b>&nbsp;</td>
+											<td nowrap align="center"><b><% if @tot!=0%>
+											<%=  (@totalEXP.to_f/@tot.to_f).round%>
+											<% else%>
+											0
+											<% end %></b>&nbsp;</td>
+											<td nowrap align="center"><b><%= @totalHC %></b>&nbsp;</td>
+											<td nowrap align="center"><b><% if @totalvalues.to_i!=0%>
+											<%= (@totalHC.to_f/@totalvalues.to_f).round %>
+											<%else%>0
+											<% end %></b>&nbsp;</td>
+											<%@val= (@keyval.to_i-@COLL.to_i) %>
+											<% if @val<0 %>
+											
+											<td nowrap align="center" ><b><font color=red face="Zurich BT" size="2"><%= @val %></font></b>&nbsp;</td>
+											<%else %>
+											<td nowrap align="center" ><b><%= @val %></b>&nbsp;</td>
+
+											<% end %>
+
+
+</tr>
+
+<% end %>
+
+<% else %>
+<!-- Code for the date selection date wise-->
+
+										<% @count=0 %>
+										<%
+										startdate=Date.parse(session[:msdate])
+										enddate=Date.parse(session[:medate])
+										@months=((enddate.month - startdate.month) + 12 * (enddate.year - startdate.year))
+										#puts @months
+										enddateyear=Date.parse("#{@syear}-12-31")
+										#puts enddateyear
+										@diff=(enddateyear.month-startdate.month)+1
+										#puts @months
+
+										%>
+										<% for j in 0..@months.to_i%>
+										<!-- Code for no of year calculation to be done
+										logic for that is maintain a counter for the old years and check whether it is exceded or not
+										if yes then  change the selection criterion........ in the lse block-->
+										<% end %>
+										
+										
+									      <% for m in 0..@months.to_i%>
+									      	
+									      	<% if @smonth.to_i==@emonth.to_i%>
+									      		<%@sdate=session[:msdate]%>
+									      		<%@edate=session[:medate]%>
+									      	<% else %>
+									      		
+									      			<%
+									      			if @count<=0
+									      				month= ((Date.parse(session[:msdate])).strftime("%m")).to_i
+									      				year=((Date.parse(session[:msdate])).strftime("%Y"))
+									      				days=(Date.new(year.to_i, 12, 31) << (12-month.to_i)).day
+									      				@sdate=Date.parse(((Date.parse(session[:msdate])).strftime("%d")).to_s+'-'+month.to_s+'-'+year.to_s)
+														@edate=Date.parse(days.to_s+'-'+month.to_s+'-'+year.to_s)
+														#@oldyear=year
+														
+														
+													elsif @count==@months.to_i
+														month=((Date.parse(session[:medate])).strftime("%m")).to_i
+									      				year=((Date.parse(session[:medate])).strftime("%Y"))
+									      				#day=
+									      				days=(Date.new(year.to_i, 12, 31) << (12-month.to_i)).day
+									      				@sdate=Date.parse(01.to_s+'-'+month.to_s+'-'+year.to_s)
+														@edate=Date.parse(((Date.parse(session[:medate])).strftime("%d")).to_s+'-'+month.to_s+'-'+year.to_s)
+
+													else
+														month= ((Date.parse(session[:msdate])).strftime("%m")).to_i+(m)
+														if month>12
+															month=01
+															year=((Date.parse(session[:msdate])).strftime("%Y")).to_i+1
+														else
+															month= ((Date.parse(session[:msdate])).strftime("%m")).to_i+(m)
+															year=((Date.parse(session[:msdate])).strftime("%Y")).to_i
+														end
+														
+														
+									      				
+									      				days=(Date.new(year.to_i, 12, 31) << (12-month.to_i)).day
+									      				@sdate=Date.parse(01.to_s+'-'+month.to_s+'-'+year.to_s)
+									      				
+														@edate=Date.parse(days.to_s+'-'+month.to_s+'-'+year.to_s)
+														 													
+													end
+													 @count=@count.to_i+1
+									      		%>
+									      		<%# puts (@count)%>
+									      	<% end %>
+									         <tr>
+											<% if @flag==false%>
+												<th><%= @shp.ShopName %>&nbsp;</th>
+											<% else %>
+												<td>&nbsp;</td>
+											<% end %>
+											<%# puts (Date.parse(session[:medate])+1)%>
+											<th width="2%" height="22" ><%= ((Date.parse("2010-#{month}-01")).strftime("%b")) %> &nbsp;</th>
+											<%# if @keyflag==false%>
+											<th width="2%" height="22" ><%= key.GroupID %>&nbsp;</th>
+											<%# else %>
+											<!--<td>&nbsp;</td>-->
+											<%# end %>
+											<% @flag=true %> 
+											<%# @keyflag=true%>
+										
+										
+											
+
+	
+									
+										<%       
+										    @colldata = Machinedata.find(:all, :conditions=> ["Cluster_Name=? and Shop_Name=? and TRANS_DATE>=? and TRANS_DATE<=? and GROUP_ID=?",@session[:cname],@shp.ShopName,@sdate,@edate,key.GroupID])
+										    @totalIN=0
+										    @totalOUT=0
+										    @COLL=0
+										    @colldata.each do |data|
+       
+										        if data.CALCULATEBY=='S'
+        		 									 @COLL=@COLL.to_i+(((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i)
+                  									@totalIN=@totalIN.to_i+data.TSRIN.to_i
+                  									@totalOUT=@totalOUT.to_i+data.TSROUT.to_i
+
+             									 else
+									              	  @COLL=@COLL.to_i+(((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i)
+									                  @totalIN=@totalIN.to_i+data.TMTRIN.to_i
+									                  @totalOUT=@totalOUT.to_i+data.TMTROUT.to_i
+										     end    
+       
+										    end%>
+										    <%@gtotalIN=@gtotalIN.to_i+@totalIN.to_i%>
+										    <%@gtotalOUT=@gtotalOUT.to_i+@totalOUT.to_i%>
+										    
+										    <% @bonus=0%>
+										    <% @refund=0%>
+										   <% @mf=0%>
+										   
+										    <%# Counterdata.find(:all,:conditions=>["ClusterName=? and ShopName=? and DATE>=? and DATE<=? and #{(key.GroupID).gsub(/ /,'')}=?",@session[:cname],@shp.ShopName,session[:msdate],session[:medate],key.GroupID]).each do |counter| %>
+										    <%# @shortreasons=Shop.find_by_sql("select * from shortreasons")%>
+										    <%# for sr in @shortreasons%>
+										    		<% @sum=Machinedata.find_by_sql("select MTRSHORT,SHORTREASON from Machinedatas where CLUSTER_NAME='#{@session[:cname]}' 
+													and TRANS_DATE>='#{@sdate}' and TRANS_DATE<='#{@edate}' and SHOP_NAME='#{@shp.ShopName}' and GROUP_ID='#{key.GroupID}'" ) %>
+												<% for mr in @sum%>
+													<% if mr.SHORTREASON=="CE" or mr.SHORTREASON=="XYZ" or mr.SHORTREASON=="BONUS"%>	
+										    				<% @bonus=@bonus.to_i+mr.MTRSHORT.to_i%>
+										    			<% end %>
+										    			<% if mr.SHORTREASON=="ADMIN" or mr.SHORTREASON=="REFUND" %>	
+										    				<% @refund=@refund.to_i+mr.MTRSHORT.to_i%>
+										    			<% end %>
+										    			<% if mr.SHORTREASON=="CZ" or mr.SHORTREASON=="MF" or mr.SHORTREASON=="MT" or mr.SHORTREASON=="PF" or mr.SHORTREASON=="ROK" %>	
+										    				<% @mf=@mf.to_i+mr.MTRSHORT.to_i%>
+										    			<% end %>
+										    		<% end %>
+										    		
+										    <%# end %>
+											<% @gtotalRefund=@gtotalRefund.to_i+@refund.to_i%>
+										    		<% @gtotalBonus=@gtotalBonus.to_i+@bonus.to_i%>
+										    		<% @gtotalMF=@gtotalMF.to_i+@mf.to_i%>
+
+											<td nowrap align="center"><b><%= @totalIN%></b>&nbsp;</td>	
+											<td nowrap align="center"><b><%= @totalOUT %></b>&nbsp;</td>	
+											<td nowrap align="center"><b><%= @refund %></b>&nbsp;</td>	
+											<td nowrap align="center"><b><%= @bonus %></b>&nbsp;</td>							
+											<td nowrap align="center"><b><%=@mf %></b>&nbsp;</td>						
+											<td nowrap align="center"><b>Credit</b>&nbsp;</td>	
+											<td nowrap align="center"><b>
+											<% if @totalIN.to_i!=0%>
+												<%= ((@totalOUT.to_f*100)/(@totalIN.to_i)).round%>
+											<% else %>
+											0
+											<% end %>%
+											</b>&nbsp;</td>	
+											<td nowrap align="center"><b><%= @COLL %></b>&nbsp;</td>					
+											<%
+												@mccountsingle=Machine.count(:conditions=>["ClusterName=? and ShopName=? and GroupID=? and MachineType='single'",@session[:cname],@shp.ShopName,key.GroupID])
+											%>
+											<%
+												@mccountDD=Machine.count(:conditions=>["ClusterName=? and ShopName=? and GroupID=? and MachineType='DD'",@session[:cname],@shp.ShopName,key.GroupID])
+											%>
+											<%
+												@mccountDG=Machine.count(:conditions=>["ClusterName=? and ShopName=? and GroupID=? and MachineType='DG'",@session[:cname],@shp.ShopName,key.GroupID])
+											%>					
+											<td nowrap align="center"><b>
+											
+											<%# fp=File.new("txt1.txt",'a')
+											fp.write("\n")
+											fp.write("ShopName-"+@shp.ShopName)
+											fp.write("\t")
+											fp.write("Single:-"+@mccountsingle.to_s)
+											fp.write("\t")
+											fp.write("DD:-"+@mccountDD.to_s)
+											fp.write("\t")
+											fp.write("DG:-"+@mccountDG.to_s)
+											fp.write("\n")
+											%>
+											<% @mcount=((@mccountsingle.to_i)+(@mccountDD.to_i*2)+(@mccountDG.to_i*2))%>
+											<% if @mcount.to_i!=0%>
+												
+											<%= (@COLL.to_f/@mcount.to_f).round %>
+											<% else %>
+											0
+											<% end %>
+											</b>&nbsp;</td>
+											<td nowrap align="center"><b><%= @tot=(@mccountsingle.to_i+@mccountDD.to_i+@mccountDG.to_i) %></b>&nbsp;</td>
+											<td nowrap align="center"><b>
+											<% if @tot!=0%>
+											<%=  (@COLL.to_f/@tot.to_f).round%>
+											<% else%>
+											0
+											<% end %></b>&nbsp;</td>
+
+											<% @totalEXP=0 %>
+											<% @totalvalues=0%>
+											<% @keyval=0%>
+											<% Counterdata.find(:all,:conditions=>["ClusterName=? and ShopName=? and DATE>=? and DATE<=? ",@session[:cname],@shp.ShopName,@sdate,@edate]).each do |counter| %>
+												<% @totalEXP=@totalEXP.to_i+counter.Exp.to_i %>
+												<% @totalvalues=@totalvalues.to_i+1%>
+												<% if key.GroupID=='KEY 1'%>
+													<% @keyval=@keyval.to_i+counter.KEY1.to_i%>
+												<% end %>
+												<% if key.GroupID=='KEY 2'%>
+													<% @keyval=@keyval.to_i+counter.KEY2.to_i%>
+												<% end %>
+												<% if key.GroupID=='KEY 3'%>
+													<% @keyval=@keyval.to_i+counter.KEY3.to_i%>
+												<% end %>
+												<% if key.GroupID=='KEY 4'%>
+													<% @keyval=@keyval.to_i+counter.KEY4.to_i%>
+												<% end %>
+											<% end %>
+											<td nowrap align="center"><b><%= @totalEXP %></b>&nbsp;</td>
+											<td nowrap align="center"><b><% if @totalvalues.to_i!=0%>
+											<%= (@totalEXP.to_i/@totalvalues.to_i).round %>
+											<%else%>0
+											<% end %></b>&nbsp;</td>
+											<td nowrap align="center"><b><% if @tot!=0%>
+											<%=  (@totalEXP.to_f/@tot.to_f).round%>
+											<% else%>
+											0
+											<% end %></b>&nbsp;</td>
+											<td nowrap align="center"><b><%= @totalHC %></b>&nbsp;</td>
+											<td nowrap align="center"><b><% if @totalvalues.to_i!=0%>
+											<%= (@totalHC.to_f/@totalvalues.to_f).round %>
+											<%else%>0
+											<% end %></b>&nbsp;</td>
+											<%@val= (@keyval.to_i-@COLL.to_i) %>
+											<% if @val<0 %>
+											
+											<td nowrap align="center" ><b><font color=red face="Zurich BT" size="2"><%= @val %></font></b>&nbsp;</td>
+											<%else %>
+											<td nowrap align="center" ><b><%= @val %></b>&nbsp;</td>
+
+											<% end %>
+
+
+
+</tr>
+
+<% end %>
+
+
+<% end %>
+<% end %>
+<% end %>
+<tr>
+	 <th nowrap width="2%" height="22" ><font color=white face="Zurich BT" size="2">TOTAL</font></th>
+	 <td nowrap align="center"><b></b>&nbsp;</td>	
+	 <td nowrap align="center"><b></b>&nbsp;</td>	
+	<td nowrap align="center"><b><%= @gtotalIN%></b>&nbsp;</td>	
+	<td nowrap align="center"><b><%= @gtotalOUT %></b>&nbsp;</td>	
+	<td nowrap align="center"><b><%= @gtotalRefund %></b>&nbsp;</td>	
+	<td nowrap align="center"><b><%= @gtotalBonus %></b>&nbsp;</td>							
+	<td nowrap align="center"><b><%=@gtotalMF %></b>&nbsp;</td>						
+	<td nowrap align="center"><b>Credit</b>&nbsp;</td>	
+	<td nowrap align="center"><b>
+	<% if @gtotalIN.to_i!=0%>
+												<%= ((@gtotalOUT.to_f*100)/(@gtotalIN.to_i)).round%>
+											<% else %>
+											0
+											<% end %>%
+
+	</b>&nbsp;</td>	
+	<td nowrap align="center"><b></b>&nbsp;</td>					
+	<td nowrap align="center"><b></b>&nbsp;</td>
+	<td nowrap align="center"><b></b>&nbsp;</td>					
+	<td nowrap align="center"><b></b>&nbsp;</td>
+	<td nowrap align="center"><b></b>&nbsp;</td>					
+	<td nowrap align="center"><b></b>&nbsp;</td>					
+	<td nowrap align="center"><b></b>&nbsp;</td>
+	<td nowrap align="center"><b></b>&nbsp;</td>					
+	<td nowrap align="center"><b></b>&nbsp;</td>
+	<td nowrap align="center"><b></b>&nbsp;</td>
+
+</tr>
+</table>
+<br/>
+
+</td></tr></table>
+</td></tr></table>
+</body>
+</html>

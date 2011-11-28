@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<script>
+window.onload=function()
+{
+var mcname=document.getElementById('machine_MachineName');
+mcname.focus();
+var save=document.getElementById('save');
+save.disabled=true;
+
+}
+
+
+//DISPLAY SAVE BUTTON ON FILLING ALL VALUES
+function showsave()
+{
+	var cmbobj=document.getElementById("machine_MachineType");
+	if(event.keyCode==13)
+	{
+	 	var btsave1 = document.getElementById("save");
+      
+        btsave1.disabled=false;
+		
+	 	btsave1.focus();
+	 	
+		//alert(cmbobj.options[cmbobj.selectedIndex].value);
+	 	
+	 }	
+	 if(event.keyCode==9)
+	{
+	 	var btsave1 = document.getElementById("data");
+      	var btsave = document.getElementById("save");
+
+        btsave.disabled=false;
+		
+	 	btsave1.focus();
+	 	
+	 }	
+
+}
+
+</script>
+
+
+</head>
+<body>
+<center>
+<table height="311" width="78%"  >
+<tr>
+<td height="311" width=100% align="center">
+
+<% form_tag :action => 'update', :id => @machine do %>
+
+<%= error_messages_for 'machine' %>
+
+<font  size= "4">
+<% if session[:msg] %>
+	<div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+ 		background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+ 			<%= session[:msg] %>
+ 	</div>
+	<%session[:msg]=nil%>
+<% end %>
+</font>
+
+<fieldset style="width:700 ; height: 81 ; align:center">
+			
+
+			<h2 align=center>Edit Machine</h2>
+
+<table width="680" height="81"  >
+				<tr>
+    				<td width="155" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_ShopID">Shop ID </label></font></b>
+ 					</td>
+ 					<td width="174" height="16" align=left>
+ 					
+				 		<%= text_field 'machine', 'ClusterName',:readonly=>true  %> 		 
+
+ 					
+ 					</td>
+ 					<td height="21" width="121" align=right>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_GroupID">Group ID </label></font></b>
+ 	 				
+ 	 				</td>
+ 	 				<td width="148" height="20" align=left>
+ 	    			
+ 	 				<%= text_field 'machine', 'ShopName' ,:readonly=>true %> 	 	 				
+ 	 				</td>
+
+				</tr>
+				<tr>
+					<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MachineNo">Machine No </label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MachineNo',:readonly=>true  %> 					
+  					
+ 	 				<tr>
+ 	 				<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MachineName">Machine Name </label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MachineName' ,:onKeyDown=>"if(event.keyCode==13)  this.form.machine_SrateIn.focus();" ,:onfocus=>"this.form.machine_MachineName.select();" %>					
+  					</td>
+  					
+				</tr>
+				
+				<tr>
+					<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_SrateIn">S_RATE_IN</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'SrateIn' ,:onkeypress=>"return onlyNumbers();" , :onKeyDown=>"if(event.keyCode==13)  this.form.machine_SrateOut.focus();" ,:onfocus=>"this.form.machine_SrateIn.select();"  %> 					
+  					</td>
+  					</tr>
+  					<tr>
+ 	 						<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_SrateOut">S_RATE_OUT</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'SrateOut',:onkeypress=>"return onlyNumbers();",:onKeyDown=>"if(event.keyCode==13)  this.form.machine_MrateIn.focus();" ,:onfocus=>"this.form.machine_SrateOut.select();" %>	 			
+  					</td>  					
+					</tr>
+				
+				<tr>
+					<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MrateIn">M_RATE_IN</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MrateIn',:onkeypress=>"return onlyNumbers();" ,:onKeyDown=>"if(event.keyCode==13)  this.form.machine_MrateOut.focus();",:onfocus=>"this.form.machine_MrateIn.select();"  %>				
+  					</td>
+  					</tr>
+  					<tr>
+ 	 						<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MrateOut">M_RATE_OUT</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MrateOut',:onkeypress=>"return onlyNumbers();" ,:onKeyDown=>"if(event.keyCode==13)  this.form.machine_Multiplyby.focus();" ,:onfocus=>"this.form.machine_MrateOut.select();" %>	   					
+  					</td>  					
+				</tr>
+
+				<tr>
+									
+  					
+ 	 				<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MultiplyBy">MultiplyBy </label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'Multiplyby' ,:onkeydown=>"if(event.keyCode==13)  this.form.machine_MachineType.focus();"   %>					
+  					</td>
+				</tr>
+<tr>
+					
+ 	 				
+				</tr>
+		<tr>
+		<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_type">Machine Type </label></font></b>
+  					</td>
+
+			<td>
+			
+			<% @z=Machine.find(params[:id])%>
+			<% @type=@z.MachineType %>
+		<select id="machine_MachineType" name="machine[MachineType]" onkeydown="showsave();" onblur="showsave();" >
+		<% if(@type=="Single") %>
+		<option value="Single">Single</option>
+		<option value="DD">DD</option>
+		<option value="DG">DG</option>
+		<% elsif(@type=="DD") %>
+		<option value="DD">DD</option>
+		<option value="Single">Single</option>
+
+		<option value="DG">DG</option>
+		<% elsif(@type=="DG") %>
+		<option value="DG">DG</option>
+		<option value="Single">Single</option>
+		<option value="DD">DD</option>
+
+		<%end%>
+
+</select> </font>
+
+			</td>
+		</tr>
+ 				</table>
+ 				<br>
+ 				  <%= submit_tag '  Edit  ' ,:id=>'save'%>
+ 
+				<%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'machines',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+
+
+				<% end %>
+			</fieldset>
+ 				</td>
+ 				</tr></table>
+ 				
+</center>
+ 				
+</body>
+</html>

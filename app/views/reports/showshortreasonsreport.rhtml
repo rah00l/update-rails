@@ -1,0 +1,231 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+<body>
+<h2>MACHINE SHORT REASONS REPORT</h2>
+<!--<h3 align="center"><font color="#6C3401" face="Zurich BT" size="2">
+<%@a=@session[:startdate].strftime("%d-%B-%Y")%>
+<% @m1=@a.split('-')%>
+<% @m1[1]%><% @m1[2]%>
+
+</font></h1>
+
+<!--<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="34%" id="AutoNumber2">
+  <tr>
+    <td >GROUP NAME:</td>
+    <td><b></b>&nbsp;</td>
+  
+    <td>SHOP NAME:</td>
+    <td><b><%= @session[:rrshopname] %></b>&nbsp;</td>
+  </tr>
+  
+</table>-->
+<% Shop.find(:all,:conditions=>["ClusterName='#{@session[:rrclustername]}' "],:select =>"distinct ShopName", :order => "ShopName").each do |shp|%>
+
+<% @totalREFUND1=0%>
+<% @totalBONUS1=0%>
+<% @totalADMIN1=0%>
+<% @totalCZ1=0%>
+<% @totalXYZ1=0%>
+<% @totalMF1=0%>
+<% @totalMT1=0%>
+<% @totalPF1=0%>
+<% @totalCE1=0%>
+<% @totalROK1=0%>
+<table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" > 
+<tr> <td colspan=16 align=center><font size=3><b><%= @session[:rrclustername] %></b></font>&nbsp;</td></tr>
+<%@a=@session[:startdate].strftime("%d-%B-%Y")%>
+<% @m1=@a.split('-')%>
+
+<tr> <td colspan=16 align=center><font size=2><b><%= shp.ShopName %>&nbsp;&nbsp;&nbsp;<%= @m1[1]%>-<%= @m1[2]%></b></font></td></tr>
+
+<% @reasons=Shop.find_by_sql("select * from ShortReasons") %>
+<tr >
+<th scope=col nowrap width=5%  height="20">DATE</th>
+<!--
+<% short=[]%>
+<% @reasons.each do |i|%>
+		<% short<<i.McShortReason%>
+		<th scope=col nowrap   height="20"><%= i.McShortReason %> </font></th>
+ <%end%>
+-->
+<th width=5% >BONUS</th>
+<th width=5%>CE</th>
+<th width=5%>XYZ</th>
+<th width=5%>ADMIN</th>
+<th width=5%>REFUND</th>
+
+<th width=5%>CZ</th>
+<th width=5%>MF</th>
+<th width=5%>MT</th>
+<th width=5%>PF</th>
+<th width=5%>ROK</th>
+<td width=1%></td>
+ <th width=5%>BONUS</th>
+<th width=5%>REFUND</th>  
+  <th width=5%>MF</th>
+<th width=5%>TOTAL</th>	
+</tr>
+
+  
+
+ 
+<% puts session[:enddate] %>
+<% @r=Machinedata.find_by_sql("select DISTINCT TRANS_DATE from Machinedatas where CLUSTER_NAME='#{@session[:rrclustername]}'
+and TRANS_DATE>='#{session[:startdate]}'
+and TRANS_DATE<='#{session[:enddate]}' and SHOP_NAME= '#{shp.ShopName}' order by TRANS_DATE") %>
+
+<% @r.each do |r|%>
+
+<% @sum=Machinedata.find_by_sql("select MTRSHORT,SHORTREASON from Machinedatas where CLUSTER_NAME='#{@session[:rrclustername]}'
+and TRANS_DATE='#{r.TRANS_DATE}' and SHOP_NAME='#{shp.ShopName}'" ) %>
+
+<% @totalREFUND=0%>
+<% @totalBONUS=0%>
+<% @totalADMIN=0%>
+<% @totalCZ=0%>
+<% @totalXYZ=0%>
+<% @totalMF=0%>
+<% @totalMT=0%>
+<% @totalPF=0%>
+<% @totalCE=0%>
+<% @totalROK=0%>
+
+
+
+
+<% @sum.each do |s| %>
+
+
+<% if(s.SHORTREASON=="REFUND") %>
+<% @totalREFUND=@totalREFUND.to_i+s.MTRSHORT.to_i%>
+<% @totalREFUND1=@totalREFUND1.to_i+s.MTRSHORT.to_i%>
+<% end %>
+
+<% if(s.SHORTREASON=="BONUS") %>
+<% @totalBONUS=@totalBONUS.to_i+s.MTRSHORT.to_i%>
+<% @totalBONUS1=@totalBONUS1.to_i+s.MTRSHORT.to_i%>
+
+<% end %>
+
+<% if(s.SHORTREASON=="ADMIN") %>
+<% @totalADMIN=@totalADMIN.to_i+s.MTRSHORT.to_i%>
+<% @totalADMIN1=@totalADMIN1.to_i+s.MTRSHORT.to_i%>
+<% end %>
+
+<% if(s.SHORTREASON=="CZ") %>
+<% @totalCZ=@totalCZ.to_i+s.MTRSHORT.to_i%>
+<% @totalCZ1=@totalCZ1.to_i+s.MTRSHORT.to_i%>
+
+<% end %>
+
+<% if(s.SHORTREASON=="XYZ") %>
+<% @totalXYZ=@totalXYZ.to_i+s.MTRSHORT.to_i%>
+<% @totalXYZ1=@totalXYZ1.to_i+s.MTRSHORT.to_i%>
+
+<% end %>
+
+<% if(s.SHORTREASON=="MF") %>
+<% @totalMF=@totalMF.to_i+s.MTRSHORT.to_i%>
+<% @totalMF1=@totalMF1.to_i+s.MTRSHORT.to_i%>
+<% end %>
+
+<% if(s.SHORTREASON=="MT") %>
+<% @totalMT=@totalMT.to_i+s.MTRSHORT.to_i%>
+<% @totalMT1=@totalMT1.to_i+s.MTRSHORT.to_i%>
+<% end %>
+
+<% if(s.SHORTREASON=="PF") %>
+<% @totalPF=@totalPF.to_i+s.MTRSHORT.to_i%>
+<% @totalPF1=@totalPF1.to_i+s.MTRSHORT.to_i%>
+<% end %>
+
+<% if(s.SHORTREASON=="CE") %>
+<% @totalCE=@totalCE.to_i+s.MTRSHORT.to_i%>
+<% @totalCE1=@totalCE1.to_i+s.MTRSHORT.to_i%>
+<% end %>
+
+<% if(s.SHORTREASON=="ROK") %>
+<% @totalROK=@totalROK.to_i+s.MTRSHORT.to_i%>
+<% @totalROK1=@totalROK1.to_i+s.MTRSHORT.to_i%>
+<% end %>
+
+
+<%end%>
+
+<tr>
+<td align=center> <%= r.TRANS_DATE.strftime("%d")%>&nbsp;</td>
+<td align=center><%=@totalBONUS%>&nbsp;</td>
+<td align=center>
+
+<%=@totalCE%>&nbsp;</td>
+<td align=center><%=@totalXYZ%>&nbsp;</td>
+<td align=center><%=@totalADMIN%>&nbsp;</td>
+<td align=center><%=@totalREFUND%>&nbsp;</td>
+
+
+<td align=center><%=@totalCZ%>&nbsp;</td>
+<td align=center><%=@totalMF%>&nbsp;</td>
+<td align=center><%=@totalMT%>&nbsp;</td>
+<td align=center><%=@totalPF%>&nbsp;</td>
+<td align=center><%=@totalROK%>&nbsp;</td>
+<td>
+</td>
+
+<td align=center><b><font size=3><%= @bonustotal=@totalBONUS+@totalXYZ+@totalCE %>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalREFUND+@totalADMIN %>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%= @MFtotal=@totalMF+@totalMT+@totalPF+@totalCZ+@totalROK %>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%= @totalREFUND+@totalADMIN+@totalCZ+@totalBONUS+@totalXYZ+@totalMF+@totalMT+@totalPF+@totalCE+@totalROK%> </font></b>&nbsp;
+</td>
+</tr>
+
+
+<%end%>
+<tr>
+<td> &nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<th > TOTAL&nbsp;</th>
+<td align=center><b><font size=3><%=@totalBONUS1%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalCE1%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalXYZ1%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalADMIN1%>&nbsp;</font></b></td>
+
+<td align=center><b><font size=3><%=@totalREFUND1%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalCZ1%>&nbsp; </font></b></td>
+<td align=center><b><font size=3><%=@totalMF1%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalMT1%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalPF1%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=@totalROK1%>&nbsp;</font></b></td>
+<td></td>
+<td align=center><b><font size=3><%=(@totalBONUS1.to_i+@totalCE1.to_i+@totalXYZ1.to_i)%>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%=(@totalREFUND1.to_i+@totalADMIN1.to_i)%>&nbsp;</font></b></td>
+<!--<td><%= @totalREFUND1+@totalADMIN1+@totalCZ1+@totalBONUS1+@totalXYZ1+@totalMF1+@totalMT1+@totalPF1+@totalCE1+@totalROK1%> &nbsp;</td>-->
+<td align=center><b><font size=3><%= @totalMF1+@totalMT1+@totalPF1+@totalCZ1+@totalROK1 %>&nbsp;</font></b></td>
+<td align=center><b><font size=3><%= @totalREFUND1+@totalADMIN1+@totalCZ1+@totalBONUS1+@totalXYZ1+@totalMF1+@totalMT1+@totalPF1+@totalCE1+@totalROK1%> </font></b>&nbsp;</td>
+</tr></table>
+<br>
+<% end %>
+</body>
+
+</html>

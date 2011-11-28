@@ -1,0 +1,236 @@
+<html>
+<head>
+
+<script type="text/javascript">
+//on load event to make save button disabled
+
+window.onload=function()
+{
+	var key2=document.getElementById('group2_GroupID')
+	key2.disabled=true;
+	
+	var key3=document.getElementById('group3_GroupID')
+	key3.disabled=true;
+
+	var key4=document.getElementById('group4_GroupID')
+	key4.disabled=true;
+
+	var cmbclustername=document.getElementById('group_ClusterName');
+	
+	cmbclustername.focus();
+
+}
+</script>
+
+<script>
+function checkkey()
+{
+var key1=document.getElementById("group1_GroupID");
+
+if(key1.checked==true)
+{
+	var key2=document.getElementById('group2_GroupID')
+	key2.disabled=false;
+
+	return true;
+
+}
+else
+{
+	var key2=document.getElementById('group2_GroupID')
+	key2.checked=false;
+	key2.disabled=true;
+
+	var key3=document.getElementById('group3_GroupID')
+	key3.checked=false;
+	key3.disabled=true;
+	
+	var key4=document.getElementById('group4_GroupID')
+	key4.checked=false;
+	key4.disabled=true;
+
+	
+
+
+}
+
+
+}
+
+//KEY2 testing
+function checkkey1()
+{
+var key2=document.getElementById("group2_GroupID");
+
+if(key2.checked==true)
+{
+	var key3=document.getElementById('group3_GroupID')
+	key3.disabled=false;
+
+	return true;
+
+}
+else
+{
+	
+
+	var key3=document.getElementById('group3_GroupID')
+	key3.checked=false;
+	key3.disabled=true;
+	
+	var key4=document.getElementById('group4_GroupID')
+	key4.checked=false;
+	key4.disabled=true;
+
+	
+
+
+}
+
+
+}
+
+
+//KEY3 testing
+function checkkey2()
+{
+var key3=document.getElementById("group3_GroupID");
+
+if(key3.checked==true)
+{
+	var key4=document.getElementById('group4_GroupID')
+	key4.disabled=false;
+
+	return true;
+
+}
+else
+{
+	
+
+
+	
+	var key4=document.getElementById('group4_GroupID')
+	key4.checked=false;
+	key4.disabled=true;
+
+	
+
+
+}
+
+
+}
+
+
+
+
+
+
+</script>
+</head>
+<body>
+<center>
+
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="951" height="252" align="center">
+  <tr>
+    <td width="951" height="252" align="center">
+<% form_tag :action => 'create' do %>
+
+<fieldset style="width:700 ; height: 150 ; align:center">
+
+ 		<h2>New Key</h2>
+ <%= error_messages_for 'group' %>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="88%" height="169">
+  						<tr width=100%>
+    						<td width="47%" align=right height="42">
+								<b><font face="Arial" size="2" >
+								<label for="group_CompanyID">GROUP NAME :</label>
+								</font></b>
+							</td>
+							<td width="2%" height="42" >
+							</td>
+
+							<td width="60%" align=left height="42">
+<% @cluster=Cluster.find(:all,:order => "ClusterName") %>
+
+ <%= collection_select(:group,:ClusterName,  @cluster, :ClusterName , :ClusterName,
+ 
+                     {:prompt   => "PLEASE SELECT GROUP"},
+                      {:onchange => "#{remote_function(:url  => { :action => "getShopName"},
+                                                       :with => "'ClusterName='+value")}"}) %>
+ 
+
+
+</td>
+ 						</tr>
+						<tr width=100%>
+
+							<td width="47%" align=right height="48" >
+							<b><font face="Arial" size="2" >
+								<label for="group_CompanyName">SHOP NAME :</label>
+								</font></b>
+
+							</td>
+							<td width="2%" height="48" >
+							</td>
+							<td width="52%" align=left height="48">
+
+<div id="shopnamediv">
+<%= render :partial => 'shopname' %>
+
+</div>
+</td>
+						</tr>
+						<tr width=100%>
+							<td width="46%" align=right  height="1" >
+<b><font face="Arial" size="2" >
+
+	<label for="group_GroupID">KEY NO</label>
+	</font></b>
+
+	</td>
+<td width="2%" height="1" >
+							</td>
+							<td width="52%" align=left height="1">
+	
+	<label for="group_Key1">1</label>	
+<input type="checkbox" id="group1_GroupID" name="group1[GroupID]" value="KEY 1" onclick="return checkkey()" >
+<input name="group1[GroupID]" type=hidden value=0 " onclick="return checkkey1()">
+
+<label for="group_Key2">2</label>
+<input type="checkbox" id="group2_GroupID" name="group2[GroupID]" value="KEY 2" onclick="return checkkey1()">
+<input name="group2[GroupID]" type=hidden value=0>		
+
+<label for="group_Key3">3</label>
+<input type="checkbox" id="group3_GroupID" name="group3[GroupID]" value="KEY 3" onclick="return checkkey2()">
+<input name="group3[GroupID]" type=hidden value=0>
+
+<label for="group_Key4">4</label>
+<input type="checkbox" id="group4_GroupID" name="group4[GroupID]" value="KEY 4" onclick="return checkkey3()">
+<input name="group4[GroupID]" type=hidden value=0>
+
+</td>
+						</tr>
+						<tr width=100%>
+
+							<td width="100%" align=center colspan=3 height="43" >
+							<br>
+ <%= submit_tag "Create" %>
+  <%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'groups',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+
+
+</td>
+  						</tr>
+				</table>
+</fieldset >
+
+<%end%>
+</td>
+  </tr>
+</table>
+</center>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<html>
+<head>
+
+<%= stylesheet_link_tag "style" %>
+
+</head>
+<body>
+
+
+<table height="428" width="727"><tr><td height="23" width="285">&nbsp;<td height="23" width="432">&nbsp;<tr>
+ 
+<form id="form1" name="form1" method="post"  align="center">	
+  
+ 
+  
+  </form>
+  
+ 
+  
+  <td height="397" width="285">&nbsp;</td><td height="397" width="432">
+  <table border=5 bordercolor="#800000" height="194" width="287"><tr>
+  <td height="188" width="269">
+<div title="password alteration" id="password alteration" class="form">
+  
+
+<br/>
+	<h2 align="center"> <u><font face="Arial" size="4" color="#000080">PROJECT 
+    VERSION</font></u></h2>
+<p>&nbsp;</p>
+<h3><font color=red>
+<% if @msg %> </h3>
+<% end %></font><div id="pass" style="width: 269; height: 57">
+    <p align="left">
+  &nbsp;<label for="user_old_pass"><b><font face="Arial" size="2" color="#800000">VERSION</font><font color="#800000">: 
+  GamingStation_ROR_ver_1.0.1_R12</font></b></label><p align="left">
+  <label for="user_old_pass"><font color="#800000"><b>DATE: 13-02-2010 05.04 pm</b></font></label><p align="left">
+  <label for="user_old_pass"><font color="#800000"><b>Description:</b></font></label><p align="left">
+  <font color="#800000">CHANGES IN COLLECTION, PURGE, DAILY&nbsp; REPORTS AND 
+  NEW MASTER REPORT CREATED.</font><br/>
+
+</div>
+
+
+  <p>&nbsp;&nbsp;&nbsp;
+<%= end_form_tag %>
+<!--<%= submit_to_remote 'Alter','Alter',:url => {:controller=>'client',:action => "password" },  :id=>'password'%>-->
+
+<br/><br/>
+
+
+<br/>
+</td></tr></table></td></tr></table>
+</form>
+</body>
+</html>

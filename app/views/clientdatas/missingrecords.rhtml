@@ -1,0 +1,230 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+<script>
+window.onload=function()
+{
+
+document.getElementById('back').focus();
+}
+
+</script>
+</head>
+
+<body>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="390">
+  <tr>
+    <td width="100%" height="390" align=center>
+    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#6C3401" width="90%" id="AutoNumber2" height="256" bgcolor="#C0C0C0">
+      <tr>
+        <td width="100%" height="24"><b>Short &amp; Missing</b></td>
+      </tr>
+      <tr>
+        <td width="100%" height="12">
+        <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber3" height="177">
+          <tr>
+            <td width="50%" height="32">
+            		Shop Name : <input type=text value=<%= @session['shop'] %> size="20" readonly>   
+            </td>
+            
+            <td width="50%" height="32">
+            		Date : <input type=text value=<%=@session['date'].strftime("%d-%m-%Y") %> size="20" readonly>
+			</td>
+            
+          </tr>
+          <tr>
+            <td width="100%" height=1 colspan="2">
+            Missing Records</td>
+          </tr>
+          <tr>
+            <td width="100%" colspan="2" height="145">
+<% @machines1= Machine.find_by_sql("select count(*) as 'totalcount' from machines where ShopName='#{@session['shop']}' and MachineNo NOT in (select MachineNo from clientdatas where ShopName='#{@session['shop']}'  and Date='#{@session['date']}') ")  %>
+
+<% if(@machines1[0].totalcount.to_i==0)%>
+<center><h3>NO MISSING RECORDS</h3></center>
+<%else%>   
+     
+          <table border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black" align=center  id="AutoNumber1"  height="24"  >  
+<tr >
+
+      	<!--<th  nowrap width="15%" height="10">
+       Sr.No</font>       
+        </th>-->
+        <th  scope=col nowrap  width="30%" height="5" >
+     KEY No. </font></th>
+		<th scope=col nowrap width="25%"  height="5">
+     MachineNo </font></th>
+     <th scope=col nowrap width="130" height="5"  >
+       MachineName</font></th>
+       
+
+</tr>
+
+<% @machines= Machine.find_by_sql("select * from machines where ShopName='#{@session['shop']}' and MachineNo NOT in (select MachineNo from clientdatas where ShopName='#{@session['shop']}' and status=0 and Date='#{@session['date']}') ")  %>
+<% @count=1 %>
+<% @machines.each do |c| %>
+  <tr>
+	<!--<td nowrap width="20%" height="5" align=center><%=@count %>&nbsp;</td>	-->
+	<td nowrap width="30%" height="5" align=center><%= c.GroupID %>&nbsp;</td>
+	<td nowrap width="20%" height="5" align=center><%= c.MachineNo %>&nbsp;</td>
+	<td nowrap width="20%" height="5" align=center><%= c.MachineName %>&nbsp;</td>
+</td>
+<% @count=@count+1 %>
+	</tr><% end %>	
+</table>
+<%end%>
+
+</td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+      <tr>
+        <td width="100%" height="100">
+        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="white" width="100%" id="AutoNumber4" height="1">
+          <tr>
+            <td width="100%" height="25" colspan="4">Total Short:</td>
+          </tr>
+          <%@grp=Clientdata.find_first(["ShopName=? and GroupID='KEY 1' and Machineshort is not null and Machineshort<0 and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+          <%if(@grp!=nil) %>
+          <tr>
+            <td width="100%" height="1" colspan="4">KEY No: 1</td>
+          </tr>
+          <tr bgcolor=#6C3401>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineNo </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineName</b></font></td>
+            <td width="25%" height="24" align="center"> <font color=white><b>Short</b></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>Reason</b></td>
+          </tr>
+          <%@e=Clientdata.find_all(["ShopName=? and GroupID='KEY 1' and Date=?",@session['shop'],@session['date']]) %>
+            <%@grp=Clientdata.find_all(["ShopName=? and GroupID='KEY 1' and Machineshort is not null and Machineshort<0 and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+
+          <% @grp.each do |e| %>
+           <tr >
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineNo %> </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineName%></b></font></td>
+            <td width="25%" height="24" align="center"> <font color=#6C3401><b>
+            
+
+            <%= (e.Machineshort.to_i).abs*10 %></b></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.Shortreason%></b></td>
+          </tr>
+		<%end%>
+          <tr>
+          <%@total=Clientdata.sum(:Machineshort,:conditions=>["ShopName=? and GroupID='KEY 1' and Date=? and status=0",@session['shop'],@session['date']]) %>
+
+            <td width="100%" height="24" align="right" colspan="4">Short: <input type=text size="20" value=<%= (@total.to_i).abs*10%> readonly>
+</td>
+          </tr>
+          <%end%>
+           <%@grp1=Clientdata.find_first(["ShopName=? and GroupID='KEY 2' and Machineshort is not null and Machineshort<0 and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+          <%if(@grp1!=nil) %>
+          <tr>
+            <td width="100%" height="1" colspan="4">KEY No: 2</td>
+          </tr>
+          <tr bgcolor=#6C3401>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineNo </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineName</b></font></td>
+            <td width="25%" height="24" align="center"> <font color=white><b>Short</b></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>Reason</b></td>
+          </tr>
+          
+            <%@grp1=Clientdata.find_all(["ShopName=? and GroupID='KEY 2' and Machineshort is not null and Machineshort<0 and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+
+          <% @grp1.each do |e| %>
+           <tr >
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineNo %> </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineName%></b></font></td>
+            <td width="25%" height="24" align="center"> <font color=#6C3401><b><%= (e.Machineshort.to_i).abs*10%></b></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.Shortreason%></b></td>
+          </tr>
+		<%end%>
+          <tr>
+          <%@total=Clientdata.sum(:Machineshort,:conditions=>["ShopName=? and GroupID='KEY 2' and Date=? and status=0",@session['shop'],@session['date']]) %>
+
+            <td width="100%" height="24" align="right" colspan="4">Short: <input type=text size="20" value=<%= (@total.to_i).abs*10%>  readonly>
+</td>
+          </tr>
+          <%end%>
+ <%@grp=Clientdata.find_first(["ShopName=? and GroupID='KEY 3' and Machineshort is not null and Machineshort<0  and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+          <%if(@grp!=nil) %>
+          <tr>
+            <td width="100%" height="1" colspan="4">KEY No: 3</td>
+          </tr>
+          <tr bgcolor=#6C3401>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineNo </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineName</b></font></td>
+            <td width="25%" height="24" align="center"> <font color=white><b>Short</b></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>Reason</b></td>
+          </tr>
+          <%@e=Clientdata.find_all(["ShopName=? and GroupID='KEY 3' and Date=?",@session['shop'],@session['date']]) %>
+           <%@grp=Clientdata.find_all(["ShopName=? and GroupID='KEY 3' and Machineshort is not null and Machineshort<0 and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+
+          <% @grp.each do |e| %>
+           <tr >
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineNo %> </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineName%></b></font></td>
+            <td width="25%" height="24" align="center"> <font color=#6C3401><b><%= (e.Machineshort.to_i).abs*10 %></b></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.Shortreason%></b></td>
+          </tr>
+		<%end%>
+          <tr>
+          <%@total=Clientdata.sum(:Machineshort,:conditions=>["ShopName=? and GroupID='KEY 3' and Date=? and status=0",@session['shop'],@session['date']]) %>
+
+            <td width="100%" height="24" align="right" colspan="4">Short: <input type=text size="20" value=<%= (@total.to_i).abs*10%>  readonly>
+</td>
+          </tr>
+          <%end%>
+ <%@grp=Clientdata.find_first(["ShopName=? and GroupID='KEY 4' and Machineshort is not null and Machineshort<0 and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+          <%if(@grp!=nil) %>
+          <tr>
+            <td width="100%" height="1" colspan="4">KEY No: 4</td>
+          </tr>
+          <tr bgcolor=#6C3401>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineNo </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>MachineName</b></font></td>
+            <td width="25%" height="24" align="center"> <font color=white><b>Short</b></td>
+            <td width="25%" height="24" align="center" ><font color=white><b>Reason</b></td>
+          </tr>
+          <%@e=Clientdata.find_all(["ShopName=? and GroupID='KEY 4' and Date=?",@session['shop'],@session['date']]) %>
+          <%@grp=Clientdata.find_all(["ShopName=? and GroupID='KEY 4' and Machineshort is not null and Machineshort<0 and Date='#{@session['date']}' and status=0",@session['shop']]) %>
+
+          <% @grp.each do |e| %>
+           <tr >
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineNo %> </b></font></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.MachineName%></b></font></td>
+            <td width="25%" height="24" align="center"> <font color=#6C3401><b><%= (e.Machineshort.to_i).abs*10 %></b></td>
+            <td width="25%" height="24" align="center" ><font color=#6C3401><b><%= e.Shortreason%></b></td>
+          </tr>
+		<%end%>
+          <tr>
+          <%@total=Clientdata.sum(:Machineshort,:conditions=>["ShopName=? and GroupID='KEY 4' and Date=? and status=0",@session['shop'],@session['date']]) %>
+
+            <td width="100%" height="24" align="right" colspan="4">Short: <input type=text size="20" value=<%= (@total.to_i).abs*10%>  readonly>
+</td>
+          </tr>
+          <%end%>
+
+        </table>
+        </td>
+      </tr>
+      <tr>
+        <td width="100%" height="20" align=right>
+	
+        <%= button_to_function 'Back' , remote_function(:url=> {:controller=>"clientdatas",:action => "cancelentry" }), :style=>"font-family: Zurich BT; font-size: 10pt ;align:center",:id=>"back" %>
+</td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>

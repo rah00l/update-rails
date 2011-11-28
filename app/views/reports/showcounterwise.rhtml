@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Admin</title>
+
+</head>
+
+<body>
+<!--<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="34%" id="AutoNumber2">
+  <tr>
+    <td >GROUP NAME:</td>
+    <td><b><%= @session[:rrclustername] %></b>&nbsp;</td>
+  
+    <td>SHOP NAME:</td>
+    <td><b><%= @session[:rrshopname] %></b>&nbsp;</td>
+  </tr>
+  
+</table>-->
+<h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">Counter Collection Report</font></h1>
+<% Shop.find(:all,:conditions=>["ClusterName='#{@session[:rrclustername]}' "],:select =>"distinct ShopName", :order => "ShopName").each do |shp|%>
+		<table border=0  align="center" width="100%"><tr>
+ 			 <td bgcolor="#FFFFFF" width="90%" align=center >
+				<table align=center border=0 bordercolor="#08176C"width="90%" left="5%"><tr>
+ 					 <td width="870">
+					
+						
+						<% @a=@session[:startdatehc].strftime("%B-%Y") %>
+						
+						
+	
+						 
+						  
+						 
+						 
+					
+						
+
+								
+
+								<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >  
+									<tr ><td colspan=14 align="center"><font size=3><b><%= @session[:rrclustername] %></b></font>&nbsp;</td></tr>	
+									<tr ><td colspan=14  align="center"><font size=2><b><%= shp.ShopName %> &nbsp; &nbsp; &nbsp; &nbsp;<%= @a %></b></font></td></tr>	
+									<br>
+									<tr  align=center>
+											<th nowrap width="5%" height="22" >
+									        <font color=white face="Zurich BT" size="2">DATE</font></th>
+									        <th nowrap width="5%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">CASH</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">EXP</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">HC</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">CR</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">O/S</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">TOTAL</font></th>
+									     	<td ></td>
+											<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">OB</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">KEY 1</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">KEY 2</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">KEY 4</font></th>
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">KEY 4</font></th>									      	
+									      	<th nowrap width="8%" height="22" >
+									      	<font color=white face="Zurich BT" size="2">TOTAL</font></th>									      	
+
+									      	
+									      	
+							  			</tr>
+							  		<% @totalcash=0 %>
+							  		<% @totalexp=0 %>
+							  		<% @totalhc=0%>
+							  		<% @totalcredit=0%>
+							  		<% @totalos=0%>
+							  		<% @totalob=0 %>
+							  		<% @totalk1=0 %>
+							  		<% @totalk2=0 %>
+							  		<% @totalk3=0 %>
+							  		<% @totalk4=0 %>
+									<%@m=@session[:dayshc] %>
+																					
+													
+													<% @i=1 %>
+							
+															<% while(@i<=@m)	%>
+															<% @date1=Date.parse(@i.to_s+'-'+@session[:monthhc].to_s+'-'+@session[:yearhc].to_s) %>												
+																<% @cdata=Counterdata.find(:first,:conditions=>['Date=? and ClusterName=? and ShopName=?',@date1.strftime("%Y-%m-%d"),@session[:rrclustername],shp.ShopName])%>
+																		
+																
+																	<% if @cdata==nil %>
+																					<!--<tr>
+																					<td><%=@date1.strftime("%d")%> &nbsp;</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					<td nowrap align="center">-</td>
+																					
+																					</tr> -->
+																			<% else %>
+																			
+																					<tr>
+																					<td><%=@date1.strftime("%d")%> &nbsp;</td>
+																					<td nowrap align="center"><%= @cdata.Cash %>&nbsp;</td>
+																					<% @totalcash= @totalcash.to_i+@cdata.Cash.to_i %>
+																					<td nowrap align="center"><%= @cdata.Exp %>&nbsp;</td>
+																					<% @totalexp= @totalexp.to_i+@cdata.Exp.to_i %>
+																					<td nowrap align="center"><%= @cdata.HC %>&nbsp;</td>
+																					<% @totalhc= @totalhc.to_i+@cdata.HC.to_i %>
+																					<td nowrap align="center"><%= @cdata.Credit %>&nbsp;</td>
+																					<% @totalcredit= @totalcredit.to_i+@cdata.Credit.to_i %>
+																					<td nowrap align="center"><%= @cdata.Outstanding %>&nbsp;</td>
+																					<% @totalos= @totalos.to_i+@cdata.Outstanding.to_i %>
+																					<td nowrap align="center"><%= @cdata.Cash.to_i+@cdata.Exp.to_i+@cdata.HC.to_i+@cdata.Credit.to_i+@cdata.Outstanding.to_i %>&nbsp;</td>
+																					<td ></td>
+																					<td nowrap align="center"><%= @cdata.Openingbal %>&nbsp;</td>
+																					<% @totalob= @totalob.to_i+@cdata.Openingbal .to_i %>
+																					
+																					<td nowrap align="center"><%= @cdata.KEY1 %>&nbsp;</td>
+																					<% @totalk1= @totalk1.to_i+@cdata.KEY1.to_i %>
+																					
+																					<td nowrap align="center"><%= @cdata.KEY2 %>&nbsp;</td>
+																					<% @totalk2= @totalk2.to_i+@cdata.KEY2.to_i %>
+																					
+																					<td nowrap align="center"><%= @cdata.KEY3 %>&nbsp;</td>
+																					<% @totalk3= @totalk3.to_i+@cdata.KEY3.to_i %>
+																					
+																					<td nowrap align="center"><%= @cdata.KEY4 %>&nbsp;</td>
+																					<% @totalk4= @totalk4.to_i+@cdata.KEY4.to_i %>
+																					
+																					<td nowrap align="center"><%= @cdata.Openingbal.to_i+ @cdata.KEY1.to_i+@cdata.KEY2.to_i+@cdata.KEY3.to_i+ @cdata.KEY4.to_i %>&nbsp;</td>
+																					
+																					</tr> 
+								
+																														      
+																			<% end %>		
+																	<% @i=@i+1 %>		
+															<% end %>
+								      											<tr>
+																					<td> &nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td ></td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					<td nowrap align="center">&nbsp;</td>
+																					
+																					</tr> 
+								    							 						<tr>
+																					<th>TOTAL</th>
+																					<td nowrap align="center"><b><%= @totalcash%></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalexp %></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalhc%></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalcredit%></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalos%></b>&nbsp;</td>
+																					<td nowrap align="center"><b>-</td>
+																					<td >&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalob%></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalk1%></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalk2 %></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalk3%></b>&nbsp;</td>
+																					<td nowrap align="center"><b><%= @totalk4 %></b>&nbsp;</td>
+																					<td nowrap align="center"><b>-</b></td>
+																					
+																					</tr>
+											   
+</table>
+<br/>
+<div align=center>
+<p>&nbsp;</p>
+ 
+
+</td></tr></table>
+</td></tr></table>
+          </table><% end %>
+</body>
+</html>

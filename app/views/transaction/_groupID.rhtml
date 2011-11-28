@@ -1,0 +1,26 @@
+<html>
+<head>
+	
+
+</head>
+<body>
+<% if(@session[:groupIDs]!=nil) %>
+	<% key=@session[:groupIDs] %>
+
+		<select id="machine_GroupID" name="machine[GroupID]" onchange="captureMachineNo();">									
+    	<% for i in (0..key.length-1) do %>
+				<option value="<%= key[i] %>"><%= key[i] %></option>
+		<%end %>
+	</select>
+	<% @session[:groupIDs]=nil %>
+	
+	<%else%>
+		<select id="machine_GroupID" name="machine[GroupID]">
+		<option value="&nbsp;">&nbsp;&nbsp;&nbsp;&nbsp;</option>
+	</select>
+	<%end%>
+	
+	
+
+</body>
+</html>

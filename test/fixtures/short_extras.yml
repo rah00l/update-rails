@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  date: 2011-06-12
+  cluster_name: MyString
+  shop_name: MyString
+  group_id: MyString
+  short_extra: 1
+  comp_coll: 1
+  key_coll: 1
+two:
+  id: 2
+  date: 2011-06-12
+  cluster_name: MyString
+  shop_name: MyString
+  group_id: MyString
+  short_extra: 1
+  comp_coll: 1
+  key_coll: 1

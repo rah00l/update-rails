@@ -1,0 +1,56 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+
+<body>
+
+
+<table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" >  
+ 
+
+ 
+
+
+<tr >
+
+	<!--<th  nowrap width="15%" height="20">
+       GROUP NAME</font>       
+        </th>
+
+      	<th  nowrap width="15%" height="20">
+       SHOP NAME</font>       
+        </th>
+        <th  scope=col nowrap  width="30%" height="20" >
+     KEY </font></th>-->
+		<th scope=col nowrap width="50%"  height="20">MACHINE NO </font></th>
+     	<th scope=col nowrap width="50%" height="1"  >MACHINE NAME</font></th>
+        <!--<th scope=col nowrap width="91" height="1"  >
+       User Type</font></th>
+        <th scope=col nowrap width="93" height="1"  >
+       Email ID</font></th>
+        <th scope=col nowrap width="72" height="1"  >
+        UserStatus</font></th>
+		<th nowrap width="72" height="1" >
+        LoginStatus</font></th>
+		<th  nowrap width="25%"  height="20" colspan=2>
+        </font>&nbsp;</th>-->
+
+</tr>
+<% @machinesdata=Machinedata.find(:all,:conditions=>["TRANS_DATE=?", session[:dailyvalue]]) %>
+<% @machinesdata.each do |c| %>
+  <tr>
+  	<td nowrap width="20%" height="10" align=center><%= c.MACHINE_NO %>&nbsp;</td>
+	<td nowrap width="20%" height="10" align=center><%= c.MACHINE_NAME %>&nbsp;</td>
+  </tr>
+	<% end %>	
+
+</table>
+
+</body>
+
+</html>

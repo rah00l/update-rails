@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <script type="text/javascript">
+      window.onload=function()
+      {
+        var txtclustername=document.getElementById('cluster_ClusterName');
+        txtclustername.focus();
+      }
+    </script>
+  </head>
+  <body>
+    <center>
+      <table height="400" width="78%"  >
+        <tr><td height="400" width=100% align="center">
+            <% form_for(@cluster) do |f| %>
+             <%= f.error_messages %>
+  <%# form_tag :action => 'create' do %>
+  <%#= error_messages_for 'cluster' %>
+              <font  size= "4">
+                <% if session[:msg] %>
+                  <div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+                       background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+                       <%= session[:msg] %>
+                  </div>
+                  <%session[:msg]=nil%>
+                <% end %>
+              </font><fieldset style="width:700 ; height: 81 ; align:center">
+                <h2 align=center>CREATE GROUP</h2>
+                <table width="690" height="50"  >
+                  <tr>
+                    <td width="50%" height="14" align=right>
+                      <b><font face="Arial" size="2" >
+                          <label for="cluster_ClusterName">GROUP NAME:</label></font></b>
+                    </td><td width="1%" height="14" align=right>
+                    </td>
+                    <td width="49%" height="14" align=left>
+                      <%= f.text_field :ClusterName  %>
+                    </td>
+                  </tr>
+                </table>
+                <br/>
+                <%= f.submit "Create" %>
+                <%= link_to "Cancel" , clusters_path, :style=>"font-family: Zurich BT; font-size: 10pt align=left"%>
+                <%#= button_to_function 'Cancel' , remote_function(:url=> clusters_path),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+              <% end %>
+            </fieldset>
+          </td>
+        </tr></table>
+    </center>
+    <p></p>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<%= error_messages_for 'machine' %>
+
+<!--[form:machine]-->
+<p><label for="machine_ShopID">Shopid</label><br/>
+<% @shop=Shop.find(:all) %>
+
+ <%= collection_select(:machine, :ShopID,  @shop,  :ShopID, :ShopID,
+                      {:prompt   => "Please select ShopID"},
+                      {:onchange => "#{remote_function(:url  => { :action => "getGroup"},
+                                                       :with => "'ShopID='+value")}"}) %>
+ 
+
+</p>
+
+<p><label for="machine_GroupID">Groupid</label><br/>
+<div id="KeyIDdiv">
+<%= render :partial => 'groupID' %>
+</p>
+</div>
+
+
+</p>
+
+<p><label for="machine_MachineNo">Machineno</label><br/>
+<%= text_field 'machine', 'MachineNo'  %></p>
+
+<p><label for="machine_MachineName">Machinename</label><br/>
+<%= text_field 'machine', 'MachineName'  %></p>
+<!--[eoform:machine]-->

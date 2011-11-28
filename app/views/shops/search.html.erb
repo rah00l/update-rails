@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <script type="text/javascript">
+      //on load event to make save button disabled
+
+      window.onload=function()
+      {
+        var cmbclustername=document.getElementById('shop_ClusterName');
+        cmbclustername.focus();
+      }
+    </script>
+  </head>
+  <body>
+    <center>
+      <table height="400" width="78%"  >
+        <tr>
+          <td height="400" width=100% align="center">
+            <% form_remote_tag :url=> {:action => 'index'},:method => 'get'  do  |f|%>
+              <%#= error_messages_for 'shop' %>
+              <font  size= "4">
+                <% if session[:msg] %>
+                  <div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+                       background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+                       <%= session[:msg] %>
+                  </div>
+                  <%session[:msg]=nil%>
+                <% end %>
+              </font>
+              <fieldset style="width:700 ; height: 81 ; align:center">
+                <h2 align=center>Modify Shop</h2>
+                <table width="694" height="81"  >
+                  <tr>
+                    <td width="179" height="16" align=right>
+                      <label for="shop_CompanyID"><b><font face="Arial" size="2">
+                            SELECT GROUP NAME</font></b></label>
+                    </td>
+                    <td width="128" height="16" align=left>
+                      <select id="shop_ClusterName" name="shop[ClusterName]">
+                        <option value="">Select a Group</option>
+                        <% @Cluster_Name.each do |c| %>
+                          <option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+                        <% end %>
+                      </select>
+
+                    </td></tr>
+                  <tr><td valign="middle"><input type="submit" name="commit" value="Search " /></td></tr>
+                </table>
+                <%#= submit "SEARCH" %>
+
+                <%#= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'shops',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+              <% end %>
+            </fieldset>
+          </td>
+        </tr>
+        <div id="search-result"></div>
+      </table>
+    </center>
+  </body>
+</html>

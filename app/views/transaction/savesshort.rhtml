@@ -1,0 +1,110 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+<script>
+function focusbutton()
+{
+	var short = document.getElementById("entry_Machineshort");
+      
+        
+
+	 	short.focus();
+
+}
+function check()
+{
+	var short = document.getElementById("entry_Machineshort");
+	if(short.value.length<1)
+ 	{
+ 	alert("Please Enter Machine Short");
+ 	
+ 	}
+ 	return(false);
+}
+function onlyNumbers(evt)
+{
+	var e = event || evt; // for trans-browser compatibility
+	var charCode = e.which || e.keyCode;
+	
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+		return false;
+    
+	return true;
+
+}
+</script>
+</head>
+
+<body onload="focusbutton();">
+<%@s=Entry.find_first(["ShopName=? and GroupID=? and MachineName=? ",@session['shortshop'],@session['shortgroupid'],@session['shortmachinename']])    %>
+<div align="center">
+  <center>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="53%" id="AutoNumber1" bgcolor=#C0C0C0>
+  <form method="POST" action="saveshort">
+  <tr>
+      <td width="100%" bgcolor="#6C3401" height="19" align="left"><b><font color=white>SHORT</font></b></td>
+      <td width="100%" bgcolor="#6C3401" height="19">&nbsp;</td>
+
+    </tr>
+  <tr>
+   
+  <td align="left">
+  	Short Amount : 
+  </td>
+    <td width="100%">
+    <%if(@s!=nil)%>
+	
+	<input type="text" name="entry[Machineshort]" id="entry_Machineshort" size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.entry_Shortreason.focus();" maxlength="6" value=<%= @s.Machineshort.to_i%>>
+	
+	<%else%>
+	<input type="text" name="entry[Machineshort]" id="entry_Machineshort" size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.entry_Shortreason.focus();" maxlength="6"></td>
+    <%end%>
+	
+	
+	  </tr>
+  <tr>
+  <td align="left">
+  ShortReason
+  </td>
+    
+<td width="100%">
+    <%if(@s!=nil)%>
+   	 	
+    	<input type="text" name="entry[Shortreason]" id="Shortreason" size="20"  onKeyDown="if(event.keyCode==13)  this.form.ok.focus();" maxlength="6" value=<%= @s.Shortreason %>>
+    	
+    <%else%>
+	<input type="text" name="entry[Shortreason]" id="Shortreason" size="20"  onKeyDown="if(event.keyCode==13)  this.form.ok.focus();" maxlength="6">
+	<%end%>	
+	</td>
+	
+	  </tr>	  
+  <tr>
+    <td width="100%" align="left">
+    
+      <p align="center">
+     <input type=submit value="SAVE Short" >
+      <% submit_to_remote ' OK ',' Create Short ',:url => {:controller=>'entries',:action => "saveshort" },:id=>'ok' %>
+      <%= button_to_function ' Back ' , remote_function(:url => {:controller=> 'entries', :action => 'entrydata'}),:id=>'cancel',:style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+
+</p>
+    </form>
+    </td>
+  </tr>
+ 
+</table>
+
+  </center>
+</div>
+
+  </center>
+</div>
+
+</body>
+
+</html>

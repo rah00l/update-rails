@@ -1,0 +1,159 @@
+<html>
+
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<head>
+
+<title>New Page 1</title>
+
+</head>
+
+<body>
+<center>
+<br>
+<table width="650" height="300">
+	<tr><td width="650" height="1" align="center"><%= error_messages_for 'entry' %>
+</td></tr>
+	<tr>
+		<td width="650" height="290" align=center>
+			<fieldset style="width:600 ; height: 250 ; align:center">
+			
+
+			<h1 align=center>Editing Entry</h1>
+<!--<form name="frmSample" method="post" action="update" onSubmit="return ValidateForm()">-->
+<% form_tag :action => 'update', :id => @entry do %>
+			
+			<table width="562" height="159" align=center  cellpadding="3" cellspacing="3">
+				<tr>
+    				<td height="1" width="67" align=left>
+  					
+ 		 			 </td>
+  					<td width="184" height="1" align=left>
+     				
+										
+  					</td>
+  					 					<td height="14" width="78" align=left>
+ 	 				<b><font face="Arial" size="2">
+ 	 				<label for="entry_Date">Date</label> 	 				</td>
+ 	 				<td width="215" height="14" align=left>
+ 	    			
+ 	 				<%= text_field 'entry', 'Date',:readonly=>true , :style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%></font></b>
+ 	 				
+ 	 				</td>
+
+				</tr>
+				<tr>
+				<td width="67" height="10" align=left> 
+ 	 				<b><font face="Arial" size="2">
+ 	 				<label for="entry_ShopID">ShopName</label>
+ 					</td>
+ 					<td width="184" height="10" align=left>
+				 	<%= text_field 'entry', 'ShopName' ,:readonly=>true ,:style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%></font></b>
+ 					 
+ 					</td>
+
+					<td height="8" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="entry_GroupID">GroupID</label>  					</td>
+  					<td width="184" height="8" align=left>
+	 	 			<%= text_field 'entry', 'GroupID',:readonly=>true, :style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%></font></b>
+ 				</tr>
+				<tr> 
+  					</td>
+  					<td width="78" height="5" align=left>
+	 				<b>
+	 				<font face="Arial" size="2">
+	 				<label for="entry_MachineNo">MachineNo</label>					</td>
+					<td width="215" height="5" align=left>	
+					 <%= text_field 'entry', 'MachineNo',:readonly=>true,:style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF"%>
+	 				<font face="Zurich BT" size="2" color="#800000"> 
+					 </font>
+					</td>
+
+				
+					
+  					<td width="78" height="1" align=left> 
+	 				<b> 
+	 				<font size="2" face="Arial">
+	 				<label for="entry_MachineName">MachineName</label></font>
+	 				</b>
+	 				</td>
+	 				<td width="215" height="1" align=left>
+	 				<%= text_field 'entry', 'MachineName' ,:readonly=>true,:style=>"color: #014D7A ; border: 1px solid #FFFFFF; background-color: #FFFFFF" %>
+ 					</td>
+ 				</tr>
+				<tr>	
+ 					
+ 					<td height="1" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="entry_ScreenIN">ScreenIn</label>
+ 		 			 </td>
+  					<td width="184" height="1" align=left>
+     				
+					<%= text_field 'entry', 'ScreenIN'  %>					
+  					</td>
+  					
+	 			
+					
+  					<td width="78" height="1" align=left> 
+	 				<b> 
+	 				<font size="2" face="Arial">
+	 				<label for="entry_ScreenOUT">ScreenOut</label></font>
+	 				</b>
+	 				</td>
+	 				<td width="215" height="1" align=left>
+	 				<%= text_field 'entry', 'ScreenOUT'  %>
+ 					</td>
+ 					
+ 				</tr>
+				<tr>	
+ 					<td height="1" width="67" align=left>
+  					<b> <font face="Arial" size="2">
+ 		 			<label for="entry_MeterIN">MeterIn</label> 		 			
+ 		 			 </td>
+  					<td width="184" height="1" align=left>
+     				
+					<%= text_field 'entry', 'MeterIN'  %>					
+  					</td>
+  				
+  					<td width="78" height="1" align=left> 
+	 				<b> 
+	 				<font size="2" face="Arial">
+	 				<label for="entry_MeterOUT">MeterOut</label></font>
+	 				</b>
+	 				</td>
+	 				<td width="215" height="1" align=left>
+	 				<%= text_field 'entry', 'MeterOUT'  %>
+ 					</td>
+ 					
+ 					
+ 					
+	 				
+
+
+				</tr>
+
+				
+			
+				<tr>
+					
+					<td width="100%" height="21" colspan=4 align=center>
+					 <%= submit_tag '  Edit  ' %>
+<%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'entries',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt ;align:center" %>
+<% end %>
+
+					</td>
+ 				</tr> 
+		</table>
+ 
+
+
+</fieldset>
+            </td>
+
+</tr>
+</table>
+&nbsp;
+</center>
+</body></html>

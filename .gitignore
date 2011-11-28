@@ -1,0 +1,7 @@
+nbproject/*
+
+tmp/**/*
+
+db/schema.rb
+*.txt
+*.csv

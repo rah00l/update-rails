@@ -1,0 +1,75 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+<body>
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+</head>
+<body>
+<h3>READING MISTAKE REPORT</h3>
+
+<h3><%=@session[:crname] %> --  <%=Date.parse(@session[:ttdate1]).strftime("%d-%m-%Y") %></h3>
+
+<% @data=Machinedata.find(:all,:select => "distinct (SHOP_NAME)",:conditions=>"CLUSTER_NAME='#{@session[:crname]}' 
+and TRANS_DATE='#{session[:ttdate1]}' 
+  ",:order => "SHOP_NAME")%>
+
+
+<table  border="1" width ="67%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" > 
+
+<tr >
+		<td scope=col nowrap width="7%"  height="20" align="center"> SHOP </font></td>
+     	<td scope=col nowrap width="34%" height="1" align="center" >NO.</font></td>
+     	
+		
+		
+
+</tr>
+<% for i in @data %>
+
+<%@allmachines=Machinedata.find(:all,:conditions=>"CLUSTER_NAME='#{@session[:crname]}' 
+and TRANS_DATE='#{session[:ttdate1]}' 
+and SHOP_NAME='#{i.SHOP_NAME}' ",:order => "digitno,charno")%>
+
+
+ 
+
+
+<tr >
+		<b><td scope=col nowrap width="7%"  height="20"><%= i.SHOP_NAME%> </font></td>
+		<td scope=col nowrap width="34%" height="1"  > &nbsp;&nbsp;
+<% for item in @allmachines%>
+
+	<% if item.CALCULATEBY=='M' or (item.MTRDIFFIN.to_i<-3 or item.MTRDIFFIN.to_i>3 or item.MTRDIFFOUT.to_i<-3 or item.MTRDIFFOUT.to_i>3)%>
+
+     	<%= item.MACHINE_NO%> &nbsp; -
+     	
+	<% else %>
+	<% end %>
+		
+
+
+
+
+ <% end %> 
+ </font></td>
+ </tr>
+<%end %>
+</table>
+
+</body>
+
+</html>
+</body>
+
+</html>

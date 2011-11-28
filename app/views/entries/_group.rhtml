@@ -1,0 +1,24 @@
+
+  
+  
+  
+  
+  <% if(@session[:Groupid]==nil or @session[:Groupid]=="") %>		
+ 			 <%@group=Group.find_all(["ShopName=? ",session[:shopname]])%>
+  			<%= collection_select(:entry, :GroupID,  @group,  :GroupID, :GroupID,
+                      {:prompt   => "  "},
+                      {:onkeypress => "#{remote_function(:url  => { :action => "update_machine"},
+                                                       :with => "'GroupID='+value")}",:onchange => "#{remote_function(:url  => { :action => "update_machine"},
+                                                       :with => "'GroupID='+value")}"}) %>
+                            <% @session[:MachineNo]=nil%>
+                                          
+       <%else%>
+            <%@group=Group.find_all(["ShopName=? ",session[:shopname]])%>
+
+ 			<%= collection_select(:entry, :GroupID,  @group,  :GroupID, :GroupID,
+                      {:prompt   => "#{@session[:Groupid]}"},
+                      {:onkeypress => "#{remote_function(:url  => { :action => "update_machine"},
+                                                       :with => "'GroupID='+value")}",:onchange => "#{remote_function(:url  => { :action => "update_machine"},
+                                                       :with => "'GroupID='+value")}"}) %>
+              
+            <%end%>

@@ -1,0 +1,351 @@
+<html>
+  <title>GamingStation</title>
+  <head>
+    <%= stylesheet_link_tag "ddlevelsmenu-topbar" %>
+    <%= javascript_include_tag "prototype","effects","application","jquery",:defaults %>
+    <%#= javascript_include_tag  "application" %>
+    <script>
+      function SHOWExpense()
+      {
+        window.open('exreport','myWin','toolbar=no, directories=no, location=yes, status=NO, menubar=no, resizable=yes, scrollbars=yes,left=0,top=0,alwaysRaised=yes');
+      }
+    </script>
+    <script type="text/javascript"><!--//--><![CDATA[//><!--
+      sfHover = function() {
+        var sfEls = document.getElementById("nav").getElementsByTagName("LI");
+        for (var i=0; i<sfEls.length; i++) {
+          sfEls[i].onmouseover=function() {
+            this.className+=" over";
+          }
+          sfEls[i].onmouseout=function() {
+            this.className=this.className.replace(new RegExp(" over\\b"), "");
+          }
+        }
+      }
+      if (window.attachEvent) window.attachEvent("onload", sfHover);
+      //--><!]]></script>
+    <style type="text/css">
+      body {
+        font: normal 11px Zurich BT;
+      }
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      ul li {
+        position: relative;
+        float: left;
+        width:130px;
+      }
+
+      li ul {
+        position: absolute;
+        left: 0; /* Set 1px less than menu width */
+        top: auto;
+        display: none;
+      }
+      li ul ul{
+        position: absolute;
+        left:100%; /* Set 1px less than menu width */
+        top: -.1em;
+        display: none;
+      }
+
+      /* Styles for Menu Items */
+      ul li a {
+        display: block;
+        text-decoration: none;
+        color: white;
+        background-color:#6C3401; /* IE6 Bug */
+        padding: 5px;
+        border: 1px solid #6C3401;
+      }
+      /* commented backslash mac hiding hack \*/
+      * html ul li a {height:1%}
+      /* end hack */
+
+      /* this sets all hovered lists to red */
+      li:hover a, li.over a,
+      li:hover li:hover a, li.over li.over a,
+      li:hover li:hover li:hover a, li.over li.over li.over a,
+      li:hover li a:hover, li.over li a:hover,
+      li:hover li:hover li:hover a:hover, li.over li li a:hover,
+      li:hover li:hover li:hover li:hover a:hover, li.over li.over li.over li.over a:hover
+      {
+        color: white;
+        background-color:#6C3401;
+        font:Normal;
+      }
+
+      /* set dropdown to default */
+      li:hover li a, li.over li a,
+      li:hover li:hover li a, li.over li.over li a,
+      li:hover li:hover li:hover li a, li.over li.over li.over li a
+      {
+        color: #6C3401;
+        background-color:white;
+      }
+      li ul li a { padding: 2px 5px; } /* Sub Menu Styles */
+      ul li:hover ul ul, ul li:hover ul ul ul, ul li.over ul ul, ul li.over ul ul ul {
+        display:none;
+      }
+
+      ul li:hover ul, ul li li:hover ul, ul li li li:hover ul, ul li.over ul, ul li li.over ul, ul li li li.over ul {
+        display: block;
+      }
+
+    </style>
+  </head>
+  <body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" >
+    <center>
+      <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="1000" id="AutoNumber1" height="427">
+        <tr>
+          <td width="1000" height="75" >
+            <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="1000" id="AutoNumber2" height="75">
+              <tr align=center>
+                <td width="100%" height="50" >
+                </td>
+              </tr>
+              <tr>
+                <td width="1000" height="15" >
+                  <table width="1000" height="15">
+                    <tr>
+                      <%if session['user']['usertype']=='SuperAdmin'%>
+                        <td width="200" height="15" >
+                        </td>
+                        <td width="800"  bgcolor="#6C3401" height="15" >
+                          <ul id="nav">
+                            <li><a href="#"><b><font size="2">Master</font></b></a></font>
+                              <ul>
+                                <li><a href="#">Group      &gt;</a></font>
+                                  <ul>
+                                    <li><%= link_to 'ADD', new_cluster_path %></li>
+                                    <li><%= link_to 'Modify', clusters_path %></li>
+                                  </ul>
+                                </li>
+                                <!--</ul>-->
+                                <li><a href="#">Shops      &gt;</a></font>
+                                  <ul>
+                                    <li><%= link_to 'ADD', new_shop_path %></li>
+                                    <li><%= link_to 'Modify',search_shops_path %></li>
+                                  </ul>
+                                </li>
+                                <!--<ul>-->
+                                <li><a href="#">Keys     &gt;</a></font>
+                                  <ul>
+                                    <li><%= link_to 'ADD', :controller => 'groups', :action => "new" %></li>
+                                    <li><%= link_to 'Modify', :controller => 'groups', :action => "search" %></li>
+                                  </ul>
+                                </li>
+                                <!--<ul>-->
+                                <li><a href="#">Machines  &gt;</a></font>
+                                  <ul>
+                                    <li><%= link_to 'ADD', :controller => 'machines', :action => "new" %></li>
+                                    <li><%= link_to 'Modify', :controller => 'machines', :action => "search" %></li>
+                                  </ul>
+                                </li>
+                                <!--<ul>-->
+                                <li><a href="#">Users      &gt;</a></font>
+                                  <ul>
+                                    <li><%= link_to 'ADD', :controller => 'users', :action => "new" %></li>
+                                    <li><%= link_to 'Modify', :controller => 'users', :action => "list" %></li>
+                                  </ul>
+                                </li>
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Transactions</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Data Entry', :controller => 'clientdatas', :action => "new" %></li>
+                                <li><%= link_to 'Expenses' %></li>
+                                <li><%= link_to 'Create and send', :controller => 'clientdatas', :action => "createdata" %></li>
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Utilities</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Change Password', :controller => 'users', :action => "password" %></li>
+                                <li><%= link_to 'Purge Data ', :controller => 'purge', :action => "purgemain"%></li>
+                                <li><%= link_to 'Purge CounterData ', :controller => 'purge', :action => "purgecounterdata"%></li>
+                                <li><%= link_to 'Purge Machine Data' , :controller => 'purge', :action => "purgemachinedata"%></li>
+
+                                <li><%= link_to 'Update OB', :controller => 'previousrecords', :action => "search" %></li>
+                                <li><%= link_to 'Target Shop', :controller => 'targets', :action => "index" %></li>
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Data Transfer</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Received Data', :controller => 'shops', :action => "receiveddata" %></li>
+
+                                <li><a href="#">Edit Data &gt;</a></font>
+                                  <ul>
+                                    <li><%= link_to 'Daily Data', :controller => 'machinedata', :action => "dailydata" %></li>
+                                    <li><%= link_to 'Counter Data', :controller => 'counterdata', :action => "counterdata" %></li>
+                                  </ul>
+                                </li>
+                                <li><%= link_to 'Previous Data', :controller => 'clientdatas', :action => "previousdata" %></li>
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Reports</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Reading Mistakes', :controller => 'clientdatas', :action => "readingmistakemain"%></li>
+                                <li>
+                                  <%= link_to 'Monthly Expence Report', :controller => 'reports', :action => "exreport"  %>
+                                  <!--<%= link_to 'Monthly Expence report' ,url_for( :controller=>'reports',:action => 'exreport'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>-->
+                                </li>
+                                <li><%= link_to 'Monthly HC Report', :controller => 'reports', :action => "hcreport" %></li>
+                                <li><a href="#">M/c Listing Report &gt;</a>
+                                  <ul>
+                                    <li><%= link_to 'M/c Listing', :controller => 'reports', :action => "mc_listing" %></li>
+                                    <li><%= link_to 'M/c Cabinet Detail', :controller => 'reports', :action => "mc_cabinet" %></li>
+                                  </ul>
+                                </li>
+                                <li><%= link_to 'Daily Report', :controller => 'reports', :action => "dailyreport" %></li>
+                                <li><a href="#">M/c Summary Report &gt;</a>
+                                  <ul>
+                                    <li><%= link_to 'Machine Summary Report', :controller => 'reports', :action => "machinesummaryreport" %></li>
+                                    <li><%= link_to 'Machine Summary Report Name wise', :controller => 'reports', :action => "machinesummaryreportnamewise" %></li>
+                                  </ul>
+                                </li>
+                                <!--<li><%#= link_to 'Machine Summary Report', :controller => 'reports', :action => "machinesummaryreport" %></li>-->
+                                <li><%= link_to 'Short Reason Report', :controller => 'reports', :action => "shortreasonsreport" %></li>
+                                <li><%= link_to 'Counter Wise Report', :controller => 'reports', :action => "counterwisereport" %></li>
+                                <li><%= link_to 'Short Extra', :controller => 'reports', :action => "shortextramain" %></li>
+                                <li><%= link_to 'Master Report', :controller => 'reports', :action => "mastermain" %></li>
+                              </ul>
+                            </li>
+                            <li><b><font size="2"><%= link_to "Log Out", :controller=> "account", :action => 'logout' %> </font> </b></li>
+                          </ul>
+                        </td>
+                      <%elsif session['user']['usertype']=='Admin'%>
+                        <td width="200" height="15" >
+                        </td>
+                        <td width="800"  bgcolor="#6C3401" height="15" >
+                          <ul id="nav">
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Transactions</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Data Entry', :controller => 'clientdatas', :action => "new" %></li>
+                                <li><%= link_to 'Create and send', :controller => 'clientdatas', :action => "createdata" %></li>
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Utilities</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Change Password', :controller => 'users', :action => "password" %></li>
+
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Data Transfer</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Received Data', :controller => 'shops', :action => "receiveddata" %></li>
+
+                                <li><a href="#">Edit Data &gt;</a></font>
+                                  <ul>
+                                    <li><%= link_to 'Daily Data', :controller => 'machinedata', :action => "dailydata" %></li>
+                                  </ul>
+                                </li>
+                                <li><%= link_to 'Previous Data', :controller => 'clientdatas', :action => "previousdata" %></li>
+
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Reports</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Reading Mistakes', :controller => 'clientdatas', :action => "readingmistakemain"%></li>
+                                <li>
+                                  <%= link_to 'Monthly Expence Report', :controller => 'reports', :action => "exreport"  %>
+                                  <!--<%= link_to 'Monthly Expence report' ,url_for( :controller=>'reports',:action => 'exreport'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>-->
+                                </li>
+
+                                <li><%= link_to 'Monthly HC Report', :controller => 'reports', :action => "hcreport" %></li>
+                                <li><a href="#">M/c Listing Report &gt;</a>
+                                  <ul>
+                                    <li><%= link_to 'M/c Listing', :controller => 'reports', :action => "mc_listing" %></li>
+                                    <li><%= link_to 'M/c Cabinet Detail', :controller => 'reports', :action => "mc_cabinet" %></li>
+                                  </ul>
+                                </li>
+                                <li><%= link_to 'Daily Report', :controller => 'reports', :action => "dailyreport" %></li>
+                                <li><a href="#">M/c Summary Report &gt;</a>
+                                  <ul>
+                                    <li><%= link_to 'Machine Summary Report', :controller => 'reports', :action => "machinesummaryreport" %></li>
+                                    <li><%= link_to 'Machine Summary Report Name wise', :controller => 'reports', :action => "machinesummaryreportnamewise" %></li>
+                                  </ul>
+                                </li>
+                                <!--<li><%#= link_to 'Machine Summary Report', :controller => 'reports', :action => "machinesummaryreport" %></li>-->
+                                <li><%= link_to 'Short Reason Report', :controller => 'reports', :action => "shortreasonsreport" %></li>
+                                <li><%= link_to 'Counter Wise Report', :controller => 'reports', :action => "counterwisereport" %></li>
+                                <li><%= link_to 'Short Extra', :controller => 'reports', :action => "shortextramain" %></li>
+                                <li><%= link_to 'Master Report', :controller => 'reports', :action => "mastermain" %></li>
+                              </ul>
+                            </li>
+                            <li><b><font size="2"><%= link_to "Log Out", :controller=> "account", :action => 'logout' %> </font> </b></li>
+                          </ul>
+                        </td>
+                      <%else%>
+                        <td width="600" height="15" >
+                        </td>
+                        <td width="400"  bgcolor="#6C3401" height="15" >
+                          <ul id="nav">
+
+                            <li><font face="Zurich BT"><a href="#"><b><font size="2">Transactions</font></b></a></font>
+                              <ul>
+                                <li><%= link_to 'Data Entry', :controller => 'clientdatas', :action => "new" %></li>
+                                <li><%= link_to 'Create and send', :controller => 'clientdatas', :action => "createdata" %></li>
+                              </ul>
+                            </li>
+                            <li><font face="Zurich BT" size="2"><b><%= link_to 'Change Password', :controller => 'customer', :action => "password" %></b></font></li>
+                            <li><b><font size="2"><%= link_to "Log Out", :controller=> "account", :action => 'logout' %> </font> </b></li>
+                          </ul>
+                        </td>
+                      <%end%>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr width="100%" height="2">
+          <td width="100%" height="2" bgcolor="#6C3401"></td>
+        </tr>
+        <tr>
+          <td width=100% height=450>
+            <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber3" height="450">
+              <tr>
+                <td width="80%" height="450" align=center>
+                  <h2><%= @page_heading %></h2>
+                  <BR>
+                  <% if flash[:notice] -%>
+                    <div id='notice'><%= flash[:notice] -%></div>
+                  <% end -%>
+                  <% if flash[:confirm] -%>
+                    <div id='confirm'><%= flash[:confirm] -%></div>
+                  <% end -%>
+                  <script type="text/javascript">
+                    //setTimeout("new Effect.Pulsate('notice');", 40)
+                    setTimeout("new Effect.Fade('notice');", 3000)
+                  </script>
+                  <script type="text/javascript">
+                    setTimeout("new Effect.Fade('confirm');", 3000)
+                  </script>
+                  <%= @content_for_layout %>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr width=100% />
+        <td width=100% bgcolor=#6C3401/>
+        <table   width="100%">
+          <tr width=100%>
+            <td width="50%" height="1" align=left ><b>
+              </b>
+            </td>
+            <td width="50%" height="1" align=right><b>
+              </b>
+            </td>
+          </tr>
+        </table>
+      </table>
+    </center>
+  </body>
+</html>

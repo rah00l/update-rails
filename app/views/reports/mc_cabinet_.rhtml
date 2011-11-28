@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+
+
+</head>
+<body>
+<center>
+<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >  
+									<tr  bgcolor="#E1CEA2" align=center>
+											<th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">Shops</font></th>
+									     	<th nowrap height="22" >
+									        <font color=white face="Zurich BT" size="2">Single</font></th>
+									        <th nowrap  height="22" >
+									        <font color=white face="Zurich BT" size="2">DD</font></th>
+									        <th nowrap  height="22" >
+									        <font color=white face="Zurich BT" size="2">DG</font></th>
+									        <th nowrap  height="22" >
+									        <font color=white face="Zurich BT" size="2">Cabinet</font></th>
+									        <th nowrap  height="22" >
+									        <font color=white face="Zurich BT" size="2">Total</font></th>		
+									 </tr>
+									 <tr   align=center>
+									 <%@maintotal=0%>
+									 <%@t=Machine.find(:all,:select =>'distinct shopname',:order => "ShopName")%>
+									 <% @t.each do |c| %>
+
+											<td nowrap  height="22" align=center>
+									        <font  face="Zurich BT" size="2"><%=c.shopname%></font></td>
+									  <%@m=Machine.count( :conditions =>["shopname=? and machinetype=?",c.shopname,'Single'] )%>      
+									     	<td nowrap height="22" align=center>
+									        <font  face="Zurich BT" size="2"><%=@m%></font></td>
+									   <%@n=Machine.count(:conditions =>["shopname=? and machinetype=?",c.shopname,'DD'])%>
+									        <td nowrap  height="22" align=center>
+									        <font  face="Zurich BT" size="2"><%=@n.to_i/2%></font></td>
+									        <%@double=@n.to_i%>
+									   <%@p=Machine.count(:conditions =>["shopname=? and machinetype=?",c.shopname,'DG'])%>
+									   <%@doub=@p.to_i%>
+										<%@ans=@m.to_i+((@double.to_i+@doub.to_i)/2)%>
+											<td nowrap  height="22" align=center>
+									        <font  face="Zurich BT" size="2"><%=@p.to_i/2%></font></td>
+									        <td nowrap  height="22" align=center>
+									        <font  face="Zurich BT" size="2"><%=@ans.to_i%></font></td>
+									        <td nowrap  height="22" align=center>
+									        <%@total=@m.to_i+@double.to_i+@doub.to_i%>
+									        <font  face="Zurich BT" size="2"><%=@total.to_i%></font></td>
+									        <%@maintotal=@maintotal.to_i+@total.to_i%>		
+									 </tr><%end%>
+									 <tr bgcolor="#E1CEA2">
+									 		<th  nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">Total</font></th>
+									        <%@singletotal=Machine.count( :conditions =>[ "machinetype=?",'Single'] )%>
+									     	
+									     	<th nowrap height="22" >
+									        <font color=white face="Zurich BT" size="2"><%=@singletotal%></font></th>
+									        <%@DDtotal=Machine.count( :conditions =>[ "machinetype=?",'DD'] )%>
+									        <th nowrap  height="22" >
+									        <font color=white face="Zurich BT" size="2"><%=@DDtotal%></font></th>
+									         <%@DGtotal=Machine.count( :conditions =>[ "machinetype=?",'DG'] )%>
+											<th nowrap  height="22" >
+									        <font color=white face="Zurich BT" size="2"><%=@DGtotal%></font></th>
+									        <th nowrap  height="22" >
+									        <%@cabinetotal=(@DDtotal*2)+(@DGtotal*2)%>
+									        <font color=white face="Zurich BT" size="2"><%=@cabinetotal%></font></th>
+									        <th nowrap  height="22" >
+									        <font color=white face="Zurich BT" size="2"><%=@maintotal.to_i%></font></th>	
+									 </tr>
+									 
+</table>
+							  
+
+</center>
+ 				
+</body>
+</html>

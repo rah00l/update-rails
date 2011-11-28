@@ -1,0 +1,54 @@
+ #logo_2 {
+background: url('../images/dms.jpg') no-repeat;
+ 
+  
+  }
+  #logo {
+background: url('images/logo.png') no-repeat;
+
+ 
+  
+  }
+  #screen {
+background: url('../images/screen1.jpg') no-repeat;
+
+ 
+  
+  }
+
+
+ #logo_3 {
+background: url('../images/newone.png') no-repeat;
+
+ 
+  
+  }
+
+#login {
+background: url('images/login_icon.png');
+bgcolor="#901010";
+  width="450"
+  height="58";
+}
+#logout {
+background: url('../images/logout.jpg');
+
+}
+
+
+links a:link{
+	 	color: maroon;
+	 	font-style:bold;
+	 	}
+	 	
+links a:visited{
+	 	color: white;
+	 	font-style:bold;
+	 	}
+	 	
+	 	
+links a:active{
+	 	color: white;
+	 	font-style:bold;
+	 	}
+	 	

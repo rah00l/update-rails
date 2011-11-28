@@ -1,0 +1,15 @@
+<html>
+<head>
+<%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+<%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+<%= javascript_include_tag 'calendar_date_select/format_db.js'%>
+
+</head>
+<body>
+<% if(@session[:prevdate]==nil) %>
+     <%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> 
+     <%else%>
+     <%= calendar_date_select_tag "date",@session[:prevdate].to_s,  :popup => "force" %> 
+	<%end%>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!-- An unpublished work of Sprylogic Technologies Ltd.  -->
+<!-- © Copyright Sprylogic Technologies Ltd. 2008. All rights reserved  -->
+
+
+<html>
+<title>GamingStation</title>
+<head>
+
+<%= stylesheet_link_tag "ddlevelsmenu-topbar" %>
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+
+
+</head>
+
+<body topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginwidth="0" marginheight="0" >
+<center>
+          
+  	 					<h2><%= @page_heading %></h2>
+  	 						<%= @content_for_layout %>
+
+  	 					<BR>
+  	 					<% if flash[:notice] -%>
+  <div id='notice'><%= flash[:notice] -%></div>
+<% end -%>
+
+<% if flash[:confirm] -%>
+  <div id='confirm'><%= flash[:confirm] -%></div>
+<% end -%>
+
+</center>
+</body>
+</html>

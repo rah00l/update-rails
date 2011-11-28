@@ -1,0 +1,2472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<script>
+function SHOWCOLLECTION()
+{
+	 window.open('collection','myWin','toolbar=no, directories=no, location=yes, status=NO, menubar=no, resizable=yes, scrollbars=yes,left=0,top=0,alwaysRaised=yes'); 
+
+}
+function onlyNumbers(evt)
+	{
+	var e = event || evt; // for trans-browser compatibility
+	
+	var charCode = e.which || e.keyCode;
+
+		if (charCode > 31 && (charCode < 48 || charCode > 57) )
+		return false;
+    
+	return true;
+}
+
+// CODE FOR AVG
+
+function SRAVGSETTING()
+{
+  today_cal=document.getElementById('today_CALCULATEBY').value
+  if (today_cal=='S')
+  {
+	lastval=document.getElementById('today_SRCOLL').value;
+  }
+  else
+  {
+	lastval=document.getElementById('today_MTRCOLL').value
+  }
+		document.getElementById('today_SRAVG').value=lastval;
+}
+
+function SRAVG()
+{
+	//alert("hhhhhhhhhhh");
+	var today_SRAVG=document.getElementById('today_SRAVG');
+	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY").value;
+	var today_SETTING=document.getElementById("today_SETTING").value;
+	var yesterday_SETTING=document.getElementById("yesterday_SETTING").value;
+	
+	var today_SRIN=document.getElementById("today_SRIN");
+	var today_SROUT=document.getElementById("today_SROUT");
+	var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
+	var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
+	
+	var yesterday_srin=document.getElementById("yesterday_srin");
+	var yesterday_srout=document.getElementById("yesterday_srout");
+
+	var yesterday_PSRINVALUE=document.getElementById("yesterday_PSRIN");
+	var yesterday_PSROUTVALUE=document.getElementById("yesterday_PSROUT");
+	
+	var mulby=document.getElementById("multiplyby").value;
+
+	
+	var condition="false"
+	
+	          	if(today_SETTING!=yesterday_SETTING)
+			 	{
+					if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
+					{
+						if (today_CALCULATEBY=='S')
+  						{
+							lastval=document.getElementById('today_SRCOLL').value;
+						}
+  						else
+						{
+							lastval=document.getElementById('today_MTRCOLL').value
+  						}
+  						today_SRAVG.value=Math.round(lastval);
+						condition="true";
+					}
+					
+					else
+					{
+						
+						condition="false";
+						if (today_CALCULATEBY=='S')
+  						{
+							lastval=document.getElementById('today_SRCOLL').value;
+						}
+  						else
+						{
+							lastval=document.getElementById('today_MTRCOLL').value
+  						}
+
+					}
+					
+				}
+				else
+				{
+				
+                
+    			
+						if (today_CALCULATEBY=='S')
+  						{
+							lastval=document.getElementById('today_SRCOLL').value;
+						}
+  						else
+						{
+							lastval=document.getElementById('today_MTRCOLL').value
+  						}
+                    
+               
+                    
+               
+				
+				}
+				lastval=Math.round(lastval/parseInt(mulby));
+				//alert(lastval);
+  				if (condition!="false")
+			 		condition="false"
+			 	else
+			 	{
+				<% @mval=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]]) %>  
+
+ 				<% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc") %>  
+  				<%@srvalues=0 %>
+  				<%@valcount=2%>
+  
+  				<%@machinevalues.each do |item|%>
+	 				<%if((@mval.SETTING==item.SETTING) and ((item.SRIN==item.PSRINVALUE and (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE and (item.SROUT!=0 and item.PSROUTVALUE!=0)))) %>
+	 					
+	 					//alert("SRIN"+'<%= item.SRIN%>');
+      					<%@valcount=@valcount+1%>
+						<% if item.CALCULATEBY=='S' %>
+        					<% @srvalues=@srvalues+item.SRCOLL.to_i%>
+	    				<%else %>
+          					<% @srvalues=@srvalues+item.MTRCOLL.to_i%>
+	    				<%end%>
+	    				
+   					<% end %>
+  				<%end%>
+    
+ 				<%begin%>
+ 	   				totalsum='<%=@srvalues.to_i %>'
+ 	   				totalcount='<%=@valcount.to_i %>'
+	   				//alert(totalsum);
+	   				//alert(totalcount);
+	   				if (parseInt(totalcount)<=2)
+	   					totalcount=1;
+	   				else
+	   					totalcount=parseInt(totalcount)-1;
+	   					
+ 	   				totalavg=(parseFloat(lastval)+parseFloat(totalsum))/(parseFloat(totalcount));
+       				//alert(totalavg)
+       				today_SRAVG.value=Math.round(totalavg*parseInt(mulby));
+
+
+       
+   				<%rescue%>
+				<%end%>
+				}
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+
+}
+
+
+
+function THIRTYDAYSAVG()
+{
+
+	 var mulby=document.getElementById("multiplyby").value;
+	 today_cal=document.getElementById('today_CALCULATEBY').value
+		  
+		 if (today_cal=='S')
+		 {
+			lastval=document.getElementById('today_SRCOLL').value;
+		 }
+		 else
+		 {
+			 lastval=document.getElementById('today_MTRCOLL').value
+		 }
+		
+		 
+		  <% @count=Machinedata.count(:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername]]) %>
+		 
+          <% if @count.to_i>=29 %>
+		
+          <% @values30=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE!=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc") %>
+          <% @sumvalue30=0%>
+          <%@countval=0%>
+          <% @values30.each do |item| %>
+          <% if @countval.to_i<=29 %>
+          <% if item.CALCULATEBY=='S' %>
+          <% @sumvalue30=@sumvalue30.to_i+item.SRCOLL.to_i %>
+          <%else %>
+          <% @sumvalue30=@sumvalue30.to_i+item.MTRCOLL.to_i %>
+          <%end%>
+              <% @countval=@countval+1 %>
+              <%else%>
+                <% break%>
+              <%end%>
+            <%end%>
+            totalsum='<%=@sumvalue30.to_i %>'
+         				totalavg=(parseInt(lastval)+parseInt(totalsum))/30;
+                        var today_THIRTYDAYSAVG=document.getElementById('today_THIRTYDAYSAVG');
+                        today_THIRTYDAYSAVG.value=parseInt(totalavg)*parseInt(mulby);
+          <%else%>
+            
+          <% end%>
+         				
+                        
+
+}
+
+
+function TENDAYSAVG()
+{
+
+	var mulby=document.getElementById("multiplyby").value;
+	 today_cal=document.getElementById('today_CALCULATEBY').value
+		  
+		 if (today_cal=='S')
+		 {
+			lastval=document.getElementById('today_SRCOLL').value;
+		 }
+		 else
+		 {
+			 lastval=document.getElementById('today_MTRCOLL').value
+		 }
+		
+		 
+		  <% @count=Machinedata.count(:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername]]) %>
+		 
+          <% if @count.to_i >=9 %>
+
+          <% @values30=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE!=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc") %>
+          <% @sumvalue30=0%>
+          <%@countval=0%>
+          <% @values30.each do |item| %>
+          <% if @countval.to_i<=9 %>
+          <% if item.CALCULATEBY=='S' %>
+          <% @sumvalue30=@sumvalue30.to_i+item.SRCOLL.to_i %>
+          <%else %>
+          <% @sumvalue30=@sumvalue30.to_i+item.MTRCOLL.to_i %>
+          <%end%>
+              <% @countval=@countval+1 %>
+              <%else%>
+                <% break%>
+              <%end%>
+            <%end%>
+            totalsum='<%=@sumvalue30.to_i %>'
+         				totalavg=(parseInt(lastval)+parseInt(totalsum))/10;
+                        var today_TENDAYSAVG=document.getElementById('today_TENDAYSAVG');
+                        today_TENDAYSAVG.value=parseInt(totalavg)*parseInt(mulby);
+          <%else%>
+            
+          <% end%>
+         				
+                        
+
+}
+
+// END AVG
+
+function onlyNumbersplusminus(evt)
+	{
+	var e = event || evt; // for trans-browser compatibility
+	
+	var charCode = e.which || e.keyCode;
+		if(charCode==43 ||charCode==45)
+		return true
+		else if (charCode > 31 && (charCode < 48 || charCode > 57) )
+		return false;
+    
+	return true;
+}
+
+
+
+window.onload=function()
+{
+var yes_PSRIN=document.getElementById('yesterday_PSRIN');
+yes_PSRIN.select();
+yes_PSRIN.focus();
+
+var today_Short=document.getElementById('today_MTRSHORT');
+if(today_Short.value.length==0)
+{
+today_Short.value=0;
+}
+CalSrcoll();
+var today_Shortreason=document.getElementById('today_Shortreason');
+if(parseInt(today_Short.value)==0)
+{
+today_Shortreason.disabled=true;
+today_Shortreason.options[today_Shortreason.selectedIndex].text="";
+}
+else
+{
+
+
+today_Shortreason.disabled=false;
+
+
+
+}
+
+}
+
+function SrperMTRSHORT(x)
+{
+	//alert("HHHHH");
+var mulby=document.getElementById("multiplyby").value;
+	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY").value;
+	var today_SETTING=document.getElementById("today_SETTING").value;
+	var yesterday_SETTING=document.getElementById("yesterday_SETTING").value;
+
+
+	var today_TSRIN=document.getElementById("today_TSRIN");
+	var today_TSROUT=document.getElementById("today_TSROUT");
+	
+	var yesterday_PSRIN=document.getElementById("yesterday_PSRIN");	
+	var yesterday_PSROUT=document.getElementById("yesterday_PSROUT");	
+	
+	var today_SRIN=document.getElementById("today_SRIN");
+	var today_SROUT=document.getElementById("today_SROUT");
+	
+	var today_SRPER=document.getElementById("today_SRPER");
+	var today_MTRIN=document.getElementById("today_MTRIN");
+	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
+	var today_MTRSHORT=document.getElementById("today_MTRSHORT");
+	var rate_SRIN=document.getElementById("rate_SRIN").value;
+	var rate_SROUT=document.getElementById("rate_SROUT").value;
+	var rate_MRIN=document.getElementById("rate_MRIN").value;
+	var rate_MROUT=document.getElementById("rate_MROUT").value;	
+	var yesterday_srin=document.getElementById("yesterday_srin");
+	var yesterday_srout=document.getElementById("yesterday_srout");
+
+	var yesterday_PSRINVALUE=document.getElementById("yesterday_PSRIN");
+	var yesterday_PSROUTVALUE=document.getElementById("yesterday_PSROUT");
+	var yesterday_MTRSHORT=document.getElementById("yesterday_MTRSHORT");
+	
+	if(document.getElementById("today_SRIN").value.length==0)
+	{
+	document.getElementById("today_SRIN").value=0;
+	today_SRIN.value=0;
+	}
+	
+	if(document.getElementById("today_SROUT").value.length==0)
+	{
+	document.getElementById("today_SROUT").value=0;
+	today_SROUT.value=0;
+	}
+	//CalTSRIN();
+	//CalTSROUT();
+	//CalTMTRIN();
+	//CalTMTROUT();	
+	//CALCULATEBY();
+	totalsumneg=0
+	totalsumpos=0
+	totalsumneg=0
+	totalsumpos=0
+	 totalmtrshortpos=0
+	 totalmtrshortneg=0
+	viewmpos=0;
+	viewmneg=0;
+
+	 <%@totalmtrshortpos=0%>
+	 <%@totalmtrshortneg=0%>
+	 
+	 
+	if (today_CALCULATEBY.value =='M')
+	{
+	if (today_MTRSHORT.value<0)
+		totalsumneg=parseInt(today_MTRSHORT.value);
+		
+	else
+		totalsumpos=parseInt(today_MTRSHORT.value);
+		
+		if (parseFloat(today_SRIN.value)!=0)
+		{
+		 var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		 //alert("MTR"+inval);
+		  if(parseInt(inval)!=0)
+		  	{
+		  	incal=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		  	}
+		  else
+		  	{
+		  	incal=parseInt(parseFloat(today_SRIN.value)*parseFloat(rate_SRIN));
+		  	}
+		  	var outval=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  if(parseInt(outval)!=0)
+		  	{
+		  	outcal=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  	}
+		  else
+		  	{
+		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
+		  	}
+		  
+
+		 
+
+			
+			today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalsumneg))*100)/(parseInt(incal)+parseFloat(totalsumpos)));
+			}
+			else
+			today_SRPER.value=0;
+	
+	//today_SRPER.value=Math.round((((parseFloat((parseInt(today_SROUT.value)*parseInt(rate_SROUT))/10))-parseInt(totalsumneg))*100)
+	//						/(parseInt(((parseInt(today_SRIN.value)*parseInt(rate_SRIN))/10))+parseInt(totalsumpos)));
+	}
+	else
+	{
+	  //alert("IN ELSE");
+	  var condition="false"
+		if(today_SETTING!=yesterday_SETTING)
+			 {
+					if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
+					{
+						///Calculation for SR %
+						condition="true";
+						if (today_SRIN.value!=0)
+						{
+							//today_SRPER.value=Math.round((parseFloat(today_SROUT.value)-parseFloat(today_MTRSHORT.value))*100/parseFloat(today_SRIN.value))
+							if (parseInt(today_MTRSHORT.value)<0)
+								totalmtrshortneg=parseInt(today_MTRSHORT.value);
+                			else
+                    			totalmtrshortpos=parseInt(today_MTRSHORT.value);
+                    			
+                    		//alert(totalmtrshortneg);
+                    		//alert(totalmtrshortpos);
+                    		
+							var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		 					//alert(inval);
+		  					if(parseInt(inval)!=0)
+		  					{
+		  					incal=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		  					}
+		  					else
+		  					{
+		  					incal=parseInt(parseFloat(today_SRIN.value)*parseFloat(rate_SRIN));
+		  					}
+		  					var outval=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  					if(parseInt(outval)!=0)
+		  					{
+		  					outcal=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  					}
+		  					else
+		  					{
+		  					outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
+		  					}
+		  
+							today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalmtrshortneg))*100)/(parseInt(incal)+parseFloat(totalmtrshortpos)));
+							
+							//today_SRPER.value=Math.round((((parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10))-parseInt(totalmtrshortneg))*100)
+							///(parseInt(((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10))+parseInt(totalmtrshortpos)));
+						}
+						else
+						{
+							today_SRPER.value=0
+						}
+						
+					}
+					
+					else
+					{
+						
+						condition="false";
+					
+						if (parseInt(today_MTRSHORT.value)<0)
+							viewmneg=parseInt(viewmneg)+parseInt(today_MTRSHORT.value);
+                		else
+                    		viewmpos=parseInt(viewmpos)+parseInt(today_MTRSHORT.value);
+
+					}
+					
+			}
+			else
+			{
+				
+              
+				
+				if (parseInt(today_MTRSHORT.value)<0)
+					viewmneg=parseInt(viewmneg)+parseInt(today_MTRSHORT.value);
+                else
+                    viewmpos=parseInt(viewmpos)+parseInt(today_MTRSHORT.value);
+                    
+               
+                    
+                
+				
+			}
+
+		}
+
+	//alert(viewmneg);
+	//alert(viewmpos);
+	if (condition!="false")
+			 	condition="false"
+	else
+	{
+		//alert("Conditions not applied");
+		<%@machinevalues1=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE = ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]])%>
+          	<% if @machinevalues1.CALCULATEBY!='M' %>
+          	
+
+         
+              <%@machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE < ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")%>
+              <%@machinevalues.each do |item|%>
+              <%if((@machinevalues1.SETTING==item.SETTING) and ((item.SRIN==item.PSRINVALUE and (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE and (item.SROUT!=0 and item.PSROUTVALUE!=0)))) %>
+                <%if (item.CALCULATEBY!='M')%>
+                  <% if item.MTRSHORT.to_i<0 %>
+                  		<%@totalmtrshortneg=@totalmtrshortneg.to_i+item.MTRSHORT.to_i%>
+                  	<% else %>
+                  		<%@totalmtrshortpos=@totalmtrshortpos.to_i+item.MTRSHORT.to_i%>
+                  	<% end %>
+                <%else%>
+                  <%break%>
+                <%end%>
+              
+              <%end%>
+            <%end%>
+            <% else %>
+            <% if @machinevalues1.MTRSHORT.to_i<0 %>
+                  		<%@totalmtrshortneg=@machinevalues1.MTRSHORT.to_i%>
+                  	<% else %>
+                  		<%@totalmtrshortpos=@machinevalues1.MTRSHORT.to_i%>
+                  	<% end %>
+         	<% end %>
+
+			neg='<%= @totalmtrshortneg %>'
+			pos='<%= @totalmtrshortpos %>'
+			//alert(neg);
+			//alert(pos);
+			//alert(viewmneg);
+			//alert(viewmpos);
+			totalmneg=parseInt(neg)+parseInt(viewmneg);
+			totalmpos=parseInt(pos)+parseInt(viewmpos);
+			//alert(totalmneg);
+			//alert(totalmpos);
+			if(parseInt(today_SRIN.value)==0)
+				today_SRPER.value=0;
+			else
+			{
+/*
+			alert(today_SROUT.value)
+			alert(rate_SROUT)
+			alert(totalmneg)
+			alert(today_SRIN.value)
+			alert(rate_SRIN)
+			alert(totalmpos)
+*/
+		if (parseFloat(today_SRIN.value)!=0)
+		{
+			var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		 	//alert(inval);
+		  	if(parseInt(inval)!=0)
+		  	{
+		  	incal=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		  	}
+		  	else
+		  	{
+		  	incal=parseInt(parseFloat(today_SRIN.value)*parseFloat(rate_SRIN));
+		  	}
+		  	var outval=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  	if(parseInt(outval)!=0)
+		  	{
+		  	outcal=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  	}
+		  	else
+		  	{
+		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
+		  	}
+		  
+
+		 
+			//today_SRPER.value=Math.round((((parseFloat((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10))-parseFloat(totalmneg))*100)
+			// /(parseInt(((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10))+parseFloat(totalmpos)));
+			
+			today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalmneg))*100)/(parseInt(incal)+parseFloat(totalmpos)));
+			
+			}
+			else
+			
+			today_SRPER.value=0;
+			}
+		}
+
+	
+	
+	
+	
+	
+	var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
+	today_PSRINVALUE.value=today_SRIN.value;
+	
+	var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
+	today_PSROUTVALUE.value=today_SROUT.value;
+	
+	today_TSRIN.value=(parseInt(today_SRIN.value)-parseInt(yesterday_PSRIN.value))*mulby;
+
+	today_TSROUT.value=(parseInt(today_SROUT.value)-parseInt(yesterday_PSROUT.value))*mulby;
+	
+return true;	
+}
+
+
+function CheckShort()
+{
+
+var today_Short=document.getElementById('today_MTRSHORT');
+var save=document.getElementById('save');
+
+if(today_Short.value.length==0)
+{
+today_Short.value=0;
+}
+CalSrcoll();
+
+CALMTRPER();
+//alert("IN CHECK SHORT");
+THIRTYDAYSAVG();
+TENDAYSAVG();
+checkAVG();
+SrperMTRSHORT(0);
+//Srper(0);
+//Srper(1);
+//Srper(3);
+//collection
+
+//calculation for collection
+var key='<%= @session[:ttkeyno]%>'
+CALCOLLECTION(key);
+CALKEYSHORT()
+
+//end
+
+var today_Shortreason=document.getElementById('today_Shortreason');
+if(parseInt(today_Short.value)==0)
+{
+today_Shortreason.disabled=true;
+//today_Shortreason.options.selectedIndex=today_Shortreason.length+1;
+
+var i;
+  for (i = today_Shortreason.length - 1; i>=0; i--) {
+    if (today_Shortreason.options[i].text=="") {
+      today_Shortreason.remove(i);
+    }
+  }
+
+
+
+var elOptNew = document.createElement('option');
+  elOptNew.text = '';
+  elOptNew.value = '';
+  today_Shortreason.add(elOptNew); 
+today_Shortreason.options.selectedIndex=today_Shortreason.length+1;
+
+//today_Shortreason.options[today_Shortreason.selectedIndex].text=="";
+
+save.select();
+save.focus();
+}
+else
+{
+
+//alert("ENtered");
+
+today_Shortreason.disabled=false;
+//today_Shortreason.select();
+
+//today_Shortreason.focus();
+
+}
+}
+
+function CALCOLLECTION(key)
+{
+<% @machinedata = Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])
+    if(@machinedata!=nil)
+       
+    @colldata = Machinedata.find_all(["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=? and Machine_No<>?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttkeyno],@session[:ttmachineno]])
+    @totalcoll=0
+    @colldata.each do |data|
+       
+        if data.CALCULATEBY=='S'
+                  @totalcoll=@totalcoll.to_i+data.SRCOLL.to_i*data.MULTIPLY_BY.to_i
+              else
+                  @totalcoll=@totalcoll+data.MTRCOLL.to_i*data.MULTIPLY_BY.to_i
+        end    
+       
+    end
+    
+    
+   
+	
+    
+	end
+%>
+if(key=="KEY 1")
+{
+newval='<%= @totalcoll%>'
+var key_collections=document.getElementById('key_collections');
+var today_SRCOLL=document.getElementById('today_SRCOLL');
+var today_MTRCOLL=document.getElementById('today_MTRCOLL');
+var today_CALCULATEBY=document.getElementById('today_CALCULATEBY');
+var mulby=document.getElementById("multiplyby").value;
+
+//alert(parseInt(newval)+parseInt(today_SRCOLL.value));
+//alert('<%= @session[:ttmachineno] %>')
+if(today_CALCULATEBY.value=='S')
+{
+key_collections.value=parseInt(newval)+parseInt(today_SRCOLL.value)
+}
+else
+{
+key_collections.value=parseInt(newval)+parseInt(today_MTRCOLL.value)
+}
+}
+
+
+if(key=="KEY 2")
+{
+newval='<%= @totalcoll%>'
+var key_collections2=document.getElementById('key_collections2');
+var today_SRCOLL=document.getElementById('today_SRCOLL');
+var today_MTRCOLL=document.getElementById('today_MTRCOLL');
+var today_CALCULATEBY=document.getElementById('today_CALCULATEBY');
+if(today_CALCULATEBY.value=='S')
+{
+key_collections2.value=parseInt(newval)+parseInt(today_SRCOLL.value)
+}
+else
+{
+key_collections2.value=parseInt(newval)+parseInt(today_MTRCOLL.value)
+}
+}
+
+
+if(key=="KEY 3")
+{
+newval='<%= @totalcoll%>'
+var key_collections3=document.getElementById('key_collections3');
+var today_SRCOLL=document.getElementById('today_SRCOLL');
+var today_MTRCOLL=document.getElementById('today_MTRCOLL');
+var today_CALCULATEBY=document.getElementById('today_CALCULATEBY');
+if(today_CALCULATEBY.value=='S')
+{
+key_collections3.value=parseInt(newval)+parseInt(today_SRCOLL.value)
+}
+else
+{
+key_collections3.value=parseInt(newval)+parseInt(today_MTRCOLL.value)
+}
+}
+
+if(key=="KEY 4")
+{
+newval='<%= @totalcoll%>'
+var key_collections4=document.getElementById('key_collections4');
+var today_SRCOLL=document.getElementById('today_SRCOLL');
+var today_MTRCOLL=document.getElementById('today_MTRCOLL');
+var today_CALCULATEBY=document.getElementById('today_CALCULATEBY');
+if(today_CALCULATEBY.value=='S')
+{
+key_collections4.value=parseInt(newval)+parseInt(today_SRCOLL.value)
+}
+else
+{
+key_collections4.value=parseInt(newval)+parseInt(today_MTRCOLL.value)
+}
+}
+
+}
+
+function CheckShortReason()
+{
+	
+	if(event.keyCode==9)
+	{
+	
+	var today_Shortreason=document.getElementById('today_Shortreason');
+	var save=document.getElementById('save');
+	
+	if(today_Shortreason.options[today_Shortreason.selectedIndex].text=="")
+	{
+		alert("PLEASE SELECT SHORT REASON");
+		today_Shortreason.focus();
+		return false;
+	}
+	else
+	{
+
+
+		save.select();	
+		save.focus();
+		return true;
+	}
+	}
+}
+
+
+function Mtrper(x)
+{
+	var mulby=document.getElementById("multiplyby").value;
+	
+	var today_TMTRIN=document.getElementById("today_TMTRIN");
+	var today_TMTROUT=document.getElementById("today_TMTROUT");
+	
+	var yesterday_PMTRIN=document.getElementById("yesterday_PMTRIN");	
+	var yesterday_PMTROUT=document.getElementById("yesterday_PMTROUT");	
+	
+	var today_MTRIN=document.getElementById("today_MTRIN");
+	var today_MTROUT=document.getElementById("today_MTROUT");
+	
+	var today_MTRPER=document.getElementById("today_MTRPER");
+
+	var today_PMTRINVALUE=document.getElementById("today_PMTRINVALUE");
+	today_PMTRINVALUE.value=today_MTRIN.value;
+	
+	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
+	
+	var today_PMTROUTVALUE=document.getElementById("today_PMTROUTVALUE");
+	today_PMTROUTVALUE.value=today_MTROUT.value;
+	
+	today_TMTRIN.value=(parseInt(today_MTRIN.value)-parseInt(yesterday_PMTRIN.value))*mulby;
+
+	today_TMTROUT.value=(parseInt(today_MTROUT.value)-parseInt(yesterday_PMTROUT.value))*mulby;
+
+	var today_TSRIN=document.getElementById("today_TSRIN");
+	var today_TSROUT=document.getElementById("today_TSROUT");
+
+
+	if((parseInt(today_TSRIN.value)<0) ||  (parseInt(today_TSROUT.value)<0))
+	{
+		today_CALCULATEBY.value="M"
+	}
+	else
+	{
+	today_CALCULATEBY.value="S"
+
+	}
+	
+
+	return true;
+}
+function CALLOSSPROFIT()
+{
+var today_SRCOLL=document.getElementById("today_SRCOLL").value;
+ var today_MTRCOLL=document.getElementById("today_MTRCOLL").value;
+ var today_LOSS=document.getElementById("today_LOSS");
+
+ 
+ 					if(parseInt(today_SRCOLL)<0 || parseInt(today_MTRCOLL)<0)
+	                         today_LOSS.value='Loss'
+                    else
+                    	    today_LOSS.value='Profit'
+
+
+}
+function CALCULATEBY()
+{
+var today_TSRIN=document.getElementById("today_TSRIN");
+var today_TSROUT=document.getElementById("today_TSROUT");
+var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
+
+	if((parseInt(today_TSRIN.value)<0) ||  (parseInt(today_TSROUT.value)<0))
+	{
+		today_CALCULATEBY.value="M"
+	}
+	else
+	{
+	today_CALCULATEBY.value="S"
+
+	}
+
+}
+
+function CALMTRPER()
+{
+
+var today_SETTING=document.getElementById("today_SETTING").value;
+var yesterday_SETTING=document.getElementById("yesterday_SETTING").value;
+var mulby=document.getElementById("multiplyby").value
+
+var today_SRIN=document.getElementById("today_SRIN");
+var today_SROUT=document.getElementById("today_SROUT");
+var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
+var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
+
+var yesterday_srin=document.getElementById("yesterday_srin");
+var yesterday_srout=document.getElementById("yesterday_srout");
+
+var yesterday_PSRINVALUE=document.getElementById("yesterday_PSRIN");
+var yesterday_PSROUTVALUE=document.getElementById("yesterday_PSROUT");
+
+
+var today_TSRIN=document.getElementById("today_TSRIN");
+var today_TSROUT=document.getElementById("today_TSROUT");
+
+var today_TMTRIN=document.getElementById("today_TMTRIN");
+var today_TMTROUT=document.getElementById("today_TMTROUT");
+
+var today_MTRPER=document.getElementById("today_MTRPER");
+var today_MTRSHORT=document.getElementById("today_MTRSHORT");
+
+var rate_SRIN=document.getElementById("rate_SRIN").value;
+var rate_SROUT=document.getElementById("rate_SROUT").value;
+var rate_MRIN=document.getElementById("rate_MRIN").value;
+var rate_MROUT=document.getElementById("rate_MROUT").value;	
+
+
+today_cal=document.getElementById('today_CALCULATEBY').value
+
+var condition="false"
+
+			 if(today_SETTING!=yesterday_SETTING)
+			 {
+					if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
+					{
+						///Calculation for SR %
+						
+						if (today_TSRIN.value!=0)
+						{
+							
+							if (parseInt(today_MTRSHORT.value)<0)
+							{
+								totalmtrshortneg=parseInt(today_MTRSHORT.value);
+								totalmtrshortpos=0;
+							}
+                			else
+                			{
+                    			totalmtrshortpos=parseInt(today_MTRSHORT.value);
+                    			totalmtrshortneg=0;
+                    		}
+
+							//alert(totalmtrshortneg);	
+							//alert(totalmtrshortpos);
+							
+                    		if (today_cal=='S')
+		 					{
+								lastinval=Math.round((Math.round(parseInt(today_TSRIN.value)/parseInt(mulby))*parseInt(rate_SRIN))/10);
+								lastoutval=Math.round(Math.round((parseInt(today_TSROUT.value)/parseInt(mulby))*parseInt(rate_SROUT))/10);
+		 					}
+		 					else
+		 					{
+								//lastinval=Math.round((parseInt(today_TMTRIN.value)*parseInt(rate_MRIN))/10);
+								//lastoutval=Math.round((parseInt(today_TMTROUT.value)*parseInt(rate_MROUT))/10);
+								
+								lastinval=Math.round((Math.round(parseInt(today_TMTRIN.value)/parseInt(mulby))*parseInt(rate_MRIN))/10);
+								lastoutval=Math.round(Math.round((parseInt(today_TMTROUT.value)/parseInt(mulby))*parseInt(rate_MROUT))/10);
+
+		 					}
+
+							today_MTRPER.value=Math.round((((parseInt((parseFloat(lastoutval))))-parseInt(totalmtrshortneg))*100)
+							/(parseInt(((parseFloat(lastinval))))+parseInt(totalmtrshortpos)));
+						}
+						else
+						{
+							today_MTRPER.value=0
+						}
+						condition="true";
+					}
+					
+					else
+					{
+						
+						condition="false";
+						if (parseInt(today_MTRSHORT.value)<0)
+						{
+							totalmtrshortneg=parseInt(today_MTRSHORT.value);
+							totalmtrshortpos=0;
+						}
+                		else
+                    	{
+                    		totalmtrshortpos=parseInt(today_MTRSHORT.value);
+                    		totalmtrshortneg=0;
+                    	}
+                    			
+                    	if (today_cal=='S')
+		 				{
+							lastinval=Math.round((Math.round(parseInt(today_TSRIN.value)/parseInt(mulby))*parseInt(rate_SRIN))/10);
+							lastoutval=Math.round(Math.round((parseInt(today_TSROUT.value)/parseInt(mulby))*parseInt(rate_SROUT))/10);
+		 				}
+		 				else
+		 				{
+							lastinval=Math.round((Math.round(parseInt(today_TMTRIN.value)/parseInt(mulby))*parseInt(rate_MRIN))/10);
+							lastoutval=Math.round(Math.round((parseInt(today_TMTROUT.value)/parseInt(mulby))*parseInt(rate_MROUT))/10);
+		 				}
+						
+
+					}
+					 
+			}
+			else
+			{
+				
+               
+    			
+				if (parseInt(today_MTRSHORT.value)<0)
+				{
+						totalmtrshortneg=parseInt(today_MTRSHORT.value);
+						totalmtrshortpos=0;
+				}
+               	else
+               	{
+                		totalmtrshortpos=parseInt(today_MTRSHORT.value);
+                		totalmtrshortneg=0;
+                }
+                    			
+                 if (today_cal=='S')
+		 		 {
+					lastinval=Math.round((Math.round(parseInt(today_TSRIN.value)/parseInt(mulby))*parseInt(rate_SRIN))/10);
+					lastoutval=Math.round(Math.round((parseInt(today_TSROUT.value)/parseInt(mulby))*parseInt(rate_SROUT))/10);
+		 		 }
+		 		 else
+		 		 {
+					lastinval=Math.round((Math.round(parseInt(today_TMTRIN.value)/parseInt(mulby))*parseInt(rate_MRIN))/10);
+					lastoutval=Math.round(Math.round((parseInt(today_TMTROUT.value)/parseInt(mulby))*parseInt(rate_MROUT))/10);
+		 		}
+                    
+               
+                    
+                 
+				
+			}
+
+		  
+		 
+			
+		 
+		  //alert("Last In Val"+lastinval);
+		  //alert("Last Out Val"+lastoutval);
+		  //alert(totalmtrshortpos);
+		 
+          if (condition!="false")
+			 condition="false"
+		  else
+		  {
+		  	//alert('<%= @session[:ttdate]%>')
+		  	//alert('<%= @session[:ttshopname]%>')
+		  	//alert('<%= @session[:ttkeyno]%>')
+		  	//alert('<%= @session[:ttmachineno]%>')
+		  	//alert('<%= @session[:ttclustername]%>')
+		  	
+		  	
+		  	<% @mval=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE=?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc") %>
+			<% @machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE<?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc") %>
+          	<% @sumvaluein=0%>
+          	<% @sumvalueout=0%>
+          	<% @totalmtrshortmperneg=0 %>
+          	<% @totalmtrshortmperpos=0 %>
+
+       	    <% @machinevalues.each do |item| %>
+       	    	 //alert('<%= item.TRANS_DATE%>');
+            	<%if((@mval.SETTING==item.SETTING) and ((item.SRIN==item.PSRINVALUE and (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE and (item.SROUT!=0 and item.PSROUTVALUE!=0)))) %>
+            	
+	  //alert('<%= item.TRANS_DATE%>');
+
+                	<% if (item.CALCULATEBY=='S') %>
+                	
+				         
+				        
+				          <% @sumvaluein=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round %>
+				          <% @sumvalueout=@sumvalueout.to_i+((item.TSROUT.to_i*item.SCREEN_RATE_OUT)/10).round %>
+			         <%else %>
+				          <% @sumvaluein=@sumvaluein.to_i+((item.TMTRIN.to_i*item.MTR_RATE_IN)/10).round %>
+				          <% @sumvalueout=@sumvalueout.to_i+((item.TMTROUT.to_i*item.MTE_RATE_OUT)/10).round %>
+			          <%end%>
+			          //alert('<%=@sumvaluein.to_i+((item.TSRIN.to_i*item.SCREEN_RATE_IN.to_i)/10).round %>')
+			          <% if (item.MTRSHORT.to_i<0) %>
+          				<%@totalmtrshortmperneg=@totalmtrshortmperneg.to_i+item.MTRSHORT.to_i%>
+			          <% else %>    
+		          		<%@totalmtrshortmperpos=@totalmtrshortmperpos.to_i+item.MTRSHORT.to_i%>
+        		      <% end %>    
+              
+          		 <%end%>
+          	<% end %>
+          totalmshortneg='<%= @totalmtrshortmperneg.to_i %>';
+          totalmshortpos='<%= @totalmtrshortmperpos.to_i %>';
+          totalsumin='<%=@sumvaluein.to_i %>'
+          totalsumout='<%=@sumvalueout.to_i %>'
+          //alert(totalsumin);
+          //alert(totalsumout);
+          //alert()
+		  //if (pa
+          //alert("SCREEN IN VALUE"+(parseInt(lastinval)));
+          //alert("SCREEN OUT VALUE"+(parseInt(lastoutval)));
+          totalin=parseInt(totalsumin)+parseInt(lastinval);
+          totalout=parseInt(totalsumout)+parseInt(lastoutval);
+          summtrshortneg=totalmshortneg;
+          summtrshortpos=totalmshortpos;
+          if (parseInt(today_MTRSHORT.value)<0)
+		  	{
+		  		summtrshortneg=parseInt(parseInt(totalmshortneg)+parseInt(today_MTRSHORT.value));
+		  	}
+		  else
+		  	{
+		  		summtrshortpos=parseInt(parseInt(totalmshortpos)+parseInt(today_MTRSHORT.value));
+		  	}
+		  	//alert("TOTAL IN"+totalin);
+		  	//alert("TOTAL OUT"+totalout);
+		  	//alert("TOTAL SUM -ve"+totalmshortneg);
+		  	//alert("TOTAL SUM +ve"+totalmshortpos);
+		  	//alert("SUM -ve"+summtrshortneg);
+		  	//alert("SUM +ve"+summtrshortpos);
+		  	//alert("CUMULATIVE OUT"+(parseFloat(totalout)-summtrshortneg));
+		  	//alert("CUMULATIVE IN"+(parseFloat(totalin)+summtrshortpos));
+		  if (totalin!=0)
+		  {
+              //today_MTRPER.value=((parseFloat(totalout)-parseFloat(summtrshortneg))*100)/(parseFloat(totalin)+parseFloat(summtrshortpos));
+				today_MTRPER.value=Math.round(((parseFloat(totalout)-parseFloat(summtrshortneg))*100)/(parseFloat(totalin)+parseFloat(summtrshortpos)));
+
+             
+           }
+            else
+              today_MTRPER.value=0
+            
+    		    		
+		  }
+
+
+
+
+ 
+
+
+
+}
+
+function Srper(x)
+{
+	
+
+	var mulby=document.getElementById("multiplyby").value;
+	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY").value;
+	var today_SETTING=document.getElementById("today_SETTING").value;
+	var yesterday_SETTING=document.getElementById("yesterday_SETTING").value;
+
+
+	var today_TSRIN=document.getElementById("today_TSRIN");
+	var today_TSROUT=document.getElementById("today_TSROUT");
+	
+	var yesterday_PSRIN=document.getElementById("yesterday_PSRIN");	
+	var yesterday_PSROUT=document.getElementById("yesterday_PSROUT");	
+	
+	var today_SRIN=document.getElementById("today_SRIN");
+	var today_SROUT=document.getElementById("today_SROUT");
+	
+	var today_SRPER=document.getElementById("today_SRPER");
+	var today_MTRIN=document.getElementById("today_MTRIN");
+	var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
+	var today_MTRSHORT=document.getElementById("today_MTRSHORT");
+	var rate_SRIN=document.getElementById("rate_SRIN").value;
+	var rate_SROUT=document.getElementById("rate_SROUT").value;
+	var rate_MRIN=document.getElementById("rate_MRIN").value;
+	var rate_MROUT=document.getElementById("rate_MROUT").value;	
+	var yesterday_srin=document.getElementById("yesterday_srin");
+	var yesterday_srout=document.getElementById("yesterday_srout");
+
+	var yesterday_PSRINVALUE=document.getElementById("yesterday_PSRIN");
+	var yesterday_PSROUTVALUE=document.getElementById("yesterday_PSROUT");
+	var yesterday_MTRSHORT=document.getElementById("yesterday_MTRSHORT");
+	
+	if(document.getElementById("today_SRIN").value.length==0)
+	{
+	document.getElementById("today_SRIN").value=0;
+	today_SRIN.value=0;
+	}
+	
+	if(document.getElementById("today_SROUT").value.length==0)
+	{
+	document.getElementById("today_SROUT").value=0;
+	today_SROUT.value=0;
+	}
+	//CalTSRIN();
+	//CalTSROUT();
+	//CalTMTRIN();
+	//CalTMTROUT();	
+	//CALCULATEBY();
+	totalsumneg=0
+	totalsumpos=0
+	totalsumneg=0
+	totalsumpos=0
+	 totalmtrshortpos=0
+	 totalmtrshortneg=0
+	viewmpos=0;
+	viewmneg=0;
+
+	 <%@totalmtrshortpos=0%>
+	 <%@totalmtrshortneg=0%>
+	 
+	 
+	if (today_CALCULATEBY.value =='M')
+	{
+	if (today_MTRSHORT.value<0)
+		totalsumneg=parseInt(today_MTRSHORT.value);
+		
+	else
+		totalsumpos=parseInt(today_MTRSHORT.value);
+		
+		if (parseFloat(today_SRIN.value)!=0)
+		{
+		 var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		 //alert("MTR"+inval);
+		  if(parseInt(inval)!=0)
+		  	{
+		  	incal=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		  	}
+		  else
+		  	{
+		  	incal=parseInt(parseFloat(today_SRIN.value)*parseFloat(rate_SRIN));
+		  	}
+		  	var outval=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  if(parseInt(outval)!=0)
+		  	{
+		  	outcal=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  	}
+		  else
+		  	{
+		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
+		  	}
+		  
+
+		 
+
+			
+			today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalsumneg))*100)/(parseInt(incal)+parseFloat(totalsumpos)));
+			}
+			else
+			today_SRPER.value=0;
+	
+	//today_SRPER.value=Math.round((((parseFloat((parseInt(today_SROUT.value)*parseInt(rate_SROUT))/10))-parseInt(totalsumneg))*100)
+	//						/(parseInt(((parseInt(today_SRIN.value)*parseInt(rate_SRIN))/10))+parseInt(totalsumpos)));
+	}
+	else
+	{
+	  //alert("IN ELSE");
+	  var condition="false"
+		if(today_SETTING!=yesterday_SETTING)
+			 {
+					if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
+					{
+						///Calculation for SR %
+						condition="true";
+						if (today_SRIN.value!=0)
+						{
+							//today_SRPER.value=Math.round((parseFloat(today_SROUT.value)-parseFloat(today_MTRSHORT.value))*100/parseFloat(today_SRIN.value))
+							if (parseInt(today_MTRSHORT.value)<0)
+								totalmtrshortneg=parseInt(today_MTRSHORT.value);
+                			else
+                    			totalmtrshortpos=parseInt(today_MTRSHORT.value);
+                    			
+                    		//alert(totalmtrshortneg);
+                    		//alert(totalmtrshortpos);
+                    		
+							var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		 					//alert(inval);
+		  					if(parseInt(inval)!=0)
+		  					{
+		  					incal=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		  					}
+		  					else
+		  					{
+		  					incal=parseInt(parseFloat(today_SRIN.value)*parseFloat(rate_SRIN));
+		  					}
+		  					var outval=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  					if(parseInt(outval)!=0)
+		  					{
+		  					outcal=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  					}
+		  					else
+		  					{
+		  					outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
+		  					}
+		  
+							today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalmtrshortneg))*100)/(parseInt(incal)+parseFloat(totalmtrshortpos)));
+							
+							//today_SRPER.value=Math.round((((parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10))-parseInt(totalmtrshortneg))*100)
+							///(parseInt(((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10))+parseInt(totalmtrshortpos)));
+						}
+						else
+						{
+							today_SRPER.value=0
+						}
+						
+					}
+					
+					else
+					{
+						
+						condition="false";
+					
+						if (parseInt(today_MTRSHORT.value)<0)
+							viewmneg=parseInt(viewmneg)+parseInt(today_MTRSHORT.value);
+                		else
+                    		viewmpos=parseInt(viewmpos)+parseInt(today_MTRSHORT.value);
+
+					}
+					
+			}
+			else
+			{
+				
+              
+				
+				if (parseInt(today_MTRSHORT.value)<0)
+					viewmneg=parseInt(viewmneg)+parseInt(today_MTRSHORT.value);
+                else
+                    viewmpos=parseInt(viewmpos)+parseInt(today_MTRSHORT.value);
+                    
+               
+                    
+                
+				
+			}
+
+		}
+
+	//alert(viewmneg);
+	//alert(viewmpos);
+	if (condition!="false")
+			 	condition="false"
+	else
+	{
+		//alert("Conditions not applied");
+		<%@machinevalues1=Machinedata.find(:first,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE = ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]])%>
+          	<% if @machinevalues1.CALCULATEBY!='M' %>
+          	
+
+         
+              <%@machinevalues=Machinedata.find(:all,:conditions=>['SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and CLUSTER_NAME=? and TRANS_DATE < ?',@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttclustername],@session[:ttdate]],:order => "TRANS_DATE desc")%>
+              <%@machinevalues.each do |item|%>
+              <%if((@machinevalues1.SETTING==item.SETTING) and ((item.SRIN==item.PSRINVALUE and (item.SRIN!=0 and item.PSRINVALUE!=0))   or (item.SROUT==item.PSROUTVALUE and (item.SROUT!=0 and item.PSROUTVALUE!=0))))  %>
+                <%if (item.CALCULATEBY!='M')%>
+                  <% if item.MTRSHORT.to_i<0 %>
+                  		<%@totalmtrshortneg=@totalmtrshortneg.to_i+item.MTRSHORT.to_i%>
+                  	<% else %>
+                  		<%@totalmtrshortpos=@totalmtrshortpos.to_i+item.MTRSHORT.to_i%>
+                  	<% end %>
+                <%else%>
+                  <%break%>
+                <%end%>
+              
+              <%end%>
+            <%end%>
+            <% else %>
+            <% if @machinevalues1.MTRSHORT.to_i<0 %>
+                  		<%@totalmtrshortneg=@machinevalues1.MTRSHORT.to_i%>
+                  	<% else %>
+                  		<%@totalmtrshortpos=@machinevalues1.MTRSHORT.to_i%>
+                  	<% end %>
+         	<% end %>
+
+			neg='<%= @totalmtrshortneg %>'
+			pos='<%= @totalmtrshortpos %>'
+			//alert(neg);
+			//alert(pos);
+			//alert(viewmneg);
+			//alert(viewmpos);
+			totalmneg=parseInt(neg)+parseInt(viewmneg);
+			totalmpos=parseInt(pos)+parseInt(viewmpos);
+			//alert(totalmneg);
+			//alert(totalmpos);
+			if(parseInt(today_SRIN.value)==0)
+				today_SRPER.value=0;
+			else
+			{
+/*
+			alert(today_SROUT.value)
+			alert(rate_SROUT)
+			alert(totalmneg)
+			alert(today_SRIN.value)
+			alert(rate_SRIN)
+			alert(totalmpos)
+*/
+		if (parseFloat(today_SRIN.value)!=0)
+		{
+			var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		 	//alert(inval);
+		  	if(parseInt(inval)!=0)
+		  	{
+		  	incal=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		  	}
+		  	else
+		  	{
+		  	incal=parseInt(parseFloat(today_SRIN.value)*parseFloat(rate_SRIN));
+		  	}
+		  	var outval=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  	if(parseInt(outval)!=0)
+		  	{
+		  	outcal=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  	}
+		  	else
+		  	{
+		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
+		  	}
+		  
+
+		 
+			//today_SRPER.value=Math.round((((parseFloat((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10))-parseFloat(totalmneg))*100)
+			// /(parseInt(((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10))+parseFloat(totalmpos)));
+			
+			today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(totalmneg))*100)/(parseInt(incal)+parseFloat(totalmpos)));
+			
+			}
+			else
+			
+			today_SRPER.value=0;
+			}
+		}
+
+	
+	
+	
+	
+	
+	var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
+	today_PSRINVALUE.value=today_SRIN.value;
+	
+	var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
+	today_PSROUTVALUE.value=today_SROUT.value;
+	
+	today_TSRIN.value=(parseInt(today_SRIN.value)-parseInt(yesterday_PSRIN.value))*mulby;
+
+	today_TSROUT.value=(parseInt(today_SROUT.value)-parseInt(yesterday_PSROUT.value))*mulby;
+
+	
+	
+	if(x==0)
+	{
+	today_MTRIN.select();
+	today_MTRIN.focus();
+	}
+
+
+
+
+
+
+
+
+
+	
+return true;	
+}
+
+function CheckPRSIN()
+{
+var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
+if(parseInt(today_PSRINVALUE.value.length)==0)
+today_PSRINVALUE.value=0;
+
+	
+}
+function CheckPRSOUT()
+{
+var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
+if(parseInt(today_PSROUTVALUE.value.length)==0)
+today_PSROUTVALUE.value=0;
+}
+
+function CheckPMTRIN()
+{
+var today_PMTRINVALUE=document.getElementById("today_PMTRINVALUE");
+if(parseInt(today_PMTRINVALUE.value.length)==0)
+today_PMTRINVALUE.value=0;
+
+	
+}
+function CheckPMTROUT()
+{
+var today_PMTROUTVALUE=document.getElementById("today_PMTROUTVALUE");
+if(parseInt(today_PMTROUTVALUE.value.length)==0)
+today_PMTROUTVALUE.value=0;
+var save=document.getElementById("");
+
+
+
+
+
+}
+function CHECKSETTING()
+{
+
+//alert("HIIIIII");
+
+var today_SETTING=document.getElementById("today_SETTING");
+var yes_SETTING=document.getElementById("yesterday_SETTING");
+var today_SRIN=document.getElementById("today_SRIN");
+var today_SROUT=document.getElementById("today_SROUT");
+var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
+var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
+
+var yesterday_srin=document.getElementById("yesterday_srin");
+var yesterday_srout=document.getElementById("yesterday_srout");
+
+var yesterday_PSRINVALUE=document.getElementById("yesterday_PSRIN");
+var yesterday_PSROUTVALUE=document.getElementById("yesterday_PSROUT");
+var today_MTRSHORT=document.getElementById("today_MTRSHORT");
+var today_SRPER=document.getElementById("today_SRPER");
+var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
+var today_TSRIN=document.getElementById("today_TSRIN");
+var today_TSROUT=document.getElementById("today_TSROUT");
+var today_TMTRIN=document.getElementById("today_TMTRIN");
+var today_TMTROUT=document.getElementById("today_TMTROUT");
+var today_MTRPER=document.getElementById("today_MTRPER");
+var key_collections=document.getElementById("key_collections");
+var today_SRCOLL=document.getElementById("today_SRCOLL");
+var today_MTRCOLL=document.getElementById("today_MTRCOLL");
+var rate_SRIN=document.getElementById("rate_SRIN").value;
+var rate_SROUT=document.getElementById("rate_SROUT").value;
+var rate_MRIN=document.getElementById("rate_MRIN").value;
+var rate_MROUT=document.getElementById("rate_MROUT").value;	
+
+var today_SRAVG=document.getElementById("today_SRAVG");
+/*
+(today_SETTING.value!=yes_SETTING.value) 
+&& (((yesterday_srin.value!=yesterday_PSRINVALUE.value ) && (yesterday_srout.value==yesterday_PSROUTVALUE.value)
+|| (yesterday_srout.value!=yesterday_PSROUTVALUE.value) && (yesterday_srin.value==yesterday_PSRINVALUE.value )) 
+||
+((yesterday_PSRINVALUE.value==0 ) || ( yesterday_PSROUTVALUE.value==0 )))
+)
+*/
+
+if(today_SETTING.value!=yes_SETTING.value)
+{
+	if((yesterday_srin.value!=yesterday_PSRINVALUE.value ) || (yesterday_PSRINVALUE.value==0 && yesterday_srin.value==0))
+	{
+	
+	
+	///Calculation for SR %
+	if (today_SRIN.value!=0)
+	{
+		var inval=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		 //alert("MTR"+inval);
+		  if(parseInt(inval)!=0)
+		  	{
+		  	incal=parseInt((parseFloat(today_SRIN.value)*parseFloat(rate_SRIN))/10);
+		  	}
+		  else
+		  	{
+		  	incal=parseInt(parseFloat(today_SRIN.value)*parseFloat(rate_SRIN));
+		  	}
+		  	var outval=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  if(parseInt(outval)!=0)
+		  	{
+		  	outcal=parseInt((parseFloat(today_SROUT.value)*parseFloat(rate_SROUT))/10);
+		  	}
+		  else
+		  	{
+		  	outcal=parseInt(parseFloat(today_SROUT.value)*parseFloat(rate_SROUT));
+		  	}
+		  
+
+		 
+
+			if(parseInt(today_MTRSHORT.value)<0)
+			{
+				var neg=today_MTRSHORT.value;
+				var pos=0;
+			}
+			else
+			{
+			var neg=0;
+			var pos=today_MTRSHORT.value;
+				
+			}
+				
+			//alert(neg);
+			//alert(pos);
+			//alert(outcal);
+			//alert(incal);
+			today_SRPER.value=Math.round(((parseInt(outcal)-parseFloat(neg))*100)/(parseInt(incal)+parseFloat(pos)));
+		//today_SRPER.value=Math.round((parseFloat(today_SROUT.value)-parseFloat(today_MTRSHORT.value))*100/parseFloat(today_SRIN.value))
+	}
+	else
+	{
+		today_SRPER.value=0
+	}
+	
+	
+	////Calculation For Meter %
+	//alert("CHECK SETTING CALLED--------1");
+	sinval=0
+	soutval=0
+	totalmtrshortmper=0
+	if (today_CALCULATEBY.value=='S')
+	{
+    	sinval=parseFloat(sinval) + parseInt((parseFloat(today_TSRIN.value)*parseFloat(rate_SRIN))/10);
+	    soutval=parseFloat(soutval) + parseInt((parseFloat(today_TSROUT.value)*parseFloat(rate_SROUT))/10);
+	 }
+	else
+	{
+    	
+    	sinval=parseFloat(sinval) + parseInt((parseFloat(today_TMTRIN.value)*parseFloat(rate_MRIN))/10);
+	    soutval=parseFloat(soutval) + parseInt((parseFloat(today_TMTROUT.value)*parseFloat(rate_MROUT))/10);
+	}
+
+	
+	totalmtrshortmper=parseFloat(totalmtrshortmper)+parseFloat(today_MTRSHORT.value);
+	
+	if (parseInt(sinval)!=0)
+	{
+	
+		
+    	today_MTRPER.value=Math.round((parseFloat(soutval)-parseFloat(totalmtrshortmper))*100/parseFloat(sinval));
+    }
+	else
+	{
+    	today_MTRPER.value=0
+    }
+    
+   
+    THIRTYDAYSAVG();
+	TENDAYSAVG();
+	//sr avg FORMULA
+	
+	if(today_CALCULATEBY.value=='S')
+	{
+		today_SRAVG.value=today_SRCOLL.value;
+	}
+	else
+	{
+		today_SRAVG.value=today_MTRCOLL.value;
+	}
+	//END
+
+	///calculation for collection
+	//CALCOLLECTION();
+}
+}
+else
+{
+	//alert("CHECK SETTING CALLED for Plain--------2");
+	CALMTRPER();
+
+}
+}
+
+function checkAVG()
+{
+var today_SETTING=document.getElementById("today_SETTING");
+var yes_SETTING=document.getElementById("yesterday_SETTING");
+var today_SRIN=document.getElementById("today_SRIN");
+var today_SROUT=document.getElementById("today_SROUT");
+var today_PSRINVALUE=document.getElementById("today_PSRINVALUE");
+var today_PSROUTVALUE=document.getElementById("today_PSROUTVALUE");
+var yesterday_srin=document.getElementById("yesterday_srin");
+var yesterday_srout=document.getElementById("yesterday_srout");
+
+var yes_PSRINVALUE=document.getElementById("yesterday_PSRIN");
+var yes_PSROUTVALUE=document.getElementById("yesterday_PSROUT");
+
+var today_MTRSHORT=document.getElementById("today_MTRSHORT");
+var today_SRPER=document.getElementById("today_SRPER");
+var today_CALCULATEBY=document.getElementById("today_CALCULATEBY");
+var today_TSRIN=document.getElementById("today_TSRIN");
+var today_TSROUT=document.getElementById("today_TSROUT");
+var today_TMTRIN=document.getElementById("today_TMTRIN");
+var today_TMTROUT=document.getElementById("today_TMTROUT");
+var today_MTRPER=document.getElementById("today_MTRPER");
+var key_collections=document.getElementById("key_collections");
+var today_SRCOLL=document.getElementById("today_SRCOLL");
+var today_MTRCOLL=document.getElementById("today_MTRCOLL");
+
+var today_SRAVG=document.getElementById("today_SRAVG");
+/*
+if ((today_SETTING.value==yes_SETTING.value) 
+&& ((today_SRIN.value==yes_PSRINVALUE.value ||  (today_SRIN.value!=0 && yes_PSRINVALUE.value!=0))  
+ || (today_SROUT.value==yes_PSROUTVALUE.value ||  (today_SROUT.value!=0 && yes_PSROUTVALUE.value!=0))) )
+*/
+ if(today_SETTING.value!=yes_SETTING.value)
+	{
+	if((yesterday_srin.value!=yes_PSRINVALUE.value ) || (yes_PSRINVALUE.value==0 && yesterday_srin.value==0))
+		{
+		//alert("SRAVG EQUAL");
+     	SRAVGSETTING();	
+		}
+	}
+  else
+ 	{
+	
+	SRAVG();
+	}
+}
+
+function CheckCalBy()
+{
+
+Mtrper(0);
+//CALMTRPER();
+
+CalSrcoll();
+THIRTYDAYSAVG();
+TENDAYSAVG();
+checkAVG();
+CalMTRDIFF();
+CALLOSSPROFIT();
+CHECKSETTING();
+var key='<%= @session[:ttkeyno]%>'
+CALCOLLECTION(key);
+CALKEYSHORT();
+
+
+var TSRIN=document.getElementById('today_TSRIN');
+var save=document.getElementById('save');
+
+var TSROUT=document.getElementById('today_TSROUT');
+if(TSRIN.value<0 || TSROUT.value<0)
+{
+	a=confirm("DATA CALCULATED BY METER");
+	if(a==true)
+	{
+		//Check();
+
+		save.select();
+		save.focus();
+	}
+	else
+	{
+		var today_SRIN=document.getElementById('today_SRIN');
+		today_SRIN.select();
+		today_SRIN.focus();
+		
+	}
+}
+else
+{
+	save.select();
+		save.focus();
+		
+}
+}
+
+function Checkupdate()
+{
+
+var today_Shortreason=document.getElementById('today_Shortreason');
+var today_MTRShort=document.getElementById('today_MTRShort');
+if(today_Shortreason.value=="" && today_MTRShort.value>0 )
+{
+	alert("PlEASE ENTER METER SHORT REASON");
+	today_Shortreason.select();
+	today_Shortreason.focus();
+	return false;
+}
+
+}
+
+
+function Check()
+{
+//Mtrper(0);
+CalTSRIN();
+CalTSROUT();
+CalTMTRIN();
+CalTMTROUT();
+
+CALMTRPER();
+
+CalSrcoll();
+THIRTYDAYSAVG();
+TENDAYSAVG();
+checkAVG();
+CalMTRDIFF();
+CALLOSSPROFIT();
+CHECKSETTING();
+var key='<%= @session[:ttkeyno]%>'
+CALCOLLECTION(key);
+CALKEYSHORT();
+
+a=confirm("Are you sure you want to update?");
+
+
+if(a==true)
+{
+new Ajax.Request("<%= url_for :controller=> :clientdatas,:action=>'checkupdate'%>",{method:'get'})
+}
+else
+{
+var today_SRIN=document.getElementById('today_SRIN');
+today_SRIN.select();
+today_SRIN.focus();
+return false;
+}
+
+
+}
+
+
+function CalSrcoll()
+{
+ 
+ var today_TSRIN=document.getElementById("today_TSRIN");
+ var today_TSROUT=document.getElementById("today_TSROUT");
+
+ var today_TMTRIN=document.getElementById("today_TMTRIN");
+ var today_TMTROUT=document.getElementById("today_TMTROUT");
+ 
+ 
+
+ var today_SRCOLL=document.getElementById("today_SRCOLL");
+ var today_MTRCOLL=document.getElementById("today_MTRCOLL");
+
+ var today_MTRSHORT=document.getElementById("today_MTRSHORT");
+ 
+var rate_SRIN=document.getElementById("rate_SRIN").value;
+
+var rate_SROUT=document.getElementById("rate_SROUT").value;
+var rate_MRIN=document.getElementById("rate_MRIN").value;
+var rate_MROUT=document.getElementById("rate_MROUT").value;
+
+
+ 
+
+ 
+  sratein=rate_SRIN
+ srateout=rate_SROUT 
+ mratein=rate_MRIN
+ mrateout=rate_MROUT
+
+// today_SRCOLL.value= ((parseInt(today_TSRIN.value)*parseInt(sratein))-(parseInt(today_TSROUT.value)*parseInt(srateout))/10)+parseInt(today_MTRSHORT.value);
+ today_SRCOLL.value= parseInt((((parseInt(today_TSRIN.value)*parseInt(sratein))-(parseInt(today_TSROUT.value)*parseInt(srateout)))/10)+parseInt(today_MTRSHORT.value));
+//alert(mratein);
+today_MTRCOLL.value= parseInt((((parseInt(today_TMTRIN.value)*parseInt(mratein))-(parseInt(today_TMTROUT.value)*parseInt(mrateout)))/10)+parseInt(today_MTRSHORT.value));
+
+	
+
+
+ 
+}
+
+function CalTSRIN()
+{
+	var yes_PSRIN=document.getElementById("yesterday_PSRIN").value;
+	var today_SRIN=document.getElementById("today_SRIN").value;
+	var mulby=document.getElementById("multiplyby").value;
+	var TSRIN=document.getElementById("today_TSRIN");
+	
+	if(document.getElementById("yesterday_PSRIN").value.length==0)
+	{
+	document.getElementById("yesterday_PSRIN").value=0;
+	yes_PSRIN=0;
+	}
+	
+	TSRIN.value=(parseInt(today_SRIN)-parseInt(yes_PSRIN))*mulby;
+	
+	CALCULATEBY();
+	
+}
+
+function CalTSROUT()
+{
+	var yes_PSROUT=document.getElementById("yesterday_PSROUT").value;
+	var today_SROUT=document.getElementById("today_SROUT").value;
+	var mulby=document.getElementById("multiplyby").value;
+
+	
+	var TSROUT=document.getElementById("today_TSROUT");
+	
+	if(document.getElementById("yesterday_PSROUT").value.length==0)
+	{
+	document.getElementById("yesterday_PSROUT").value=0;
+	yes_PSROUT=0;
+	}
+
+	
+	TSROUT.value=(parseInt(today_SROUT)-parseInt(yes_PSROUT))*mulby;
+	CALCULATEBY();
+}
+
+
+function CalTMTROUT()
+{
+	var yes_PMTROUT=document.getElementById("yesterday_PMTROUT").value;
+	var today_SETTING=document.getElementById("today_SETTING");
+	var today_MTROUT=document.getElementById("today_MTROUT").value;
+	var TMTROUT=document.getElementById("today_TMTROUT");
+	var mulby=document.getElementById("multiplyby").value;
+	
+	if(document.getElementById("yesterday_PMTROUT").value.length==0)
+	{
+	document.getElementById("yesterday_PMTROUT").value=0;
+	yes_PMTROUT=0;
+	}
+
+	
+	TMTROUT.value=(parseInt(today_MTROUT)-parseInt(yes_PMTROUT))*mulby;
+	CALCULATEBY();
+	
+	today_SETTING.select();
+	today_SETTING.focus();
+}
+
+function CalTMTRIN()
+{
+	var yes_PMTRIN=document.getElementById("yesterday_PMTRIN").value;
+	var today_MTRIN=document.getElementById("today_MTRIN").value;
+	var mulby=document.getElementById("multiplyby").value;
+
+	var TMTRIN=document.getElementById("today_TMTRIN");
+	
+	if(document.getElementById("yesterday_PMTRIN").value.length==0)
+	{
+	document.getElementById("yesterday_PMTRIN").value=0;
+	yes_PMTRIN=0;
+	}
+
+	
+	TMTRIN.value=(parseInt(today_MTRIN)-parseInt(yes_PMTRIN))*mulby;
+	CALCULATEBY();
+	
+}
+
+function CalMTRDIFF()
+{
+var TSRIN=document.getElementById('today_TSRIN');
+var TSROUT=document.getElementById('today_TSROUT');
+
+var TMTRIN=document.getElementById('today_TMTRIN');
+var TMTROUT=document.getElementById('today_TMTROUT');
+
+var MTRDIFFIN=document.getElementById('today_MTRDIFFIN');
+var MTRDIFFOUT=document.getElementById('today_MTRDIFFOUT');
+
+var SRINRATE=document.getElementById('rate_SRIN');
+var SROUTRATE=document.getElementById('rate_SROUT');
+
+var MRINRATE=document.getElementById('rate_MRIN');
+var MROUTRATE=document.getElementById('rate_MROUT');
+
+var mulby=document.getElementById("multiplyby").value;
+
+//MTRDIFFIN.value=Math.round((parseInt(TMTRIN.value)-parseInt(TSRIN.value))/1);
+//MTRDIFFOUT.value=Math.round((parseInt(TMTROUT.value)-parseInt(TSROUT.value))/1);
+//alert(mulby);
+MTRDIFFIN.value=Math.round((((Math.round(parseInt(TMTRIN.value)/parseInt(mulby)))*parseInt(MRINRATE.value))-((Math.round(parseInt(TSRIN.value)/parseInt(mulby)))*parseInt(SRINRATE.value)))/10);
+MTRDIFFOUT.value=Math.round((((Math.round(parseInt(TMTROUT.value)/parseInt(mulby)))*parseInt(MROUTRATE.value))-((Math.round(parseInt(TSROUT.value)/parseInt(mulby)))*parseInt(SROUTRATE.value)))/10);
+
+
+var today_MTRDIFFWHY=document.getElementById('today_MTRDIFFWHY');
+
+		 if (MTRDIFFIN.value=='0' && MTRDIFFOUT.value=='0' )
+		 {
+            today_MTRDIFFWHY.value='NO'
+         }
+         if (MTRDIFFIN.value=='0' && MTRDIFFOUT.value!='0')
+         {
+            		today_MTRDIFFWHY.value='OUT'
+          }  		
+          if (MTRDIFFIN.value!='0' && MTRDIFFOUT.value=='0')
+          {
+            		today_MTRDIFFWHY.value='IN'
+          }
+          if (MTRDIFFIN.value!='0' && MTRDIFFOUT.value!='0' )
+          {
+            		today_MTRDIFFWHY.value='IN/OUT'
+          		
+			}
+			
+	
+}
+
+function CALKEYSHORT()
+{
+var key_collections=document.getElementById('key_collections').value;
+var key_collections2=document.getElementById('key_collections2').value;
+
+var key1=document.getElementById('key_collection1').value;
+var key2=document.getElementById('key_collection2').value;
+var key3=document.getElementById('key_collection3').value;
+var key4=document.getElementById('key_collection4').value;
+var short_extra1=document.getElementById('short_extra1');
+var short_extra2=document.getElementById('short_extra2');
+var short_extra3=document.getElementById('short_extra3');
+var short_extra4=document.getElementById('short_extra4');
+short_extra1.value=parseInt(key1)-parseInt(key_collections);
+short_extra2.value=parseInt(key2)-parseInt(key_collections2);
+
+
+}
+
+function enableR()
+{
+//alert("HHHHHHHHHHHHH");
+var enb_rate=document.getElementById('enb_rate');
+var rate_SRIN=document.getElementById('rate_SRIN');
+var rate_SROUT=document.getElementById('rate_SROUT');
+var rate_MRIN=document.getElementById('rate_MRIN');
+var rate_MROUT=document.getElementById('rate_MROUT');
+
+if (enb_rate.checked==true)
+{
+//alert("Checked");
+rate_SRIN.readOnly=false;
+rate_SROUT.readOnly=false;
+rate_MRIN.readOnly=false;
+rate_MROUT.readOnly=false;
+}
+
+else
+{
+//alert("Un Checked");
+rate_SRIN.readOnly=true;
+rate_SROUT.readOnly=true;
+rate_MRIN.readOnly=true;
+rate_MROUT.readOnly=true;
+}
+}
+
+
+function ChangeSRINState()
+{
+var SRIN=document.getElementById("rate_SRIN");
+var checkSRIN=document.getElementById("check_SRIN");
+
+if(checkSRIN.checked==true)
+{
+	SRIN.readOnly=false;
+	SRIN.select();
+	SRIN.focus();
+}
+else
+{
+SRIN.readOnly=true;
+}
+}
+
+function ChangeSROUTState()
+{
+var SROUT=document.getElementById("rate_SROUT");
+var checkSROUT=document.getElementById("check_SROUT");
+
+if(checkSROUT.checked==true)
+{
+	SROUT.readOnly=false;
+	SROUT.select();
+	SROUT.focus();
+}
+else
+{
+SROUT.readOnly=true;
+}
+}
+function ChangeMTRINState()
+{
+var SROUT=document.getElementById("rate_MRIN");
+var checkSROUT=document.getElementById("check_MTRIN");
+
+if(checkSROUT.checked==true)
+{
+	SROUT.readOnly=false;
+	SROUT.select();
+	SROUT.focus();
+}
+else
+{
+SROUT.readOnly=true;
+
+}
+}
+
+
+function ChangeMTROUTState()
+{
+var SROUT=document.getElementById("rate_MROUT");
+var checkSROUT=document.getElementById("check_MTROUT");
+
+if(checkSROUT.checked==true)
+{
+	SROUT.readOnly=false;
+	SROUT.select();
+	SROUT.focus();
+}
+else
+{
+SROUT.readOnly=true;
+
+}
+
+}
+
+//function callcontroller()
+//{
+	//new Ajax.Request("<%= url_for :controller=> :machinedata,:action=>'datavalue' %>",{method:'get'})
+//}
+
+</script>
+
+</head>
+<body>
+<% form_tag :action=>'updatemachinedata' do %>
+<center>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="420">
+  <tr>
+    <td width="100%" height="420" align=center>
+    
+    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="96%" height="420">
+      <tr>
+        <td width="100%" height="50" >
+        <table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse" bordercolor="#111111" width="553" height="100%">
+          <tr>
+              <th width="171" >ShopName</td>
+              <th width="77" >KEY No.</td>
+			  <th width="55"  >X</td>
+			  <th width="240"  >Name/No</td>
+		 </tr>
+          <tr>
+              <td width="171"  >
+              <input type="text" name="SHOPNAME" id="SHOPNAME" size=18 value="<%= @session[:ttshopname]%>" readonly></td>
+              <td width="77"  >
+              <input type="text" name="KEY" id="KEY" size=7 value="<%= @session[:ttkeyno]%>" readonly></td>
+			  <td width="55"  >
+			  <% @mc=Machinedata.find_first(["CLUSTER_NAME=? and SHOP_NAME=? and GROUP_ID=? and MACHINE_NO=? and TRANS_DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttkeyno],@session[:ttmachineno],@session[:ttdate]])%>
+            		<% if(@mc!=nil) %>
+            		
+            		
+			  
+			  <input type="text" name="multiplyby" id="multiplyby" size=5 value="<%= @mc.MULTIPLY_BY.to_i %>" readonly></td>
+			  <td width="240"  >
+              <input type="text" name="T1" size=9 value="<%= @mc.MACHINE_NAME%>" readonly>&nbsp;&nbsp<input type="text" name="MACHINENO" id="MACHINENO" size=8 value="<%= @session[:ttmachineno]%>" readonly></td>
+			  <%end%>
+         </tr>
+
+        </table>
+        </td>
+      </tr>
+      <tr>
+        <td width="100%" height="1">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="100%" height="200">
+        <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="100%">
+          <tr>
+            <th width="9%" height="10">Date</td>
+            <th width="9%" height="10">Setting</td>
+            <th width="9%" height="10">Sr.in</td>
+            <th width="9%" height="10">Sr.out</td>
+            <th width="8%" height="10">Sr.%</td>
+            <th width="8%" height="10">Mtr.in</td>
+            <th width="8%" height="10">Mtr.out</td>
+            <th width="8%" height="10">Mtr.%</td>
+            <th width="8%" height="10">Cal By</td>
+            <th width="8%" height="10">Mtr.Diffin</td>
+            <th width="8%" height="10">Mtr.Diffout</td>
+            <th width="8%" height="10">WHY</td>
+          </tr>
+          <tr>
+            <td width="10%" height="10" ></td>
+            <td width="9%" height="10"></td>
+            <td width="9%" height="10">
+            <input type="checkbox" name="check_SRIN" id="check_SRIN"  value="ON" onClick="ChangeSRINState();">
+            
+            <input type="text" name="rate[SRIN]" id="rate_SRIN" size=5 value="<%=@mc.SCREEN_RATE_IN.to_i %>" readonly onkeypress="return onlyNumbers();">
+            
+            </td>
+            <td width="9%" height="10">
+            <input type="checkbox" name="check_SROUT" id="check_SROUT"  value="ON" onClick="ChangeSROUTState();">
+            <input type="text" name="rate[SROUT]" id="rate_SROUT" size=5 value="<%=@mc.SCREEN_RATE_OUT.to_i %>" readonly onkeypress="return onlyNumbers();"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10">
+            <input type="checkbox" name="check_MTRIN" id="check_MTRIN"  value="ON" onClick="ChangeMTRINState();">
+
+            <input type="text" name="rate[MRIN]" id="rate_MRIN" size=5 value="<%=@mc.MTR_RATE_IN.to_i %>" readonly onkeypress="return onlyNumbers();"></td>
+            <td width="8%" height="10">
+            <input type="checkbox" name="check_MTROUT" id="check_MTROUT"  value="ON" onClick="ChangeMTROUTState();">
+
+            <input type="text" name="rate[MROUT]" id="rate_MROUT" size=5 value="<%=@mc.MTE_RATE_OUT.to_i %>" readonly onkeypress="return onlyNumbers();"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+
+          </tr>
+          
+
+<% daybefore=Date.parse(@session[:ttdate])-2 %>
+<% yesterday=Date.parse(@session[:ttdate])-1 %>
+
+<!--QUERY FOR FETCHING DAYBEFORE YESTERDAY'S DATA -->
+<% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],daybefore,@session[:ttmachineno]])%>
+<% if(@DATE2!=nil)%>
+
+          <tr>
+            <td width="10%" height="10" ><input type="text" name="T1" size=6 value="<%= daybefore %>" readonly ></td>
+            <td width="9%" height="10">
+            <input type="text" name="T1" size=9 value="<%= @DATE2.SETTING %>" readonly></td>
+            <td width="9%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.SRIN.to_i %>" readonly></td>
+            <td width="9%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.SROUT.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.SRPER.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRIN.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTROUT.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.CALCULATEBY %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly></td>
+
+          </tr>
+
+          <tr>
+            <td width="10%" height="10" ></td>
+            <td width="9%" height="10"></td>
+            <td width="9%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.PSRINVALUE.to_i %>" readonly></td>
+            <td width="9%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.PSROUTVALUE.to_i %>" readonly></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" readonly></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+
+          </tr>
+          <% end%>
+          
+          <!--QUERY FOR FETCHING YESTERDAY'S DATA -->
+<% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],yesterday,@session[:ttmachineno]])%>
+<% if(@DATE2!=nil)%>
+          <tr>
+            <td width="10%" height="10" ><input type="text" name="yesterday[date]" id="yesterday_date" size=6 value="<%=yesterday %>" readonly >
+</td>
+            <td width="9%" height="10"><input type="text" name="yesterday[SETTING]" id="yesterday_SETTING" size=9 value="<%= @DATE2.SETTING %>" readonly></td>
+            <td width="9%" height="10"><input type="text" name="yesterday[srin]" id="yesterday_srin" size=5 value="<%= @DATE2.SRIN.to_i %>" readonly></td>
+            <td width="9%" height="10"><input type="text" name="yesterday[srout]" id="yesterday_srout" size=5 value="<%= @DATE2.SROUT.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.SRPER.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRIN.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTROUT.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.CALCULATEBY %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly></td>
+
+          </tr>
+
+          <tr>
+            <td width="10%" height="10" ></td>
+            <td width="9%" height="10"><input type="hidden" name="yesterday[MTRSHORT]" id="yesterday_MTRSHORT" size=5 value="<%= @DATE2.MTRSHORT %>" readonly></td>
+            <td width="9%" height="10"><input type="text" name="yesterday[PSRIN]" id="yesterday_PSRIN" size=5 value="<%= @DATE2.PSRINVALUE.to_i %>" onFocus="this.select();" onblur="return CalTSRIN();" onkeypress="return onlyNumbers();" tabindex=0></td>
+            <td width="9%" height="10"><input type="text" name="yesterday[PSROUT]" id="yesterday_PSROUT" size=5 value="<%= @DATE2.PSROUTVALUE.to_i %>" onFocus="this.select();" onblur="return CalTSROUT();" onkeypress="return onlyNumbers();" ></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"><input type="text" name="yesterday[PMTRIN]" id="yesterday_PMTRIN" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" onFocus="this.select();" onblur="return CalTMTRIN();" onkeypress="return onlyNumbers();" ></td>
+            <td width="8%" height="10"><input type="text" name="yesterday[PMTROUT]" id="yesterday_PMTROUT" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" onFocus="this.select();" onblur="return CalTMTROUT();" onkeypress="return onlyNumbers();"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+
+          </tr>
+          <% end%>
+            <!--QUERY FOR FETCHING YESTERDAY'S DATA -->
+<% @DATE2=Machinedata.find_first(["Cluster_Name=? and Shop_Name=? and TRANS_Date=? and Machine_No=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate],@session[:ttmachineno]])%>
+<% if(@DATE2!=nil)%>
+
+          <tr>
+            <td width="10%" height="10" ><input type="text" name="today[date]" id="today_date"  size=6 value="<%= @session[:ttdate] %>"  readonly>
+            </td>
+            <td width="9%" height="10">
+            <input type="text" name="today[SETTING]" size=9 id="today_SETTING" onFocus="this.select();"  value="<%= @DATE2.SETTING %>"></td>
+            <td width="9%" height="10"><input type="text" name="today[SRIN]" id="today_SRIN" size=5 value="<%= @DATE2.SRIN.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onBlur="return Srper(1);"></td>
+            <td width="9%" height="10"><input type="text" name="today[SROUT]" id="today_SROUT" size=5 value="<%= @DATE2.SROUT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onBlur="return Srper(0);"></td>
+            <td width="8%" height="10"><input type="text" name="today[SRPER]" id="today_SRPER"  size=5 value="<%= @DATE2.SRPER.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="today[MTRIN]" id="today_MTRIN" size=5 value="<%= @DATE2.MTRIN.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="return Mtrper(1);"></td>
+            <td width="8%" height="10"><input type="text" name="today[MTROUT]" id="today_MTROUT" size=5 value="<%= @DATE2.MTROUT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();"  onblur="CheckCalBy();"></td>
+            <td width="8%" height="10"><input type="text" name="today[MTRPER]" id="today_MTRPER"  size=5 value="<%= @DATE2.MTRPER.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="today[CALCULATEBY]" id="today_CALCULATEBY"  size=5 value="<%= @DATE2.CALCULATEBY %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="today[MTRDIFFIN]" id="today_MTRDIFFIN"  size=5 value="<%= @DATE2.MTRDIFFIN.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="today[MTRDIFFOUT]" id="today_MTRDIFFOUT" size=5 value="<%= @DATE2.MTRDIFFOUT.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="today[MTRDIFFWHY]" id="today_MTRDIFFWHY" size=5 value="<%= @DATE2.MTRDIFFWHY %>" readonly></td>
+
+          </tr>
+
+          <tr>
+            <td width="10%" height="10" ></td>
+            <td width="9%" height="10"></td>
+            <td width="9%" height="10"><input type="text" name="today[PSRINVALUE]" id="today_PSRINVALUE" size=5 value="<%= @DATE2.PSRINVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPRSIN();"></td>
+            <td width="9%" height="10"><input type="text" name="today[PSROUTVALUE]" id="today_PSROUTVALUE" size=5 value="<%= @DATE2.PSROUTVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPRSOUT();"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"><input type="text" name="today[PMTRINVALUE]" id="today_PMTRINVALUE" size=5 value="<%= @DATE2.PMTRINVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPMTRIN();" ></td>
+            <td width="8%" height="10"><input type="text" name="today[PMTROUTVALUE]" id="today_PMTROUTVALUE" size=5 value="<%= @DATE2.PMTROUTVALUE.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbers();" onblur="CheckPMTROUT();"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"></td>
+
+          </tr>
+          
+          <tr>
+            <td width="10%" height="9" ></td>
+            <td width="9%" height="10"></td>
+            <td width="9%" height="10"><input type="text" name="today[TSRIN]" id="today_TSRIN" size=5 value="<%= @DATE2.TSRIN.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly></td>
+            <td width="9%" height="10"><input type="text" name="today[TSROUT]" id="today_TSROUT" size=5 value="<%= @DATE2.TSROUT.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 ></td>
+            <td width="8%" height="10"><input type="text" name="today[TMTRIN]" id="today_TMTRIN" size=5 value="<%= @DATE2.TMTRIN.to_i*@DATE2.MULTIPLY_BY.to_i %>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="today[TMTROUT]" id="today_TMTROUT" size=5 value="<%= @DATE2.TMTROUT.to_i*@DATE2.MULTIPLY_BY.to_i%>" readonly></td>
+            <td width="8%" height="10"><input type="text" name="T1" size=5 ></td>
+            <td width="8%" height="10"></td>
+            <td width="8%" height="10"> </td>
+            <td width="8%" height="10"><input type="hidden" name="today[LOSS]" id="today_LOSS" size=5 value="<%= @DATE2.LOSS %>" readonly></td>
+            <td width="8%" height="10"></td>
+
+          </tr>
+        </table>
+        </td>
+      </tr>
+      <tr>
+        <td width="100%" height="1">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="100%" height="70">
+        <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height=100%>
+          <tr>
+            <td width="34%" align=center>
+            <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height=70%>
+              <tr>
+                <th  >Sr.Coll</td>
+                <th  >Mtr.Coll</td>
+			    <th  >M-Short</td>
+			    <th  >Reason</td>
+		    </tr>
+             <tr>
+                <td  ><input type="text" name="today[SRCOLL]" id="today_SRCOLL" size=5 value="<%= @DATE2.SRCOLL.to_i %>" readonly></td>
+                <td  ><input type="text" name="today[MTRCOLL]" id="today_MTRCOLL" size=5 value="<%= @DATE2.MTRCOLL.to_i %>" readonly></td>
+
+			    <td  ><input type="text" name="today[MTRSHORT]" id="today_MTRSHORT" size=5 value="<%= @DATE2.MTRSHORT.to_i %>" onFocus="this.select();" onkeypress="return onlyNumbersplusminus();" onblur="CheckShort();"></td>
+			    <td  > 
+			    <% @REASONS=Shop.find_by_sql("select * from shortreasons where McShortReason<>'#{@DATE2.SHORTREASON}' order by McShortReason") %>
+			    
+			    <select size="1" name="today[Shortreason]" id="today_Shortreason" onkeydown="return CheckShortReason();" >
+			    <option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>
+				<% @REASONS.each do |r| %>
+				
+				<option value="<%= r.McShortReason %>"><%= r.McShortReason %></option>	
+			    <!--<option value="<%= @DATE2.SHORTREASON %>"><%= @DATE2.SHORTREASON %></option>-->
+			    <% end %>
+			    </select></td>
+            </tr>
+            </table>
+            </td>
+            <td width="33%" align=center>
+            <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="96">
+              <tr>
+                <td width="100%" height="32" colspan="4" align=center>AVG</td>
+              </tr>
+              <tr>
+                <th width="25%" height="32">30 Days</th>
+                <th width="25%" height="32">10 Days</th>
+                <th width="25%" height="32">S/R</th>
+                <!--<th width="25%" height="32">MTR</th>-->
+              </tr>
+              <tr>
+                <td width="25%" height="32">
+                <input type="text" name="today[THIRTYDAYSAVG]" id="today_THIRTYDAYSAVG" size=5 value="<%= @DATE2.THIRTYDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                <td width="25%" height="32">
+                <input type="text" name="today[TENDAYSAVG]" id="today_TENDAYSAVG" size=5 value="<%= @DATE2.TENDAYSAVG.to_i*@DATE2.MULTIPLY_BY %>" readonly></td>
+                <td width="25%" height="32">
+                <input type="text" name="today[SRAVG]" id="today_SRAVG" size=5 value="<%= @DATE2.SRAVG.round*@DATE2.MULTIPLY_BY %>" readonly></td>
+                <!--<td width="25%" height="32">
+                <input type="text" name="T1" size=5 ></td>-->
+              </tr>
+            </table><% end%>
+            </td>
+            <td width="33%" align=center>
+            <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="90%" height="70%">
+              <tr>
+                <th width="34%"  >Collection</td>
+                <th width="33%"  >Key Collection</td>
+                <th width="33%" >S/E</td>
+              </tr>
+             <!-- <% @keys=Counterdata.find(:first,:conditions=>["ShopName=?",@session[:ttshopname]]) %>-->
+            <% @keys=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:ttclustername],@session[:ttshopname],@session[:ttdate]]) %>
+
+              <tr >
+                <td width="34%" ><input type="text"  id="key_collections" name="key[collections]" size=5 value="<%= @session[:ttCOLL1].to_i %>" readonly></td>
+              
+                <% if(@keys.KEY1.to_i!=0) %>
+                 <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="<%= @keys.KEY1.to_i %>" readonly></td>
+                 <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="<%= (@keys.KEY1.to_i)-(@session[:ttCOLL1].to_i) %>" readonly></td>
+                <% else%>
+                <td width="33%" ><input type="text" name="key[collection1]" id="key_collection1" size=5 value="0" readonly></td>
+                <td width="33%" ><input type="text" name="short[extra1]" id="short_extra1" size=5 value="0" readonly></td>
+                <% end%>
+                 
+              </tr>
+               <tr>
+                <td width="34%" ><input type="text"  id="key_collections2" name="key[collections2]" size=5 value="<%= @session[:ttCOLL2].to_i %>" readonly></td>
+                 <% if(@keys.KEY2.to_i!=0) %>
+                <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="<%= @keys.KEY2.to_i %>" readonly></td>
+                <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="<%= (@keys.KEY2.to_i)-(@session[:ttCOLL2].to_i)%>" readonly></td>
+                <%else%>
+                <td width="33%" ><input type="text" name="key[collection2]" id="key_collection2" size=5 value="0" readonly></td>
+                <td width="33%" ><input type="text" name="short[extra2]" id="short_extra2" size=5 value="0" readonly></td>
+                <%end%>
+                
+                
+              </tr>
+				 <tr>
+                <td width="34%" ><input type="text"  id="key_collections3" name="key[collections3]" size=5 value="<%= @session[:ttCOLL3].to_i %>" readonly></td>
+                 <% if(@keys.KEY3.to_i!=0) %>
+                <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="<%= @keys.KEY3.to_i %>" readonly></td>
+                <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="<%= (@keys.KEY3.to_i)-(@session[:ttCOLL3].to_i) %>" readonly></td>
+         		 <%else%>
+         		 <td width="33%" ><input type="text" name="key[collection3]" id="key_collection3" size=5 value="0" readonly></td>
+         		 <td width="33%" ><input type="text" name="short[extra3]" id="short_extra3" size=5 value="0" readonly></td>
+         		 <%end%>      
+                
+
+
+              </tr>
+			 <tr>
+                <td width="34%" ><input type="text"  id="key_collections4" name="key[collections4]" size=5 value="<%= @session[:ttCOLL4].to_i %>" readonly></td>
+                 <% if(@keys.KEY4.to_i!=0) %>
+                <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="<%= @keys.KEY4.to_i %>" readonly></td>
+                    <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="<%= (@keys.KEY4.to_i)-(@session[:ttCOLL4].to_i)%>" readonly></td>
+         		 <%else%>
+         		 <td width="33%" ><input type="text" name="key[collection4]" id="key_collection4" size=5 value="0" readonly></td>
+         		     <td width="33%" ><input type="text" name="short[extra4]" id="short_extra4" size=5 value="0" readonly></td>
+         		 <%end%>  
+            
+              </tr>
+
+            </table>
+            </td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+      <tr>
+        <td width="100%" height="30" align=center>
+        <div width=50% height=25 >
+        
+         <%= submit_tag "UPDATE" ,:id=>'save',:onclick=>'return Check();',:onblur=>"this.form.yesterday_PSRIN.focus();"%>
+       
+
+        
+
+		<%= link_to 'COLLECTION' ,{ :controller=>'collection',:action => 'collection'}, :target=>'_blank'%>
+
+						
+
+</div>
+        				</td>
+        				
+						<% submit_to_remote 'COLLECTION','COLLECTION',:before=>'SHOWCOLLECTION();'%>
+						
+						<% link_to 'COLLECTION' ,url_for( :controller=>'collection',:action => 'collection'), { :popup => ['new_window','left=100,height=500,width=800,top=50,scrollbars=1,resizable=1,maximizable=1']}%>
+      </tr>
+    </table>
+    
+    </td>
+  </tr>
+</table>
+</center>
+<% end %>
+</body>
+
+</html>

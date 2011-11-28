@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>GameStation</title>
+    <%= javascript_include_tag "prototype","effects","application",:defaults %>
+    <script>
+      window.onload=function()
+      {
+
+        var login=document.getElementById('user_login');
+        login.focus();
+      }
+    </script>
+  </head>
+  <%= stylesheet_link_tag "style" %>
+  <body>
+    <table width="1000" height="111" cellspacing="0" cellpadding="0" style="border-collapse: collapse" bordercolor="#111111" align=center>
+      <tr >
+        <td width="1000" height="550"  >
+          <table width="1000" height="111" cellspacing="0" cellpadding="0" style="border-collapse: collapse" bordercolor="#111111" align=center><tr ><td width="1000" height="58" >
+                <table border="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber2" height="124" cellpadding="0">
+                  <tr>
+                    <td width="100%" height="124" ></td>
+
+                  </tr>
+                </table></td></tr>
+            <td width="898" height="303"><table align="left" height="303" width="639" >
+                <tr>
+                  <td  id=login  width="494"   height="303" align="centre">
+                  </td>
+                  <tr>
+                    <% form_tag :action=> "login" do %>
+                    <table border="0" bordercolor="#08176c" style="border-collapse: collapse" cellpadding="2" cellspacing="10" align="left" width="325" height="85" ><tr>
+                        <td width="284" height="71" bgcolor=#E1CEA2>
+                          <h1 align="left"><font color="#6C3401">Please Login</font></h1>
+                          <div title="Account login" id="loginform" class="form">
+                            <h3><font color=red>
+                                <% if @message %>
+                                  <div id="message"
+                                       style="width: 300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+                                       background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px"><%= @message %></div>
+                                <% end %> </font>
+                              <span style="font-weight: 400">
+                                <label for="user_login" align=left><font face="Zurich BT" color="#ffffff">Login:</font></label></span><font color=red><br/>
+                                <input type="text" name="user_login" id="user[login]" size="28" value=""/><br/>
+                              </font>
+                              <span style="font-weight: 400">
+                                <label for="user_password" align=left><font face="Zurich BT" color="#ffffff">Password:</font></label></span><font color=red><br/>
+                                <input type="password" name="user_password" id="user[password]" size="30"/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                              </font></h3>
+                            <font color=red>
+                              <input type="submit" name="login" value="Login &#187;" class="primary" />
+                          </div>
+                        <%end%>
+                          </table></td></tr></table>
+                    </td></tr></table>
+              </body>
+              </html>

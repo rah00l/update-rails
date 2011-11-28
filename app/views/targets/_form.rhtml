@@ -1,0 +1,17 @@
+<%= error_messages_for 'target' %>
+
+<!--[form:target]-->
+<p><label for="target_Date">Date</label><br/>
+<%= date_select 'target', 'Date'  %></p>
+
+<p><label for="target_Shop_Name">Shop name</label><br/>
+<%#= text_field 'target', 'Shop_Name'  %></p>
+<%#= collection_select :Shop,:ShopName,@shop,:target,:Shop_Name %>
+		<% @s=Shop.find(:all,:order=>"ShopName") %>
+ 						<%= collection_select(:target, :Shop_Name,  @s,  :ShopName, :ShopName,
+                      {:prompt   => "Select ShopName"}) %>
+
+<p><label for="target_Target_value">Target value</label><br/>
+<%= text_field 'target', 'Target_value'  %></p>
+<!--[eoform:target]-->
+

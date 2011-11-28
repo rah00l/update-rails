@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<script type="text/javascript">
+
+
+window.onload=function()
+{
+var mc=document.getElementById('machine_MachineNo');
+
+mc.focus();
+var save=document.getElementById('save');
+save.disabled=true;
+
+
+
+}
+</script>
+
+
+<script language="JavaScript">
+//DISPLAY SAVE BUTTON ON FILLING ALL VALUES
+function showsave()
+{
+	var cmbobj=document.getElementById("machine_MachineType");
+	if(event.keyCode==13)
+	{
+	 	var btsave1 = document.getElementById("save");
+      
+        btsave1.disabled=false;
+		
+	 	btsave1.focus();
+	 	
+		//alert(cmbobj.options[cmbobj.selectedIndex].value);
+	 	
+	 }	
+	 if(event.keyCode==9)
+	{
+	 	var btsave1 = document.getElementById("data");
+      	var btsave = document.getElementById("save");
+
+        btsave.disabled=false;
+		
+	 	btsave1.focus();
+	 	
+	 }	
+
+}
+
+function checkfornumber()
+{
+var mcno=document.getElementById("machine_MachineNo");
+alert(mcno.value);
+var x=mcno.value;
+ if (IsNumeric(x)) 
+   { 
+      alert('number value'); 
+      return false 
+   } 
+   return true;
+ }
+
+function onlyNumbers(evt)
+{
+	var e = event || evt; // for trans-browser compatibility
+	var charCode = e.which || e.keyCode;
+	
+	if (charCode > 31 && (charCode < 48 || charCode > 57))
+		return false;
+    
+	return true;
+
+}
+
+function Check()
+{
+	var shop=document.getElementById("machine_ShopName");
+	var mcno=document.getElementById("machine_MachineNo");
+	var mcname=document.getElementById("machine_MachineName");
+	var sratein=document.getElementById("machine_SrateIn");
+	var srateout=document.getElementById("machine_SrateOut");
+	var mratein=document.getElementById("machine_MrateIn");
+		var mctype=document.getElementById("machine_MachineType");
+		
+		var mrateout=document.getElementById("machine_MrateOut");
+		var mul=document.getElementById("machine_Multiplyby");
+	if(shop.value.length<1)
+	{
+		alert("PLEASE ENTER SHOP NAME");
+		shop.focus();
+		return(false);
+	}
+
+	else if(mcno.value.length<1)
+	{
+		alert("PLEASE ENTER MACHINE NUMBER");
+		mcno.focus();
+		return(false);
+	}
+	else if(mcname.value.length<1)
+	{
+		alert("PLEASE ENTER MACHINE NAME");
+		mcname.focus();
+		return(false);
+	}
+	else if(sratein.value.length<1)
+	{
+		alert("PLEASE ENTER MACHINE SCREEN RATE IN");
+		sratein.focus();
+		return(false);
+	}
+	else if(srateout.value.length<1)
+	{
+		alert("PLEASE ENTER MACHINE SCREEN RATE OUT");
+		srateout.focus();
+		return(false);
+	}
+		else if(mratein.value.length<1)
+	{
+		alert("PLEASE ENTER MACHINE METER RATE IN");
+		mratein.focus();
+		return(false);
+	}
+	else if(mrateout.value.length<1)
+	{
+		alert("PLEASE ENTER MACHINE METER RATE OUT");
+		mrateout.focus();
+		return(false);
+	}
+else if(mul.value.length<1)
+	{
+		alert("PLEASE ENTER MACHINE MULTIPLY BY");
+		mul.focus();
+		return(false);
+	}
+
+
+	else
+	{
+		
+		return(true);
+	}
+}	
+</script>
+
+<script type="text/javascript"> 
+		//Check wheather text box value is numeric or not 
+        function check_field() { 
+            //var field = document.getElementById("machine1); 
+            var field=document.getElementById("machine_MachineNo");
+            var cmbobj=document.getElementById("machine_MachineType");
+            value=IsNumeric(field.value)
+
+			if (value==true)
+			{
+				cmbobj.options[1].value="DD";
+				cmbobj.options[1].text="DD";
+				cmbobj.options[2].value="DG";
+				cmbobj.options[2].text="DG";				
+				cmbobj.options[0].value="Single";
+				cmbobj.options[0].text="Single";		
+			}
+		 	else
+			{
+				//document.getElementById('machine_MachineType').selectedIndex = 0;
+				cmbobj.options[0].value="DD";
+				cmbobj.options[0].text="DD";
+				cmbobj.options[1].value="DG";
+				cmbobj.options[1].text="DG";				
+				cmbobj.options[2].value="Single";
+				cmbobj.options[2].text="Single";				
+
+			}
+
+  			
+        }
+        
+        
+        function IsNumeric(sText)
+
+		{
+   		var ValidChars = "0123456789";
+  		var IsNumber=true;
+   		var Char;
+
+ 
+   		for (i = 0; i < sText.length && IsNumber == true; i++) 
+      		{ 
+      			Char = sText.charAt(i); 
+      			if (ValidChars.indexOf(Char) == -1) 
+         			{
+         				IsNumber = false;
+         			}
+      		}
+   		return IsNumber;
+   
+   	}
+
+function checkMachineNO()
+{
+	var mcno=document.getElementById("machine_MachineNo");
+	if(mcno.value.length<=0)
+	{
+		//alert("PLEASE ENTER  VALUE FOR MACHINENO ");
+		//mcno.focus();
+		return false;
+	}
+	else
+	{
+		return true;
+	}	
+
+
+}
+    </script> 
+
+
+</head>
+<body>
+<center>
+<table height="130" width="75%"  >
+<tr>
+<td height="130" width=100% align="center">
+
+<% form_tag :id=>'myform', :action => 'create' do %>
+
+<%= error_messages_for 'machine' %>
+			<h2 align=center>New Machine</h2>
+			<table width="680" height="81"  >
+				<tr>
+    				<td width="25%" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_ShopID">GROUP NAME </label></font></b>
+ 					</td>
+ 					<td width="25%" height="16" align=left>
+ 					
+				 	<% @cluster=Cluster.find(:all,:order => "ClusterName") %>
+					<% if( @session[:clustername]==nil or  @session[:clustername]=="")%>
+ 					<%= collection_select(:machine, :ClusterName,  @cluster,  :ClusterName, :ClusterName,
+                      {:prompt   => "PLEASE SELECT GROUPNAME"},
+                      {:onchange => "#{remote_function(:url  => { :action => "getShop"},
+                                                       :with => "'ClusterName='+value")}"}) %>
+					<%else%>
+					
+					 <% @cluster=Cluster.find(:all,:conditions=>["ClusterName<>?",@session[:clustername]],:order => "ClusterName")%>      											
+					<select id="machine_ClusterName" name="machine[ClusterName]" onchange="<%=remote_function(:url => {:action => 'getShop'},:with => "'ClusterName='+value")-%>">
+													<option value="<%= @session[:clustername] %>"><%= @session[:clustername] %></option>			
+     	 											<% @cluster.each do |c| %>
+     	 											<option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+     	 											<% end %>
+     	 										</select>
+
+					
+					
+					
+					<%end%>
+				 	
+ 					
+ 					</td></tr><tr>
+ 					<td height="25%" width="121" align=right>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_ShopName">SHOP NAME </label></font></b>
+ 	 				
+ 	 				</td>
+ 	 				<td width="25%" height="20" align=left>
+ 	    			<div id="ShopNamediv">
+					<%= render :partial => 'shopname' %>
+
+					</div>
+ 	 				
+ 	 				</td>
+ 	 				</tr>
+ 	 				<tr>
+ 	 				<td align=right>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="machine_GroupID">KEY NO </label></font></b>
+
+ 	 				</td>
+ 	 				<td>
+ 	 				<div id="KeyIDdiv">
+					<%= render :partial => 'groupID' %>
+
+					</div>
+
+ 	 				</td>
+ 	 				<td align="right">
+ 	 				&nbsp;</td>
+ 	 				<td>
+ 	 				
+ 	 				</td>
+
+
+				</tr>
+				<tr>
+					<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MachineNo">MACHINE NO </label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MachineNo' ,:value=>'' ,:onKeyDown=>"if(event.keyCode==13)  this.form.machine_MachineName.focus();",:onBlur=>"checkMachineNO();check_field();",:onfocus=>"this.form.machine_MachineNo.select();",:onKeyUp=>"javascript:this.value=this.value.toUpperCase();"%> 					  					</td>
+  					</tr>
+  					<tr>
+ 	 				<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MachineName">MACHINE NAME </label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MachineName' ,:value=>'',:onKeyDown=>"if(event.keyCode==13)  this.form.machine_SrateIn.focus();"  %>					
+  					</td>
+  					
+				</tr>
+					<tr>
+					<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_SrateIn">S_RATE_IN</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'SrateIn' ,:value=>'',:onkeypress=>"return onlyNumbers();" , :onKeyDown=>"if(event.keyCode==13)  this.form.machine_SrateOut.focus();"   %> 					
+  					</td>
+  					</tr>
+  					<tr>
+ 	 						<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_SrateOut">S_RATE_OUT</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'SrateOut',:value=>'',:onkeypress=>"return onlyNumbers();",:onKeyDown=>"if(event.keyCode==13)  this.form.machine_MrateIn.focus();"  %>	 			
+  					</td>  					
+					</tr>
+				
+				<tr>
+					<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MrateIn">M_RATE_IN</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MrateIn',:value=>'',:onkeypress=>"return onlyNumbers();" ,:onKeyDown=>"if(event.keyCode==13)  this.form.machine_MrateOut.focus();"  %>				
+  					</td>
+  					</tr>
+  					<tr>
+ 	 						<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MrateOut">M_RATE_OUT</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'MrateOut',:value=>'',:onkeypress=>"return onlyNumbers();" ,:onKeyDown=>"if(event.keyCode==13)  this.form.machine_Multiplyby.focus();"  %>	   					
+  					</td>  					
+				</tr>
+
+				
+				
+	 	 			  <tr>					
+ 	 				<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MultiplyBy">MULTIPLY BY </label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+   					
+	 	 			<%= text_field 'machine', 'Multiplyby' ,:value=>'',:onkeypress=>"return onlyNumbers();",:onkeydown=>"if(event.keyCode==13)  this.form.machine_MachineType.focus();" %>					
+  					</td>
+				</tr>
+<tr>
+					<td height="1" width="155" align=right>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="machine_MachineType">MACHINE TYPE</label></font></b>
+  					</td>
+  					<td width="174" height="1" align=left>
+  					
+
+					
+   					<select id="machine_MachineType" name="machine[MachineType]" onkeydown="showsave();" onblur="showsave();">
+   						<option value="Single">Single</option>
+  						<option value="DD">DD</option>
+   						<option value="DG">DG</option>
+   						
+
+   						</select>
+   					
+   					
+   					
+
+	 	 			  </td>
+	 	 			  </tr>
+ 				</table>
+ 				<br>
+ 				<input type=hidden id="data">
+
+ 				<%= submit_tag "Create" ,:onclick=>"return Check();",:id=>'save'%>
+				<%= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'machines',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+				<% end %>
+			
+ 				</td>
+ 				</tr></table>
+ 				
+</center>
+ 				
+</body>
+</html>

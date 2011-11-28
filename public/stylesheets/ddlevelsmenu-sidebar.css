@@ -1,0 +1,49 @@
+/* ######### Marker List Vertical Menu ######### */
+
+.markermenu{
+width: 175px; /*width of side bar menu*/
+clear: left;
+position: relative; /*Preserve this for "right" arrow images (added by script) to be positioned correctly*/
+visibility: hidden;
+}
+
+.markermenu ul{
+list-style-type: none;
+margin: 5px 0;
+padding: 0;
+border: 1px solid white;
+}
+
+.markermenu ul li a{
+/*background: #F2F2F2 url('bulletlist.gif') no-repeat 3px center; /*light gray background*/
+color: white;
+display: block;
+width: auto;
+padding-left: 20px;
+text-decoration: none;
+border-bottom: 1px solid white; font-style:normal; font-variant:normal; font-weight:bold; font-size:13px; font-family:Lucida Grande, Trebuchet MS, Verdana, Helvetica, sans-serif; padding-right:0; padding-top:3px; padding-bottom:3px
+}
+
+* html .markermenu ul li a{ /*IE6 hack*/
+width: 155px;
+}
+
+.markermenu ul li a:visited, .markermenu ul li a:active{
+color: white;
+}
+
+.markermenu ul li a:hover, .markermenu ul li a.selected{
+color: white;
+background-color: black;
+}
+
+/* ######### Customized Drop Down ULs CSS (inherits from ddlevelsmenu-base.css) ######### */
+
+.blackwhite li a{
+background: white;
+}
+
+.blackwhite li a:hover{
+background: black;
+color: white;
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title> Admin</title>
+    <script>
+      window.onload=function()
+      {
+        new Ajax.Request("<%= url_for :controller=> :reports,:action=>:exreport %>",{method:'post'})
+
+      }
+    </script>
+  </head>
+  <body>
+    <table border=0  align="center" width="100%" height="100%">
+      <tr>
+        <td bgcolor="#FFFFFF" width="90%" align=center >
+          <table align=center border=0 bordercolor="#08176C" width="90%" left="5%" height="194">
+            <tr>
+              <td width="870" height="100%">
+                <p>
+                  <h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">
+                      Short Extra Report</font>
+                    <p>
+                      <% @a=@session[:startdate].strftime("%d-%B-%Y") %>
+                      <% @m1=@a.split('-')%>
+                    </p>
+                    <h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%= @m1[1] %> - <%= @m1[2]%></font></h1>
+                  <table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
+                         <tr  bgcolor="#E1CEA2" align=center>
+                      <th nowrap width="1%" height="22" >
+                        <font color=white face="Zurich BT" size="2">Shop Name</font></th>
+                      <th nowrap width="10%" height="22" >
+                        <font color=white face="Zurich BT" size="2">KEY/DATE</font></th>
+                      <%@m=@session[:days] %>
+                      <%1.upto(@m.to_i) do |i|%>
+                        <th nowrap width="1%" height="22" >
+                          <font color=white face="Zurich BT" size="2"><%=i%></font></th>
+                      <%end%>
+                      <th nowrap width="1%" height="22" >
+                        <font color=white face="Zurich BT" size="2">TOTAL</font></th>
+                    </tr>
+                    <% Shop.find(:all, :conditions=>["ClusterName=? ",@session[:rrclustername]],:order => "ShopName").each do |@shp|%>
+                      <% @flag=false %>
+                      <% Group.find(:all,:conditions=>["ClusterName=? and ShopName=?", @session[:rrclustername],@shp.ShopName],:order=>"GroupID").each do |key|%>
+                        <tr>
+                          <% if @flag==false%>
+                            <th>
+                              <%= @shp.ShopName %>&nbsp;
+                            </th>
+                          <% else %>
+                            <td>&nbsp;</td>
+                          <% end %>
+                          <% @flag=true %>
+                          <td nowrap align="center"><%= key.GroupID %>&nbsp;</td>
+                          <% @cnt=0 %>
+                          <%@m=@session[:days] %>
+                          <%1.upto(@m.to_i) do |@i|%>
+                            <% @date1=Date.parse(@i.to_s+'-'+@session[:month].to_s+'-'+@session[:year].to_s) %>
+                            <% @t =Machinedata.find_by_sql("select * from machinedatas where Cluster_name='#{@session[:rrclustername]}' and shop_name='#{@shp.ShopName}' and Trans_date='#{@date1}' order by digitno,Machine_no" )%>
+                            <% @count=0 %>
+                            <% @t.each do |@c| %>
+                              <% @count=@count+1%>
+                              <% @d=(@date1).to_s.split('-')%>
+                            <%end%>
+                            <% if @count==0%>
+                              <td nowrap align="center">-</td>
+                            <%else%>
+                              <% if @i.to_i==@d[2].to_i %>
+                                <%
+                                @colldata = Machinedata.find(:all, :conditions=> ["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=?",@session[:rrclustername],@shp.ShopName,@date1,key.GroupID])
+                                @totalcoll=0
+                                @colldata.each do |data|
+                                  if data.CALCULATEBY=='S'
+                                    @COLL=(((((data.TSRIN.to_f*data.SCREEN_RATE_IN.to_f)-(data.TSROUT.to_f*data.SCREEN_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+                                    @totalcoll=@totalcoll.to_i+@COLL.to_i
+                                  else
+                                    @COLL1=(((((data.TMTRIN.to_f*data.MTR_RATE_IN.to_f)-(data.TMTROUT.to_f*data.MTE_RATE_OUT.to_f))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_f).round
+                                    @totalcoll=@totalcoll.to_i+@COLL1.to_i
+                                  end
+                                end%>
+                                <% @keys=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:rrclustername],@shp.ShopName,@date1]) %>
+                                <%if @keys!= nil%>
+                                  <% if key.GroupID=='KEY 1'%>
+                                    <% @keyval=@keys.KEY1.to_i%>
+                                  <% end %>
+                                  <% if key.GroupID=='KEY 2'%>
+                                    <% @keyval=@keys.KEY2.to_i%>
+                                  <% end %>
+                                  <% if key.GroupID=='KEY 3'%>
+                                    <% @keyval=@keys.KEY3.to_i%>
+                                  <% end %>
+                                  <% if key.GroupID=='KEY 4'%>
+                                    <% @keyval=@keys.KEY4.to_i%>
+                                  <% end %>
+                                <%end%>
+                                <%@val= (@keyval.to_i-@totalcoll.to_i) %>
+                                <% if @val.to_i<0%>
+                                  <td nowrap align="center"><font color=red face="Zurich BT" size="2"><%= @val %></font>&nbsp;</td>
+                                <% else %>
+                                  <td nowrap align="center"><%= @val %>&nbsp;</td>
+                                <% end %>
+                                <% @cnt=@cnt+ (@keyval.to_i-@totalcoll.to_i) %>
+                              <% else%>
+                                <td nowrap align="center">-</td>
+                              <%end%>
+                            <%end%>
+                          <%end%>
+                          <% if @cnt.to_i<0%>
+                            <td nowrap align="center"><font color=red face="Zurich BT" size="2"><%= @cnt%></font>&nbsp;</td>
+
+                          <% else %>
+                            <td nowrap align="center"><b><%= @cnt%></b>&nbsp;</td>
+                          <% end %>
+                        </tr>
+                      <% end %>
+                    <% end %>
+                  </table>
+                  <br/>
+              </td></tr></table>
+        </td></tr></table>
+  </body>
+</html>

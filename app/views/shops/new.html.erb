@@ -1,0 +1,625 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <SCRIPT LANGUAGE="JavaScript"> //Common functions for all dropdowns
+
+      /*----------------------------------------------
+      The Common functions used for all dropdowns are:
+      -----------------------------------------------
+      -- function fnKeyDownHandler(getdropdown, e)
+      -- function fnLeftToRight(getdropdown)
+      -- function fnRightToLeft(getdropdown)
+      -- function fnDelete(getdropdown)
+      -- function FindKeyCode(e)
+      -- function FindKeyChar(e)
+      -- function fnSanityCheck(getdropdown)
+
+      --------------------------- Subrata Chakrabarty */
+
+      function fnKeyDownHandler(getdropdown, e)
+      {
+        fnSanityCheck(getdropdown);
+
+        // Press [ <- ] and [ -> ] arrow keys on the keyboard to change alignment/flow.
+        // ...go to Start : Press  [ <- ] Arrow Key
+        // ...go to End : Press [ -> ] Arrow Key
+        // (this is useful when the edited-text content exceeds the ListBox-fixed-width)
+        // This works best on Internet Explorer, and not on Netscape
+
+        var vEventKeyCode = FindKeyCode(e);
+
+        // Press left/right arrow keys
+        if(vEventKeyCode == 37)
+        {
+          fnLeftToRight(getdropdown);
+        }
+        if(vEventKeyCode == 39)
+        {
+          fnRightToLeft(getdropdown);
+        }
+        if(vEventKeyCode == 13)
+        {
+          alert("Enter key pressed");
+        }
+
+        // Delete key pressed
+        if(vEventKeyCode == 46)
+        {
+          fnDelete(getdropdown);
+        }
+
+        // backspace key pressed
+        if(vEventKeyCode == 8 || vEventKeyCode==127)
+        {
+          if(e.which) //Netscape
+          {
+            //e.which = ''; //this property has only a getter.
+          }
+          else //Internet Explorer
+          {
+            //To prevent backspace from activating the -Back- button of the browser
+            e.keyCode = '';
+            if(window.event.keyCode)
+            {
+              window.event.keyCode = '';
+            }
+          }
+          return true;
+        }
+
+        // Tab key pressed, use code below to reorient to Left-To-Right flow, if needed
+        //if(vEventKeyCode == 9)
+        //{
+        //  fnLeftToRight(getdropdown);
+        //}
+      }
+
+      function fnLeftToRight(getdropdown)
+      {
+        getdropdown.style.direction = "ltr";
+      }
+
+      function fnRightToLeft(getdropdown)
+      {
+        getdropdown.style.direction = "rtl";
+      }
+
+      function fnDelete(getdropdown)
+      {
+        if(getdropdown.options.length != 0)
+        // if dropdown is not empty
+        {
+          if (getdropdown.options.selectedIndex == vEditableOptionIndex_A)
+          // if option the Editable field
+          {
+            getdropdown.options[getdropdown.options.selectedIndex].text = '';
+            getdropdown.options[getdropdown.options.selectedIndex].value = '';
+          }
+        }
+      }
+
+
+      /*
+      Since Internet Explorer and Netscape have different
+      ways of returning the key code, displaying keys
+      browser-independently is a bit harder.
+      However, you can create a script that displays keys
+      for either browser.
+      The following function will display each key
+      in the status line:
+
+      The "FindKey.." function receives the "event" object
+      from the event handler and stores it in the variable "e".
+      It checks whether the "e.which" property exists (for Netscape),
+      and stores it in the "keycode" variable if present.
+      Otherwise, it assumes the browser is Internet Explorer
+      and assigns to keycode the "e.keyCode" property.
+       */
+
+      function FindKeyCode(e)
+      {
+        if(e.which)
+        {
+          keycode=e.which;  //Netscape
+        }
+        else
+        {
+          keycode=e.keyCode; //Internet Explorer
+        }
+
+        //alert("FindKeyCode"+ keycode);
+        return keycode;
+      }
+
+      function FindKeyChar(e)
+      {
+        keycode = FindKeyCode(e);
+        if((keycode==8)||(keycode==127))
+        {
+          character="backspace"
+        }
+        else if((keycode==46))
+        {
+          character="delete"
+        }
+        else
+        {
+          character=String.fromCharCode(keycode);
+        }
+        //alert("FindKey"+ character);
+        return character;
+      }
+
+      function fnSanityCheck(getdropdown)
+      {
+        if(vEditableOptionIndex_A>(getdropdown.options.length-1))
+        {
+          alert("PROGRAMMING ERROR: The value of variable vEditableOptionIndex_... cannot be greater than (length of dropdown - 1)");
+          return false;
+        }
+      }
+    </SCRIPT>
+
+    <SCRIPT LANGUAGE="JavaScript"> //Dropdown specific functions, which manipulate dropdown specific global variables
+
+      /*----------------------------------------------
+      Dropdown specific global variables are:
+      -----------------------------------------------
+      1) vEditableOptionIndex_A   --> this needs to be set by Programmer!! See explanation.
+      2) vEditableOptionText_A    --> this needs to be set by Programmer!! See explanation.
+      3) vPreviousSelectIndex_A
+      4) vSelectIndex_A
+      5) vSelectChange_A
+
+      --------------------------- Subrata Chakrabarty */
+
+      /*----------------------------------------------
+      The dropdown specific functions
+      (which manipulate dropdown specific global variables)
+      used by all dropdowns are:
+      -----------------------------------------------
+      1) function fnChangeHandler_A(getdropdown)
+      2) function fnKeyPressHandler_A(getdropdown, e)
+      3) function fnKeyUpHandler_A(getdropdown, e)
+
+      --------------------------- Subrata Chakrabarty */
+
+      /*------------------------------------------------
+      IMPORTANT: Global Variable required to be SET by programmer
+      -------------------------- Subrata Chakrabarty  */
+
+      var vEditableOptionIndex_A = 0;
+
+      // Give Index of Editable option in the dropdown.
+      // For eg.
+      // if first option is editable then vEditableOptionIndex_A = 0;
+      // if second option is editable then vEditableOptionIndex_A = 1;
+      // if third option is editable then vEditableOptionIndex_A = 2;
+      // if last option is editable then vEditableOptionIndex_A = (length of dropdown - 1).
+      // Note: the value of vEditableOptionIndex_A cannot be greater than (length of dropdown - 1)
+
+      var vEditableOptionText_A = "--?--";
+
+      // Give the default text of the Editable option in the dropdown.
+      // For eg.
+      // if the editable option is <option ...>--?--</option>,
+      // then set vEditableOptionText_A = "--?--";
+
+      /*------------------------------------------------
+      Global Variables required for
+      fnChangeHandler_A(), fnKeyPressHandler_A() and fnKeyUpHandler_A()
+      for Editable Dropdowns
+      -------------------------- Subrata Chakrabarty  */
+
+      var vPreviousSelectIndex_A = 0;
+      // Contains the Previously Selected Index, set to 0 by default
+
+      var vSelectIndex_A = 0;
+      // Contains the Currently Selected Index, set to 0 by default
+
+      var vSelectChange_A = 'MANUAL_CLICK';
+      // Indicates whether Change in dropdown selected option
+      // was due to a Manual Click
+      // or due to System properties of dropdown.
+
+      // vSelectChange_A = 'MANUAL_CLICK' indicates that
+      // the jump to a non-editable option in the dropdown was due
+      // to a Manual click (i.e.,changed on purpose by user).
+
+      // vSelectChange_A = 'AUTO_SYSTEM' indicates that
+      // the jump to a non-editable option was due to System properties of dropdown
+      // (i.e.,user did not change the option in the dropdown;
+      // instead an automatic jump happened due to inbuilt
+      // dropdown properties of browser on typing of a character )
+
+      /*------------------------------------------------
+      Functions required for  Editable Dropdowns
+      -------------------------- Subrata Chakrabarty  */
+
+      function fnChangeHandler_A(getdropdown)
+      {
+        fnSanityCheck(getdropdown);
+
+        vPreviousSelectIndex_A = vSelectIndex_A;
+        // Contains the Previously Selected Index
+
+        vSelectIndex_A = getdropdown.options.selectedIndex;
+        // Contains the Currently Selected Index
+
+        if ((vPreviousSelectIndex_A == (vEditableOptionIndex_A)) && (vSelectIndex_A != (vEditableOptionIndex_A))&&(vSelectChange_A != 'MANUAL_CLICK'))
+        // To Set value of Index variables - Subrata Chakrabarty
+        {
+          getdropdown[(vEditableOptionIndex_A)].selected=true;
+          vPreviousSelectIndex_A = vSelectIndex_A;
+          vSelectIndex_A = getdropdown.options.selectedIndex;
+          vSelectChange_A = 'MANUAL_CLICK';
+          // Indicates that the Change in dropdown selected
+          // option was due to a Manual Click
+        }
+      }
+
+      function fnKeyPressHandler_A(getdropdown, e)
+      {
+        fnSanityCheck(getdropdown);
+
+        keycode = FindKeyCode(e);
+        keychar = FindKeyChar(e);
+
+        // Check for allowable Characters
+        // The various characters allowable for entry into Editable option..
+        // may be customized by minor modifications in the code (if condition below)
+        // (you need to know the keycode/ASCII value of the  character to be allowed/disallowed.
+        // - Subrata Chakrabarty
+
+        if ((keycode>47 && keycode<59)||(keycode>62 && keycode<127) ||(keycode==32))
+        {
+          var vAllowableCharacter = "yes";
+        }
+        else
+        {
+          var vAllowableCharacter = "no";
+        }
+
+        //alert(window); alert(window.event);
+
+        if(getdropdown.options.length != 0)
+        // if dropdown is not empty
+          if (getdropdown.options.selectedIndex == (vEditableOptionIndex_A))
+        // if selected option the Editable option of the dropdown
+        {
+
+          var vEditString = getdropdown[vEditableOptionIndex_A].value;
+
+          // make Editable option Null if it is being edited for the first time
+          if((vAllowableCharacter == "yes")||(keychar=="backspace"))
+          {
+            if (vEditString == vEditableOptionText_A)
+              vEditString = "";
+          }
+          if (keychar=="backspace")
+          // To handle backspace - Subrata Chakrabarty
+          {
+            vEditString = vEditString.substring(0,vEditString.length-1);
+            // Decrease length of string by one from right
+
+            vSelectChange_A = 'MANUAL_CLICK';
+            // Indicates that the Change in dropdown selected
+            // option was due to a Manual Click
+
+          }
+          //alert("EditString2:"+vEditString);
+
+          if (vAllowableCharacter == "yes")
+          // To handle addition of a character - Subrata Chakrabarty
+          {
+            vEditString+=String.fromCharCode(keycode);
+            // Concatenate Enter character to Editable string
+
+            // The following portion handles the "automatic Jump" bug
+            // The "automatic Jump" bug (Description):
+            //   If a alphabet is entered (while editing)
+            //   ...which is contained as a first character in one of the read-only options
+            //   ..the focus automatically "jumps" to the read-only option
+            //   (-- this is a common property of normal dropdowns
+            //    ..but..is undesirable while editing).
+
+            var i=0;
+            var vEnteredChar = String.fromCharCode(keycode);
+            var vUpperCaseEnteredChar = vEnteredChar;
+            var vLowerCaseEnteredChar = vEnteredChar;
+
+
+            if(((keycode)>=97)&&((keycode)<=122))
+            // if vEnteredChar lowercase
+              vUpperCaseEnteredChar = String.fromCharCode(keycode - 32);
+            // This is UpperCase
+
+
+            if(((keycode)>=65)&&((keycode)<=90))
+            // if vEnteredChar is UpperCase
+              vLowerCaseEnteredChar = String.fromCharCode(keycode + 32);
+            // This is lowercase
+
+            if(e.which) //For Netscape
+            {
+              // Compare the typed character (into the editable option)
+              // with the first character of all the other
+              // options (non-editable).
+
+              // To note if the jump to the non-editable option was due
+              // to a Manual click (i.e.,changed on purpose by user)
+              // or due to System properties of dropdown
+              // (i.e.,user did not change the option in the dropdown;
+              // instead an automatic jump happened due to inbuilt
+              // dropdown properties of browser on typing of a character )
+
+              for (i=0;i<=(getdropdown.options.length-1);i++)
+              {
+                if(i!=vEditableOptionIndex_A)
+                {
+                  var vReadOnlyString = getdropdown[i].value;
+                  var vFirstChar = vReadOnlyString.substring(0,1);
+                  if((vFirstChar == vUpperCaseEnteredChar)||(vFirstChar == vLowerCaseEnteredChar))
+                  {
+                    vSelectChange_A = 'AUTO_SYSTEM';
+                    // Indicates that the Change in dropdown selected
+                    // option was due to System properties of dropdown
+                    break;
+                  }
+                  else
+                  {
+                    vSelectChange_A = 'MANUAL_CLICK';
+                    // Indicates that the Change in dropdown selected
+                    // option was due to a Manual Click
+                  }
+                }
+              }
+            }
+          }
+
+          // Set the new edited string into the Editable option
+          getdropdown.options[vEditableOptionIndex_A].text = vEditString;
+          getdropdown.options[vEditableOptionIndex_A].value = vEditString;
+
+          return false;
+        }
+        return true;
+      }
+
+      function fnKeyUpHandler_A(getdropdown, e)
+      {
+        fnSanityCheck(getdropdown);
+
+        if(e.which) // Netscape
+        {
+          if(vSelectChange_A == 'AUTO_SYSTEM')
+          {
+            // if editable dropdown option jumped while editing
+            // (due to typing of a character which is the first character of some other option)
+            // then go back to the editable option.
+            getdropdown[(vEditableOptionIndex_A)].selected=true;
+          }
+
+          var vEventKeyCode = FindKeyCode(e);
+          // if [ <- ] or [ -> ] arrow keys are pressed, select the editable option
+          if((vEventKeyCode == 37)||(vEventKeyCode == 39))
+          {
+            getdropdown[vEditableOptionIndex_A].selected=true;
+          }
+        }
+      }
+
+      /*-------------------------------------------------------------------------------------------- Subrata Chakrabarty */
+
+    </SCRIPT>  <!--end of script for dropdown lstDropDown_A -->
+
+
+
+    <script type="text/javascript">
+      //on load event to make save button disabled
+
+      window.onload=function()
+      {
+        var save=document.getElementById('save');
+        save.disabled=true;
+        var cmbclustername=document.getElementById('shop_ClusterName');
+	
+        cmbclustername.focus();
+
+      }
+    </script>
+
+    <script language="JavaScript">
+
+      //DISPLAY SAVE BUTTON ON FILLING ALL VALUES
+      function showsave()
+      {
+	
+        if(event.keyCode==13)
+        {
+          var btsave1 = document.getElementById("save");
+      
+          btsave1.disabled=false;
+
+          btsave1.focus();
+        }
+      }
+    </script>
+    <script>
+      //ADD OPENING BAL VALUE
+      function cal()
+      {
+        var cash=document.getElementById('shop_Cash').value;
+        var credit=document.getElementById('shop_Credit').value;
+        var ob=document.getElementById('shop_OpeningBal');
+
+        if(document.getElementById('shop_Cash').value.length<1)
+        {
+          cash=0;
+        }
+        if(document.getElementById('shop_Credit').value.length<1)
+        {
+          credit=0;
+        }
+	
+
+        ob.value=parseInt(cash)+parseInt(credit);
+	
+
+        return true;
+      }
+
+      //ONLY NUMBERS ALLOWED TO ENTER IN CASH AND CREDIT FIELD
+      function onlyNumbers(evt)
+      {
+        var e = event || evt; // for trans-browser compatibility
+        var charCode = e.which || e.keyCode;
+	
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+          return false;
+    
+        return true;
+
+      }
+
+      function ValidateCredit()
+      {
+
+	
+        var credit=document.getElementById("Shop_Credit");
+
+	
+	
+
+        if(credit.value.length<1)
+        {
+          alert('Please Enter Value for Credit')
+          credit.value=0;
+          credit.focus();
+          return(false);
+        }
+        else
+        {
+          cal();
+          var btsave1 = document.getElementById("save");
+      
+          btsave1.disabled=false;
+
+          btsave1.focus();
+          return(true);
+
+        }
+
+      }
+
+      //VALIDATE CASH FIELD
+      function ValidateCash()
+      {
+        var cash=document.getElementById("Shop_Cash");
+        if(cash.value.length<1)
+        {
+          alert('Please Enter Value for CASH')
+          cash.focus();
+          cash.value=0;
+          return(false);
+        }
+        else
+        {
+          cal();
+          return(true);
+
+        }
+
+      }
+    </script>
+  </head>
+  <body>
+    <center>
+      <table height="400" width="80%"  >
+        <tr>
+          <td height="400" width=100% align="center">
+            <%# form_tag :action => 'create' do %>
+              <%#= error_messages_for 'shop' %>
+            <% form_for(@shop) do |f| %>
+            <%#= f.error_messages %>
+              <font  size= "4">
+                <% if session[:msg] %>
+                  <div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+                       background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+                       <%= session[:msg] %>
+                  </div>
+                  <%session[:msg]=nil%>
+                <% end %>
+              </font>
+              <fieldset style="width:700 ; height: 81 ; align:center">
+                <h2 align=center>Create Shop</h2>
+                <table width="893" height="81"  >
+                  <tr>
+                    <td width="238" height="16" align=right><label for="shop_CompanyID"><b><font face="Arial" size="2">
+                            GROUP NAME
+                          </font></b></label></td>
+                    <td width="196" height="16" align=left>
+                      <% if session[:cluster].present? %>
+                        <%= f.collection_select(:shop, :ClusterName,@shop_names,:ClusterName, :ClusterName,
+                          {:prompt   => "Select ClusterName"},
+                          {:onkeypress => "#{remote_function(:url  => {:controller=>'shops', :action => "getCluster"},
+                            :with => "'ClusterName='+value")}",
+                            :onchange => "#{remote_function(:url  => {:controller=>'shops', :action => "getCluster"},
+                            :with => "'ClusterName='+value")}"})
+                      %>
+                      <%else%>
+                        <%  @cluster=Cluster.find(:all,:order => "ClusterName")%>
+                        <select id="shop_ClusterName" name="shop[ClusterName]"
+                                onchange="<%=remote_function(:url => {:action => 'getCluster'},:with => "'ClusterName='+value")-%>">
+                          <option value="<%= session[:cluster] %>"><%= session[:cluster] %></option>
+                          <% @cluster.each do |c| %>
+                            <option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+                          <% end %>
+                        </select>
+                      <%end%>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="21" width="238" align=right><b><font face="Arial" size="2" ><label for="shop_CompanyName">SHOP NAME</label></font></b></td>
+                    <td width="196" height="20" align=left>
+                      <%= f.text_field  :ShopName ,:onKeyDown=>"if(event.keyCode==13)  this.form.shop_Address.focus();", :onKeyUp=>"javascript:this.value=this.value.toUpperCase();" %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="1" width="238" align=right><b> <font face="Arial" size="2" ><label for="shop_Address">ADDRESS</label></font></b>  					</td>
+                    <td width="196" height="1" align=left>
+                      <%= f.text_area  :Address  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_os.focus();"%>
+                    </td>
+                    <td height="1" width="166" align=right></td>
+                    <td width="275" height="1" align=left></td>
+
+                  </tr>
+                  <tr>
+                    <td height="1" width="238" align=right><b> <font face="Arial" size="2" ><label for="shop_Address">OS</label></font></b></td>
+                    <td width="196" height="1" align=left>
+                      <%= f.text_field  :os  ,:cols=>"30%", :rows=>"3%",:onkeydown=>"if(event.keyCode==13)  this.form.shop_Cash.focus();"%>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="238"></td>
+                    <td align=center width="196">CASH</td>
+                    <td align=center width="166">CREDIT</td>
+                    <td align=center width="275">OPENING BALANCE</td>
+                  </tr>
+                  <tr>
+                    <td height="1" width="238" align=right><b> <font face="Arial" size="2" ><label for="shop_Address">O/B</label></font></b></td>
+                    <td width="196"><%= f.text_field  :Cash , :onkeypress=>"return onlyNumbers();" ,:onblur=>"return ValidateCash();",:onKeyDown=>"if(event.keyCode==13)  this.form.shop_Credit.focus();" %>+</td>
+                    <td width="166"><%= f.text_field  :Credit ,:onblur=>"cal();", :onkeypress=>"return onlyNumbers();",:onblur=>"return ValidateCredit();" ,:onKeyDown=>"showsave();"%>=</td>
+                    <td width="275" height="1" align=left><%= f.text_field  :OpeningBal, :readonly=>true%></td>
+                  </tr>
+                </table>
+                <%= f.submit "Create" ,:id=>"save"%>
+                <%= link_to "Cancel" ,shops_path%>
+                <%#= button_to_function 'Cancel' , remote_function(:url=> {:controller=>'shops',:action => "canceladd" }),:id=>'cancel', :style=>"font-family: Zurich BT; font-size: 10pt align=left" %>
+              <% end %>
+            </fieldset>
+          </td></tr></table>
+    </center>
+  </body>
+</html>

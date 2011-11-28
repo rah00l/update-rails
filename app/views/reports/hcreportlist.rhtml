@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title> Admin</title>
+</head>
+
+  <body>
+    <h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">HC </font></h1>
+
+    <% @a=@session[:startdatehc].strftime("%d-%B-%Y") %>
+    <% @m1=@a.split('-')%>
+
+
+    <h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"></font></h1>
+
+      <table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
+             <tr  bgcolor="#E1CEA2" align=center></tr>
+              <tr><td align="center"><font color=#6C3401 face="Zurich BT" size="2"><b><%=@session[:rrclustername]%>  <%= @m1[1] %> - <%= @m1[2]%></b></font>&nbsp;
+            <table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
+                <tr  bgcolor="#E1CEA2" align=center>
+                <th nowrap width="1%" height="22" >
+                  <font color=white face="Zurich BT" size="2">Date</font></th>
+                <% @t =Counterdata.find_by_sql("select distinct(shopname) from shops where clustername='#{@session[:rrclustername]}' order by shopname " )%>
+                <% @t.each do |c| %>
+                  <th nowrap height="22" ><font color=white face="Zurich BT" size="2"><%=c.shopname%></font></th>
+                <%end%>
+                <th nowrap  height="22" ><font color=white face="Zurich BT" size="2">Total</font></th>
+               </tr>
+                <%@m=@session[:dayshc] %>
+                <%1.upto(@m.to_i) do |@i|%>
+                <tr> <%@totalcol_hc=0 %>
+                  <td><b><%=@i%></b> &nbsp;</td>
+                   <% @date1=Date.parse(@i.to_s+'-'+@session[:monthhc].to_s+'-'+@session[:yearhc].to_s) %>
+                   <% @dshop =Counterdata.find_by_sql("select distinct(shopname) from shops where clustername='#{@session[:rrclustername]}'  order by shopname  " )%>
+                    <% @dshop.each do |@ds| %>
+                    <% @hcvalue =Counterdata.find_by_sql("select hc from counterdatas where date='#{@date1}'
+                                                          and shopname='#{@ds.shopname}' and  clustername='#{@session[:rrclustername]}'
+                                                          order by shopname" )%>
+                    <% @count=0 %>
+                    <% @hcvalue.each do |@hv| %>
+                      <% @count=@count+1%>
+                      <% @d=(@date1).to_s.split('-')%>
+                    <%end%>
+                    <% if @count==0%>
+                      <td nowrap align="center">-</td>
+                    <% else %>
+                      <% if @i.to_i==@d[2].to_i %>
+                        <td nowrap align="center"><%= @hv.hc %>&nbsp;</td>
+                        <%@num=@hv.hc%>
+                        <%@total_hc=@total_hc.to_i + @num.to_i %>
+                        <%@totalcol_hc=@totalcol_hc.to_i+@num.to_i %>
+                      <%end%>
+                    <% end %>
+                  <%end%>		 <!-- end of dis_shop do loop -->
+                  <td><b><%=@total_hc.to_i%>&nbsp;</b></td>
+                  <%@number=@number.to_i+@total_hc.to_i%>
+                  <%@total_hc=0%>
+                <% end %>
+
+              </tr>
+              <tr>
+                <td><b>Total</b></td>
+                <% @dshopanother =Counterdata.find_by_sql("select distinct(shopname) from shops where clustername='#{@session[:rrclustername]}'  order by shopname  " )%>
+                <% @dshopanother .each do |@ds2| %>
+                  <% @total_hcvalue =Counterdata.find_by_sql("select sum(hc) as hc from(select * from counterdatas
+    where shopname='#{@ds2.shopname}' and clustername='#{@session[:rrclustername]}' and  date >= '#{@session[:startdatehc]}' AND date <=  '#{@session[:enddatehc]}' )ans" )%>
+                  <% @total_avg =Counterdata.find_by_sql("select avg(hc) as hcavg from(select * from counterdatas
+    where shopname='#{@ds2.shopname}' and clustername='#{@session[:rrclustername]}' and  date >= '#{@session[:startdatehc]}' AND date <=  '#{@session[:enddatehc]}' )ans" )%>
+                  <% @total_avg .each do |@avg| %>
+                    <% @av=@avg.hcavg %>
+                  <% end %>
+                  <% @total_hcvalue .each do |@thcv2| %>
+                    <td><b><%= @thcv2.hc %>&nbsp;</b></td>
+                    <%@tableadd=@tableadd.to_i+@thcv2.hc.to_i %>
+                  <%end%>
+                <%end%>
+                <td><b><%=@tableadd.to_i%></b> &nbsp;</td>
+              </tr>
+              <tr>
+                <td><b>Average</b></td>
+                <% @dshopanother =Counterdata.find_by_sql("select distinct(shopname) from shops where clustername='#{@session[:rrclustername]}'  order by shopname  " )%>
+                <% @dshopanother .each do |@ds2| %>
+                  <% @total_avg =Counterdata.find_by_sql("select avg(hc) as hcavg from(select * from counterdatas
+    where shopname='#{@ds2.shopname}' and clustername='#{@session[:rrclustername]}' and  date >= '#{@session[:startdatehc]}' AND date <=  '#{@session[:enddatehc]}' )ans" )%>
+                  <% @total_avg .each do |@avg| %>
+                    <% @av=@avg.hcavg %>
+                  <% end %>
+                  <td><b><%= @av.to_f.round %>&nbsp;</b></td>
+                <%end%>
+                <td><b><%= (@tableadd.to_f/ @session[:dayshc].to_f).round %>&nbsp;</b></td>
+              </tr>
+            </table>
+            <!--new2-->
+<%#end%>
+<%# @tableadd=0 %>
+            <!--</td>
+            <td><b><%=@number.to_i%>&nbsp;</b></td>
+            </tr>
+            </table>-->
+            <!--ends new2-->
+
+            <!--<br/>
+            <div align=center>
+            <p>&nbsp;</p>
+
+
+            </td></tr></table>-->
+          </td></tr></table>
+      </table>
+      <br/>
+      <table border="1" width ="802"  align="center" cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >
+             <tr>
+          <th width="870">Cluster Name </th>
+          <th width="870">Total </th>
+          <th width="870">Percentage % </th>
+        </tr>
+
+        <% @tsum1=0%>
+        <% Cluster.find(:all,:order=>"ClusterName").each do|c|%>
+          <% @total_hcvalue =Counterdata.find_by_sql("select sum(hc) as hc from(select * from counterdatas
+    where clustername='#{c.ClusterName}' and  date >= '#{@session[:startdatehc]}' AND date <=  '#{@session[:enddatehc]}' )ans" )%>
+
+          <% @count=Counterdata.count(:conditions=>["ClusterName=? and date>=? and date<=?",c.ClusterName, @session[:startdatehc],@session[:enddatehc]])%>
+
+
+
+
+          <% if @count.to_i>0 %>
+            <% @total_hcvalue .each do |@sum1| %>
+              <% @sum=@sum1.hc %>
+              <% puts @tsum1=@tsum1+@sum1.hc.to_i%>
+            <% end %>
+
+          <% else %>
+            <% @sum=0%>
+          <% end %>
+        <% end %>
+
+
+
+<%# @tsum=0%>
+        <% Cluster.find(:all,:order=>"ClusterName").each do|c|%>
+          <tr>
+            <td><%= c.ClusterName%>&nbsp;</td>
+            <% @total_hcvalue =Counterdata.find_by_sql("select sum(hc) as hc from(select * from counterdatas
+    where clustername='#{c.ClusterName}' and  date >= '#{@session[:startdatehc]}' AND date <=  '#{@session[:enddatehc]}' )ans" )%>
+
+            <% @count=Counterdata.count(:conditions=>["ClusterName=? and date>=? and date<=?",c.ClusterName, @session[:startdatehc],@session[:enddatehc]])%>
+
+
+
+
+            <% if @count.to_i>0 %>
+              <% @total_hcvalue .each do |@sum1| %>
+                <% @sum=@sum1.hc %>
+      <%# puts @tsum=@tsum+@sum1.hc.to_i%>
+              <% end %>
+
+            <% else %>
+              <% @sum=0%>
+            <% end %>
+
+            <td><%= @sum %>&nbsp;</td>
+            <% if @sum==0%>
+              <td>-</td>
+            <% else %>
+              <% p "----- 1st -> #{@sum} 2nd -> #{@tsum} " %>
+              <td><%= ((@sum.to_f/@tsum1.to_f)*100).round  %>&nbsp;</td>
+            <% end %> &nbsp;</tr>
+
+        <% end %>
+      </table>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+
+     		<% if(@session[:rrmname]==nil or @session[:rrmname]=="") %>
+ 			<% @machines=Machine.find(:all,:select=>"distinct MachineName",:conditions=> ["ClusterName=? ",@session[:rrclustername]],:order=>"MachineName")%>
+ 			<%= collection_select(:machinedata, :MachineName,  @machines,  :MachineName, :MachineName,
+                      {:prompt   => "Select MachineName"},
+                      {:onkeypress => "#{remote_function(:url  => {:controller=>'reports', :action => "setMName"},
+                                                       :with => "'MachineName='+value")}",:onchange => "#{remote_function(:url  => {:controller=>'reports', :action => "setMName"},
+                                                       :with => "'MachineName='+value")}"}) %>
+            <%else%>
+
+
+
+           <% @machines=Machine.find(:all,:select=>"distinct MachineName",:conditions=>["ClusterName=? and MachineName<>?",@session[:rrclustername],@session[:rrmname]],:order=>"MachineName")%>
+			<select id="machinedata_MachineName" name="machinedata[MachineName]" onchange="<%=remote_function(:url => {:action => 'setMName'},:with => "'MachineName='+value")-%>">
+													<option value="<%= @session[:rrmname] %>"><%= @session[:rrmname] %></option>
+     	 											<% @machines.each do |c| %>
+     	 											<option value="<%= c.MachineName %>"><%= c.MachineName %></option>
+     	 											<% end %>
+     	 										</select>
+
+
+            <%end%>

@@ -1,0 +1,120 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+
+<script>
+function zxcSelectSort(zxcid,zxcfirstoption){
+zxcobj=document.getElementById(zxcid);
+zxcAry=new Array();
+for (zxc0=zxcfirstoption;zxc0<zxcobj.options.length;zxc0++){
+zxcAry[zxc0-zxcfirstoption]=zxcobj.options[zxc0];
+}
+zxcAry=zxcAry.sort(zxcOptionSort);
+for (zxc1=0;zxc1<zxcAry.length;zxc1++){
+zxcobj.options[zxc1+zxcfirstoption]=new 
+
+Option(zxcAry[zxc1].text,zxcAry[zxc1].value,true,true);
+}
+zxcobj.selectedIndex=0;
+}
+function zxcOptionSort(zxca,zxcb){
+zxcA=zxca.text.toLowerCase();
+zxcB=zxcb.text.toLowerCase();
+if (zxcA<zxcB){ return -1; }
+if (zxcA>zxcB){ return 1; }
+return 0;
+}
+
+
+function sortlist() {
+alert("sorting");
+var lb = document.getElementById('shop_FileName');
+arrTexts = new Array();
+
+for(i=0; i<lb.length; i++)  {
+  arrTexts[i] = lb.options[i].text;
+}
+arrTexts.sort();
+
+for(i=0; i<lb.length; i++)  {
+  lb.options[i].text = arrTexts[i];
+  lb.options[i].value = arrTexts[i];
+}
+}
+</script>
+
+</script>
+
+</head>
+
+<body >
+<form action="uploaddata">
+<table border=0 width="390">
+<%@con=Configuration.find(1)
+    
+    @folderpath=@con.FilesFolderPath
+  
+    
+    basedir = "#{@folderpath}/"%>
+    <%
+    a=Dir.pwd()
+    if File.directory?(basedir)
+            
+        else
+            
+            FileUtils.mkdir_p basedir
+            Dir.chdir(a)
+        end
+    %>
+<% pw=Dir.pwd() %>
+<%Dir.chdir(basedir)%>
+<%files = Dir.glob("*")%>
+<%files = files.sort%>
+<tr>
+<td width="400" align="center">
+<b><font face="Arial" size="2">
+                    RECEIVED DATA</font></b><BR><BR>
+                 
+
+<select id="shop_FileName" name="shop[FileName][]"  size=20>
+<%files.each { |file| %>
+     <%= file %>
+     
+															
+    <option value="<%= file %>"><%= file %></option>
+  
+
+<% } %>
+  </select>
+ <% Dir.chdir(pw) %> 
+</td>
+</tr>
+</table>
+ <br><br>
+ <% submit_to_remote 'Upload','Upload',:url => {:controller=>'shops',:action => "uploaddata" }%>
+ 
+ 
+  <%= submit_to_remote 'View','Viewdata',:url => {:controller=>'shops',:action => "getfilename" }%>
+   
+
+<br>
+ <div id="aux_div" style=" visibility:hidden; align:center; width:333;
+  									border: 2px solid white;
+  									padding-bottom: 0px;
+  									margin-bottom: 0px;
+  									background-color: #f0f0f0; height:42; padding-left:2px; padding-right:2px; padding-top:2px" >
+                                 <font size=4 color=#014D7A>
+
+                                    Please Wait Data is uploading<%= image_tag('spinner.gif') %>
+                                    <br>
+                                  </font>				
+                                  </div>
+
+ </form>
+</body>
+
+</html>

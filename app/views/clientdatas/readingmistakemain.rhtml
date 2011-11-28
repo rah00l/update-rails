@@ -1,0 +1,308 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Data Entering</title>
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+<%= stylesheet_link_tag 'calendar_date_select/silver.css' %>
+<%= javascript_include_tag 'calendar_date_select/calendar_date_select.js'%>
+<%= javascript_include_tag 'calendar_date_select/format_db.js'%>
+
+<script language="JavaScript">
+	function onlyNumbers(evt)
+	{
+	var e = event || evt; // for trans-browser compatibility
+	var charCode = e.which || e.keyCode;
+		if (charCode > 31 && (charCode < 48 || charCode > 57))
+		return false;
+    
+	return true;
+}
+function showsave1()
+{
+	if(event.keyCode==32)
+	{
+	var btsave1 = document.getElementById("SHORT");
+      
+        btsave1.disabled=false;
+
+	 	btsave1.focus();
+	}
+}
+
+//DISPLAY SAVE BUTTON ON FILLING ALL VALUES
+function showsave()
+{
+	
+	if(event.keyCode==13)
+	{
+	 	var btsave1 = document.getElementById("save");
+      
+        btsave1.disabled=false;
+
+	 	btsave1.focus();
+	 }	
+}
+
+
+//CHECK FOR VALIDATION OF FORM
+function Validate()
+{
+		
+	var meterin=document.getElementById("entry_MeterIN");
+	var meterout=document.getElementById("entry_MeterOUT");
+	var screenout=document.getElementById("entry_ScreenOUT");
+	var screenin=document.getElementById("entry_ScreenIN");
+	if(meterin.value.length<1)
+	{
+		alert('Please Enter Value for MeterIN')
+		meterin.focus();
+		return(false);		
+	}
+	else if(meterout.value.length<1)
+	{
+		alert('Please Enter Value for MeterOUT')
+		meterout.focus();
+		return(false);		
+	}
+	else if(screenout.value.length<1)
+	{
+		alert('Please Enter Value for ScreenOUT')
+		screenout.focus();
+		return(false);		
+	}
+	else if(screenin.value.length<1)
+	{
+		alert('Please Enter Value for ScreenIN')
+		screenin.focus();
+		return(false);		
+	}
+
+	else
+	{
+		return(true);
+	}
+
+}
+
+
+function checkScreen()
+{
+	var screenout=document.getElementById("entry_ScreenOUT");
+	var screenin=document.getElementById("entry_ScreenIN");
+	
+	if(screenin.value==0 && screenout.value>=1)
+	{
+		alert("PLEASE ENTER VALID VALUE FOR SCREENIN AND SCREENOUT");
+		screenin.focus();
+		return false;
+	}
+	else
+	{
+		return true;
+	}	
+	
+}
+</script>  
+
+
+<script type="text/javascript">
+//ONLOAD FUNCTION FOR SETTING DEFAULT VALUES SELECTED AND DATE DISPLAY 18 HOURS BEFORE DATE
+
+window.onload=function()
+{
+var output=document.getElementById('entry_Date');
+var shopname = document.getElementById("entry_ShopName");
+var mcno = document.getElementById("entry_MachineNo");
+//shopname.options[0].selected = true;
+
+var nonstp=document.getElementById("transact_nonstp");
+//shopname.options[shopname.selectedIndex]=1;
+var v_sn = shopname.options[shopname.selectedIndex].value;
+
+
+if(v_sn=="")
+{
+//shopname.focus();
+mcno.focus();
+
+}
+else
+{
+mcno.focus();
+}
+var save=document.getElementById('save');
+save.disabled=true;
+
+
+//output.disabled=true;
+var mydate=new Date(),
+month=mydate.getMonth(),
+month1=month+1,
+day=mydate.getDate(),
+year=mydate.getYear(),
+hours=mydate.getHours();
+
+if(hours<18)
+{
+
+
+var next_day=day-1;
+output.value = next_day;
+output.value = (next_day<10?'0'+next_day:next_day)+'-'+(month1<10?'0'+month1:month1)+'-'+year;
+
+}
+else
+{
+
+output.value = (day<10?'0'+day:day) +'-'+ (month1<10?'0'+month1:month1) +'-'+year;
+
+}
+}
+
+
+</script>
+          
+</head>
+
+<body >
+<% form_tag :controller=>"clientdatas",:action => "showreadingmistakes" do %>
+
+<div align="center">
+  <table border="0" cellspacing="1" width="73%" id="AutoNumber1" height="112" align="center" style="border-collapse: collapse" bordercolor="#6C3401">
+    <tr>
+      <td width="100%" colspan="4" height="10" align=center>
+      <% error_messages_for 'entry' %>
+      <%if session[:errmsg]%>
+			<font color=red size= "4" align=center>
+
+				<div id="msg" style="width:300;border: 2px solid blue; align:center; padding-bottom: 12px; margin-bottom: 20px; align:center
+ 					background-color: #f0f0f0; height:22; padding-left:7px; padding-right:7px; padding-top:7px"><%=session[:errmsg] %>
+ 					</div>
+				<%session[:errmsg]=nil%>
+					</font>
+			<% end %></td></tr><tr>
+ <td width="100%" bgcolor="#6C3401" colspan="4" height="19" align=center>
+
+      <font color=white size= "3" align=center>
+
+      <b>Reading Mistake Report</b></font></td>
+    </tr>
+    <tr>
+      <td width="100%" colspan="4" height="65">
+      <table border="1" cellpadding="3" cellspacing="3" style="border-collapse: collapse" bordercolor="#6C3401" width="741" id="AutoNumber2" bgcolor="#C0C0C0">
+       
+
+
+ 
+          <tr>
+    				<td width="253" height="16" align=right> 
+ 	 				<label for="shop_CompanyID"><b><font face="Arial" size="2">
+                    GROUP NAME</font></b></label>
+ 					</td>
+ 					<td width="286" height="16" align=left>
+ 					
+ 				<% if(@session[:rrclustername]==nil or @session[:rrclustername]=="") %>		
+ 						<% @s=Cluster.find(:all,:order => "ClusterName") %>
+ 						<%= collection_select(:machinedata, :ClusterName,  @s,  :ClusterName, :ClusterName,
+                      {:prompt   => "Select ClusterName"}) %>
+            	<%else%>
+         			
+             	<% @cluster=Cluster.find(:all,:conditions=>["ClusterName<>?",@session[:rrclustername]],:order => "ClusterName")%>      											
+					<select id="machinedata_ClusterName" name="machinedata[ClusterName]" >
+													<option value="<%= @session[:rrclustername] %>"><%= @session[:rrclustername] %></option>			
+     	 											<% @cluster.each do |c| %>
+     	 											<option value="<%= c.ClusterName %>"><%= c.ClusterName %></option>
+     	 											<% end %>
+     	 										</select>
+
+				
+            	<%end%>
+ 					
+ 					</td></tr>
+   
+        <!--<tr>
+         <td width="253" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">
+                    SHOP NAME</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <div id="Shopdiv">
+	<%# render :partial => 'shop'%>
+
+</div></td>
+        
+          
+      
+        </tr>-->
+       
+                <tr>
+          <td width="253" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">
+                    DATE</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <!--<%= calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %> -->
+
+       <% if(@session[:ttdate1]==nil) %>
+          <% date = Date.today-1 %>
+     <%= calendar_date_select_tag "date1", date.strftime('%Y-%m-%d'),  :popup => "force" %>
+     <%else%>
+     <%= calendar_date_select_tag "date1",@session[:ttdate1].to_s,  :popup => "force" %> 
+	<%end%>
+     &nbsp;</tr>
+
+      </td>
+    </tr>
+  </tr>
+       
+              <!--  <tr>
+          <td width="253" height="16" align=right> 
+ 	 				<b><font face="Arial" size="2">TO
+                    DATE</font></b>
+ 					</td>
+          <td width="286" align="justify" >
+          <!--<%# calendar_date_select_tag "date",Date.today.to_s,  :popup => "force" %>  Not In use
+
+       <%# if(@session[:ttdate2]==nil) %>
+     <%#= calendar_date_select_tag "date2",Date.today.to_s,  :popup => "force" %> 
+     <%#else%>
+     <%#= calendar_date_select_tag "date2",@session[:ttdate2].to_s,  :popup => "force" %> 
+	<%#end%>
+     &nbsp;</tr>-->
+
+      </td>
+    </tr>
+
+      
+       
+	
+	
+
+
+      </td>
+         
+    </tr>
+      <tr bgcolor="#C0C0C0">
+      <td width="727" height="26" colspan=4 >
+     
+      <p align=center>
+     <%= submit_tag "Show Report" ,:id=>'save'  %>		
+      </td>
+      
+ <%end%>        
+    </tr>
+    
+    </table>
+</div>
+
+</body>
+  
+
+</html>
+         <div id="KeyIDdiv" style="visibility:hidden;>  
+	</div>
+	<%= render :partial => 'group' %></div>

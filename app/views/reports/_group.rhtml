@@ -1,0 +1,22 @@
+ <% if(@session[:rrgroupid]==nil or @session[:Groupid]=="") %>		
+ <%@group=Group.find(:all,:conditions=>["ShopName=? ",session[:rrshopname]],:order=>"GroupID")%>
+ 	<%= collection_select(:machinedata, :GroupID,  @group,  :GroupID, :GroupID,
+    	              {:prompt   => "  "},
+                      {:onkeypress => "#{remote_function(:url  => { :action => "setKey"},
+                                                       :with => "'GroupID='+value")}",:onchange => "#{remote_function(:url  => { :action => "setKey"},
+                                                       :with => "'GroupID='+value")}"}) %>
+                            <% @session[:rrmachineno]=nil%>
+                                          
+       <%else%>
+       
+        <% @group=Group.find(:all,:conditions=>["ShopName=? and GroupID<>?",session[:rrshopname],@session[:rrgroupid]],:order=>"GroupID")%>      											
+			<select id="machinedata_GroupID" name="machinedata[GroupID]" onchange="<%=remote_function(:url => {:controller => 'reports', :action => 'setKey'},:with => "'GroupID='+value")-%>" onkeydown="<%=remote_function(:url => {:controller => 'reports', :action => 'setKey'},:with => "'GroupID='+value")-%>">
+													<option value="<%= @session[:rrgroupid] %>"><%= @session[:rrgroupid] %></option>			
+     	 											<% @group.each do |c| %>
+     	 											<option value="<%= c.GroupID %>"><%= c.GroupID %></option>
+     	 											<% end %>
+     	 										</select>
+
+       
+                       
+            <%end%>

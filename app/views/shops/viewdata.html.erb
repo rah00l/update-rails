@@ -1,0 +1,316 @@
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>New Page 1</title>
+<script  language="JavaScript">
+/*
+function show_progress(X)
+{
+				
+			file='<%= @session['file']%>';
+	      	a=confirm("ARE YOU SURE YOU WANT TO UPLOAD FILE "+file+"?" );
+			if(a==true)
+			{
+			if(X>0)
+			{
+			alert("PREVIOUS DATA FOR "+X+" NOT ENTERED");
+			}
+	      	document.getElementById('aux_div').style.visibility = "visible";
+    	 	new Ajax.Request("<%= url_for :controller=> :shops,:action=>:uploaddata %>",{method:'post'});
+    		}
+
+
+}
+*/
+
+function show_progress(X,Y)
+{
+				
+			file='<%= @session['file']%>';
+                a=confirm("ARE YOU SURE YOU WANT TO UPLOAD FILE "+file+"?" );
+			if(a==true)
+			{
+				
+				if(X>0)
+				{
+				b=confirm("PREVIOUS DAY'S RECORD DOES NOT EXISTS FOR "+X+" DAYS, DO YOU STILL WANT TO CONTINUE?");
+					if(b==true)
+						{
+	      					document.getElementById('aux_div').style.visibility = "visible";
+    	 					new Ajax.Request("<%= url_for :controller=> :shops,:action=>:uploaddata %>",{method:'post'});
+                                                Y.disabled=true;
+    					}
+    			}
+    			else
+    			{
+    						document.getElementById('aux_div').style.visibility = "visible";
+    	 					new Ajax.Request("<%= url_for :controller=> :shops,:action=>:uploaddata %>",{method:'post'});
+                                                Y.disabled=true;
+    			
+    			}
+    		}
+    		
+
+
+}
+</script>
+
+</head>
+
+<body>
+<form action="uploaddata">
+	<%@session['filename']%> 
+   <% 
+   values=[]
+   IO.foreach("#{@session['filename']}"){|block| values<<block}
+   
+   d=values.to_s.split('COUNTER')
+
+   %>
+   
+    
+
+
+<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >  
+<tr  bgcolor="#E1CEA2" align=center>
+  		<th nowrap width="10%" height="22" >
+        <font color=white face="Zurich BT" >GROUPNAME</font></th>
+
+      	<th nowrap width="10%" height="22" >
+        <font color=white face="Zurich BT" >SHOPNAME</font></th>
+      	<th  nowrap  width="10%" height="22" >
+        <font color=white face="Zurich BT" >DATE </font></th>
+		<th  nowrap width="10%" height="22">
+        <font color=white face="Zurich BT" >KEY NO</font></th>
+		<th  nowrap width="10%" height="22" >
+        <font color=white face="Zurich BT" >MACHINENO </font></th>
+		 <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >SCREENIN </font></th>
+         <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >SCREENOUT </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >METERIN </font></th>
+        
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >METEROUT </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >MACHINESHORT </font></th>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >SHORTREASON </font></th>
+
+       
+        
+
+
+
+ </tr>
+ <% data=d[0].to_a %>
+ <% for i in 0..(data.length-1)%>
+
+ <% a= data[i].to_s.split(',')%>
+
+   <tr>
+  
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[0]%>
+&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[1]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[2]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[3]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[4]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[5]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[6]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[7]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[8]%>&nbsp;</td>	
+<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[9]%>&nbsp;</td>	
+	<td nowrap align="center" width="10%"><font face="Zurich BT"  size="2"><%=a[10]%>&nbsp;</td>	
+	
+
+
+
+</tr>	
+<%end%>
+</table><br>
+COUNTER COLLECTION DETAILS
+ <% counterdata=d[1].to_a %>
+ 
+<% for i in 0..(counterdata.length-1)%>
+
+ <% a= counterdata[i].to_s.split(',')%>
+<%end%>
+
+
+<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% >  
+<tr >
+  		<th nowrap width="10%" height="22" >
+        <font color=white face="Zurich BT" >DATE</font></th>
+
+      	<th nowrap width="10%" height="22" >
+        <font color=white face="Zurich BT" ><%= a[2] %></font></th>
+        
+      	<th  nowrap  width="10%" height="22" >
+        <font color=white face="Zurich BT" >COMPANY ID </font></th>
+		<th  nowrap width="10%" height="22">
+        <font color=white face="Zurich BT" ><%= a[1]%></font></th>
+		</tr>
+		<tr><th>
+        <font color=white face="Zurich BT" >CASH </font></th>
+		 <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" ><%= a[3]%> </font></th>
+         <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >OB </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" ><%= a[8]%> </font></th>
+        </tr>
+        
+        <tr>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >EXP </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > <%= a[4]%></font></th>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >KEY1 </font></th>
+		
+       <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" ><%= a[9]%> </font></th>
+        </tr>
+
+    <tr>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >HC </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > <%= a[5]%></font></th>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >KEY2 </font></th>
+		
+       <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" ><%= a[10]%> </font></th>
+        </tr>
+		
+		
+		    <tr>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >CR </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > <%= a[6]%></font></th>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >KEY3 </font></th>
+		
+       <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" ><%= a[11]%> </font></th>
+        </tr>
+
+    <tr>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >SHT/EXT </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > <%= a[7]%></font></th>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >KEY4 </font></th>
+		
+       <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" ><%= a[12]%> </font></th>
+        </tr>
+ <tr>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >&nbsp; </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > &nbsp;</font></th>
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >OutStanding </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > <%= a[13]%></font></th>
+		</tr>
+		<tr>
+
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >Total&nbsp; </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > <%= a[3].to_i+a[4].to_i+a[5].to_i+a[6].to_i+a[7].to_i%>&nbsp;</font></th>
+		<th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" >Total&nbsp; </font></th>
+        <th  nowrap width="10%" height="22">
+        
+        <font color=white face="Zurich BT" > <%= a[8].to_i+a[9].to_i+a[10].to_i+a[11].to_i+a[12].to_i+a[13].to_i%>&nbsp;</font></th>
+		</tr>
+
+        
+</table>
+<br>
+ <% submit_to_remote 'Upload','Upload',:url => {:controller=>'shops',:action => "uploaddata" }%>
+ <% @oldmdata1=Machinedata.find(:first,:conditions=>['SHOP_NAME=?',a[1]],:order => "TRANS_DATE desc" )%>
+
+            <% @olddate=Date.parse("#{@oldmdata1.TRANS_DATE}")%>
+            <% @currdate=Date.parse("#{a[2]}")%>
+			
+			 <%@datediff=@currdate-@olddate%>
+            <% @actualdatediff=@datediff-1%>
+				
+ 
+ <input type="button" onclick="show_progress('<%= @actualdatediff%>',this);" value="UPLOAD DATA">
+
+<div id="aux_div" style=" visibility:hidden; align:center; width:333;
+  									border: 2px solid white;
+  									padding-bottom: 0px;
+  									margin-bottom: 0px;
+  									background-color: #f0f0f0; height:42; padding-left:2px; padding-right:2px; padding-top:2px" >
+                                 <font size=4 color=#014D7A>
+
+                                    Please Wait Data is uploading<%= image_tag('spinner.gif') %>
+                                    <br>
+                                  </font>			
+									
+                                     </div>
+
+    
+<%= link_to 'BACK', :controller => 'shops', :action => 'receiveddata' %>
+
+ </form>
+</body>
+
+</html>

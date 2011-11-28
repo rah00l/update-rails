@@ -1,0 +1,18 @@
+
+     	
+           		                                     
+                                                       
+                                                      
+     	 										
+     	 	<% @shopsarray=@session[:clustarray].to_a%>
+ 			 				<select id="machinedata_ShopName" name="machinedata[ShopName][]" onchange="<%=remote_function(:url => {:action => 'setShopdaily'},:with => "'ShopName='+value")-%>" multiple size="8">
+ 			 				
+ 			 				<% for i in 0..(@shopsarray.length-1)%>
+								<% @shops=Shop.find_by_sql("select ShopName from shops where ClusterName='#{@shopsarray[i]}' order by ShopName")%>
+								
+ 			 					<% for item in @shops %>
+									<font face="Zurich BT" size="2"> <option value="<%= item.ShopName %>"><%= item.ShopName -%></option></font>
+
+								<% end %>
+							<% end %>
+ 			 				</select>

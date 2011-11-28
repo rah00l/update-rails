@@ -1,0 +1,26 @@
+<head>
+<script>
+function cal()
+{
+	var cash=document.getElementById('shop_Cash').value;
+	var credit=document.getElementById('shop_Credit').value;
+	var ob=document.getElementById('shop_OpeningBal');
+
+	
+	
+	ob.value=parseInt(cash)+parseInt(credit);
+	return true;
+}
+</script>
+</head>
+
+<body>
+<h1>Editing previousrecord</h1>
+
+<% form_tag :action => 'update', :id => @previousrecord do %>
+  <%= render :partial => 'form' %>
+  <%= submit_tag 'Edit' %>
+<% end %>
+
+<%= link_to 'Back', :action => 'list' %>
+</body>

@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<script type="text/javascript">
+//on load event to make save button disabled
+
+window.onload=function()
+{
+	
+	var cmbclustername=document.getElementById('user_firstname');
+	
+	cmbclustername.focus();
+
+}
+</script>
+
+
+</head>
+<body>
+<center>
+<font color="#901010" size= "4">
+ <%= error_messages_for 'user' %>
+<% if session[:msg] %>
+	<div id="msg" style="width:300;border: 2px solid blue;padding-bottom: 12px; margin-bottom: 20px;
+ 		background-color: #f0f0f0; align:center; height:22; padding-left:7px; padding-right:7px; padding-top:7px">
+ 			<%= session[:msg] %>
+ 	</div>
+	<%session[:msg]=nil%>
+<% end %>
+</font>
+
+<table height="165" width="71%" align=center >
+<tr>
+<td height="165" width=100% align="center" cellpadding="3" cellspacing="3">
+<table width="616" height="123"  >
+				<tr>
+    				<td width="89" height="1" align=left> 
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="user_firstname">Firstname:</label></font></b>
+ 					</td>
+ 					<td width="248" height="1" align=left>
+ 					
+				 	<%= text_field "user", "firstname", :size => 20  %> 
+ 					
+ 					</td>
+ 					<td height="6" width="89" align=left>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="user_login">Login: </label></font></b>
+ 	 				
+ 	 				</td>
+ 	 				<td width="172" height="5" align=left>
+ 	    			
+ 	 				<%= text_field "user", "login", :size => 20  %>
+ 	 				
+ 	 				</td>
+
+				</tr>
+				<tr>
+					<td height="12" width="89" align=left>
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="user_lastname">Lastname: </label></font></b>
+  					</td>
+  					<td width="248" height="12" align=left>
+   					
+	 	 			<%= text_field "user", "lastname", :size => 20  %>
+ 					
+  					</td>
+  					<td height="12" width="89" align=left>
+ 	 				<b><font face="Arial" size="2" >
+ 	 				<label for="user_login">Password: </label></font></b>
+ 	 				</td>
+ 	 				<td width="172" height="12" align=left>
+ 	    			
+ 	 				<%= password_field :user, :password, :size => 22  %>
+ 	 				
+ 	 				</td>
+
+				</tr>
+				<tr>
+					
+  					<td width="89" height="1" align=left>
+	 				<b>
+	 				<font face="Arial" size="2" >
+	 				<label for="user_type">Usertype: </label></font></b>
+					</td>
+					<td width="172" height="1" align=left>	 
+	 				<select  id="user_usertype" name="user[usertype]" style="font-family: Zurich BT; ">
+					<option value="SuperAdmin">SuperAdmin</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Operator">Operator</option>
+					<!--<option value="Customer">Customer</option>-->
+
+	 				</select> 
+					</td>
+					<td width="89" height="9" align=left > 
+	 				<b> 
+	 				<font >
+	 				<label for="user_status"><font size="2" face="Arial">Userstatus:</font></label></font><font size="2"  face="Arial">
+	 				</font></b>
+	 				</td>
+	 				<td width="172" height="9" align=left >
+	 				<b><font face="Arial">
+	 				<input type="radio" id="user_userstatus" name="user[userstatus]" value="1" checked="checked" /></font></font></b></font></b><font size="2" ><b><font face="Arial">Active</font>
+     				</b>
+	 				</font><b>
+ 					<font  face="Arial">
+					<input type="radio" id="user_userstatus" name="user[userstatus]" value="0" /></font><font face="Arial"  size="2">In Active</font>
+ 	 				</b>
+ 					</td>
+
+				</tr>
+				<tr>
+					<td height="9" width="89" align=left >
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="user_emailid">Email ID:</label></font></b>
+  					</td>
+  					<td width="248" height="9" align=left >
+     				
+					<%= text_field 'user', 'emailid', :size =>20 %>
+					
+  					</td>
+  					<td height="9" width="89" align=left >
+  					<b> <font face="Arial" size="2" >
+ 		 			<label for="user_phoneno">Phone No:</label></font></b>
+  					</td>
+  					<td width="248" height="9" align=left >
+     				
+					<%= text_field 'user', 'phoneno', :size =>20 %>
+					
+  					</td>
+
+
+				</tr>
+			
+				
+ 				</table>
+ 				</td>
+ 				</tr></table>
+ 				
+</center>
+ 				
+</body>
+</html>

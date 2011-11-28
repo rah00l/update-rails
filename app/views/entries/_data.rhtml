@@ -1,0 +1,97 @@
+ <b>Data 
+      Entering</b></td>
+    </tr>
+   
+          <td width="25%" align="justify" bgcolor="#E1CEA2">Screen In</td>
+          <td width="25%" align="justify" bgcolor="#E1CEA2">
+          
+           <p>
+            <input type="text" name="entry[ScreenIN]" id="entry_ScreenIN" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.entry_ScreenOUT.focus();" size="20" maxlength="6"></p>
+          
+          </td>
+          <td width="10%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+          <td width="40%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="25%" align="justify" bgcolor="#E1CEA2">Screen Out</td>
+          <td width="25%" align="justify" bgcolor="#E1CEA2">
+          <input type="text" name="entry[ScreenOUT]" id="entry_ScreenOUT" size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.entry_MeterIn.focus();" maxlength="6"></td>
+          <td width="10%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+          <td width="40%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="25%" align="justify" bgcolor="#E1CEA2">Meter In</td>
+          <td width="25%" align="justify" bgcolor="#E1CEA2">
+          <input type="text" name="entry[MeterIN]" id="entry_MeterIn" size="20" onkeypress="return onlyNumbers();" onKeyDown="if(event.keyCode==13)  this.form.entry_MeterOUT.focus();" maxlength="6"></td>
+          <td width="10%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+          <td width="40%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td width="25%" align="justify" bgcolor="#E1CEA2">Meter Out</td>
+          <td width="25%" align="justify" bgcolor="#E1CEA2">
+          <input type="text" name="entry[MeterOUT]" id="entry_MeterOUT"size="20" onkeypress="return onlyNumbers();" onKeyDown="showsave();" onblur="showsave1();" maxlength="6"></td>
+          <td width="10%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+          <td width="40%" align="justify" bgcolor="#E1CEA2">&nbsp;</td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+    <tr>
+      <td width="18%" height="26" bgcolor="#E1CEA2">
+     
+      <p>
+        <input type="button" value="Modify" name="btmodify"></p>
+        <%= submit_to_remote 'Modify','Modify',:url => {:controller=>'entries',:action => "modify" }%>
+
+      </td>
+      <td width="22%" height="26" bgcolor="#E1CEA2">
+      
+      <%= submit_to_remote 'Delete','Delete',:url => {:controller=>'entries',:action => "destroy" },:confirm=>'Are You Sure you want to delete the record? ' %>
+      </td>
+      <td width="34%" height="26" bgcolor="#E1CEA2">
+      <input type="button" value="Counter Collection" name="btcntrcoll"></td>
+      <td width="25%" height="26" bgcolor="#E1CEA2">
+      <input type="button" id="btmissing" value="Short &amp; Missing Rec" name="btshortmiss"></td>
+         
+    </tr>
+    <tr>
+      <td width="18%" height="26" bgcolor="#E1CEA2">
+     
+      &nbsp;</td>
+      <td width="22%" height="26" bgcolor="#E1CEA2">
+      &nbsp;</td>
+      <td width="34%" height="26" bgcolor="#E1CEA2">
+      &nbsp;</td>
+      <td width="25%" height="26" bgcolor="#E1CEA2">
+      
+      <!--<input type="submit" id="btsave" value="Save" name="btsave" style="float: right;">-->
+     <%= submit_to_remote 'btsave', 'Save' , :url=> {:controller=>'entries',:action => "create" }, :html=>{:disabled => true},:style=>"font-family: Zurich BT; font-size: 10pt" %><br />
+
+
+      </td>
+         
+    </tr>
+    <tr>
+      <td width="18%" height="26" bgcolor="#E1CEA2">
+     
+      &nbsp;</td>
+      <td width="22%" height="26" bgcolor="#E1CEA2">
+      &nbsp;</td>
+      <td width="34%" height="26" bgcolor="#E1CEA2">
+      &nbsp;</td>
+      <td width="25%" height="26" bgcolor="#E1CEA2">
+      
+      &nbsp;</td>
+         
+    </tr>
+    <tr>
+      <td width="18%" height="26" bgcolor="#E1CEA2">
+     
+      &nbsp;</td>
+      <td width="22%" height="26" bgcolor="#E1CEA2">
+      &nbsp;</td>
+      <td width="34%" height="26" bgcolor="#E1CEA2">
+      &nbsp;</td>
+      <td width="25%" height="26" bgcolor="#E1CEA2">
+      
+      &nbsp;</td></tr></table>

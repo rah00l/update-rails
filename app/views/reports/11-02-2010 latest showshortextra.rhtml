@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title> Admin</title>
+<script>
+window.onload=function()
+{
+	new Ajax.Request("<%= url_for :controller=> :reports,:action=>:exreport %>",{method:'post'})
+
+}
+</script>
+</head>
+
+<body>
+	<p>&nbsp;</p>
+	
+		<table border=0  align="center" width="100%"><tr>
+ 			 <td bgcolor="#FFFFFF" width="90%" align=center >
+				<table align=center border=0 bordercolor="#08176C"width="90%" left="5%"><tr>
+ 					 <td width="870">
+					<p>
+					
+								<p>
+						<h1 align="center"><font color="#6C3401" face="Zurich BT" size="5">
+                        Short Extra Report</font></h1>
+						<p>&nbsp;</p>
+						<p>
+						 <% @a=@session[:startdate].strftime("%d-%B-%Y") %>
+						  <% @m1=@a.split('-')%>
+						 
+						 
+						<h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%= @m1[1] %> - <%= @m1[2]%></font></h3>
+						<p>&nbsp;</p>
+						<table border="1" width ="802"  cellpadding="0"  cellspacing="0" bordercolor="#111111"   id="AutoNumber1"  height="24"  left:2% > 
+								<tr  bgcolor="#E1CEA2" align=center>
+									<th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">DATE</font></th>
+									  <th nowrap width="10%" height="22" >
+									        <font color=white face="Zurich BT" size="2">KEY</font></th>
+
+									        <%@m=@session[:days] %>
+									
+										<%1.upto(@m.to_i) do |i|%>
+										
+  								      	<th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2"><%=i%></font></th>
+									     <%end%>
+									     <th nowrap width="1%" height="22" >
+									        <font color=white face="Zurich BT" size="2">TOTAL</font></th>
+									 </tr>
+								
+						<% Shop.find(:all, :conditions=>["ClusterName=? ",@session[:rrclustername]],:order => "ShopName").each do |@shp|%>
+							<% @flag=false %>
+							<% Group.find(:all,:conditions=>["ClusterName=? and ShopName=?", @session[:rrclustername],@shp.ShopName],:order=>"GroupID").each do |key|%>
+						<!--<h3 align="center"><font color="#6C3401" face="Zurich BT" size="2"><%#= key.GroupID %></font></h3>-->
+							
+
+							
+							
+					
+								<%# Machinedata.find(:all,:select => "distinct Machine_No", :conditions=>["Cluster_Name=? and Shop_Name=? and GROUP_ID=?",@session[:rrclustername],@shp.ShopName,key.GroupID],:order =>"digitno").each do |item|%>
+								 
+									
+
+									
+									
+
+									
+ <tr>
+										<% if @flag==false%>
+										<th>
+													<%= @shp.ShopName %>&nbsp;
+										</th>
+												<% else %>
+													<td>&nbsp;</td>
+												<% end %>
+										
+										<% @flag=true %> &nbsp;<th width="10%" height="22" ><%= key.GroupID %>&nbsp;</th>
+<!--RUBY CODE FOR FETCHING USERS DATA--> 
+<% @cnt=0 %>
+
+				<%@m=@session[:days] %>
+				
+				<%1.upto(@m.to_i) do |@i|%>
+					
+					<% @date1=Date.parse(@i.to_s+'-'+@session[:month].to_s+'-'+@session[:year].to_s) %>
+					
+					
+					<%# @t =Counterdata.find_by_sql("select exp from counterdatas where clustername='#{@session[:rrclustername]}' and shopname='#{item.ShopName}' and date='#{@date1}'" )%>
+
+					<% @t =Machinedata.find_by_sql("select * from machinedatas where Cluster_name='#{@session[:rrclustername]}' and shop_name='#{@shp.ShopName}' and Trans_date='#{@date1}' order by digitno,Machine_no" )%>
+										
+					<% @count=0 %>
+					
+					<% @t.each do |@c| %>
+								<% @count=@count+1%>
+								<% @d=(@date1).to_s.split('-')%>
+								
+								<!--<% if  @i==@d[2].to_i%>-->
+										
+								<!--<% else %>-->
+											
+								<!--<%end%>-->
+						
+						<%end%>		
+					
+						<% if @count==0%>
+								
+								<td nowrap align="center">-</td>	
+
+						<%else%>
+								
+								
+
+								<% if @i.to_i==@d[2].to_i %>
+									
+										<%        
+										    @colldata = Machinedata.find(:all, :conditions=> ["Cluster_Name=? and Shop_Name=? and TRANS_DATE=? and GROUP_ID=?",@session[:rrclustername],@shp.ShopName,@date1,key.GroupID])
+										    @totalcoll=0
+										    @colldata.each do |data|
+       
+										        if data.CALCULATEBY=='S'
+        		 									 @COLL=((((data.TSRIN.to_i*data.SCREEN_RATE_IN.to_i)-(data.TSROUT.to_i*data.SCREEN_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i
+                  									@totalcoll=@totalcoll.to_i+@COLL.to_i
+                  
+             									 else
+									              	  @COLL1=((((data.TMTRIN.to_i*data.MTR_RATE_IN.to_i)-(data.TMTROUT.to_i*data.MTE_RATE_OUT.to_i))/10)*data.MULTIPLY_BY)+data.MTRSHORT.to_i
+									                  @totalcoll=@totalcoll.to_i+@COLL1.to_i
+										     end    
+       
+										    end%>
+										    
+										    
+										    <% @keys=Counterdata.find(:first,:conditions=>["ClusterName=? and ShopName=? and DATE=?",@session[:rrclustername],@shp.ShopName,@date1]) %>
+											<% if key.GroupID=='KEY 1'%>
+												<% @keyval=@keys.KEY1.to_i%>
+												
+											<% end %>
+											<% if key.GroupID=='KEY 2'%>
+												<% @keyval=@keys.KEY2.to_i%>
+												
+											<% end %>
+											<% if key.GroupID=='KEY 3'%>
+												<% @keyval=@keys.KEY3.to_i%>
+												
+											<% end %>
+
+											<% if key.GroupID=='KEY 4'%>
+												<% @keyval=@keys.KEY4.to_i%>
+												
+											<% end %>
+
+											<td nowrap align="center"><%= (@keyval.to_i-@totalcoll.to_i) %>&nbsp;</td>
+									<% @cnt=@cnt+ (@keyval.to_i-@totalcoll.to_i) %>
+								<% else%>
+								<td nowrap align="center">-</td>	
+								<%end%>
+									
+
+						<%end%>						
+						
+				<%end%>
+				<td nowrap align="center"><b><%= @cnt%></b>&nbsp;</td>					
+					
+
+
+<!--<tr><th>Total</th>
+ </tr>	-->
+<%# end %>
+</tr>
+<% end %>
+<% end %>
+</table>
+<br/>
+<br/>
+
+
+<div align=center>
+<p>&nbsp;</p>
+ 
+
+</td></tr></table>
+</td></tr></table>
+</body>
+</html>

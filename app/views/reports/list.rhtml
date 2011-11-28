@@ -1,0 +1,97 @@
+
+<html>
+<head>
+<%= javascript_include_tag "prototype","effects","application",:defaults %>
+</head>
+<body topmargin=0 bottommargin=0 height=400>
+
+<table width=90% height="400"><tr>
+  <td width="100%" height="400" >
+  
+<table width=100%  height="400" >
+<tr><td width="100%" height="100%" >
+ <div class=clsDataGridheight id=divList bgcolor=white  width=100% height=380 topmargin=0 align=center>
+<h3><%= @session[:rrclustername]%></h3>
+<!--<h4><%#= @session[:rrshopname] %>&nbsp;&nbsp;&nbsp;&nbsp;<%#= @session[:rrgroupid]%></h4>-->
+
+<table  border="1" width ="95%"  cellpadding="0"  cellspacing="0"  bordercolor="black"   id="AutoNumber1" > 
+			<tr >
+			<th width="50" > Shop </font></th>
+				<% Machine.find(:all,
+								:select=>"distinct MachineName",
+								:conditions=>["ClusterName=?",@session[:rrclustername]],
+								:order => "MachineName").each do |mname|%>
+					    <th  ><%= mname.MachineName %></font>&nbsp;</th>
+				<% end %>
+    		<th>Total</font></th>
+			</tr>
+			
+
+	<% @shp= Shop.find(:all,
+						:select => "distinct ShopName",
+						:conditions=>["ClusterName=? ",@session[:rrclustername]],
+						:order =>"ShopName")%>
+	 
+		<% for item in @shp %>
+		<tr>
+			<td align=center><%= item.ShopName %>&nbsp;</td>
+			<% @totalcount=0 %>
+			<% Machine.find(:all,
+							:select=>"distinct MachineName",
+							:conditions=>["ClusterName=?", @session[:rrclustername]],
+							:order => "MachineName").each do |mname|%>
+
+						<% @machines=Machinedata.count(
+								:conditions=>["Cluster_Name=? and Shop_Name=? and Machine_Name=? and Trans_Date=?",
+								@session[:rrclustername],item.ShopName,mname.MachineName,@session[:ttdate1]]) %>
+					
+						<td  align=center><%=@machines%>&nbsp;</td>
+					
+					<%  @totalcount= @totalcount.to_i+ @machines.to_i%>
+			<% end %>
+	<td  align=center><%=@totalcount%>&nbsp;</td>
+	
+<% end %>
+</tr>
+
+<tr align=center>
+<th>Total</th>	
+	
+	<% @tot = 0 %>
+		<% Machine.find(:all,
+					:select=>"distinct MachineName",
+					:conditions=>["ClusterName=?", @session[:rrclustername]],
+					:order => "MachineName").each do |mname|%>
+	
+						<% @machines=Machinedata.count(:conditions=>["Cluster_Name=? and Machine_Name=? and Trans_Date=?",
+														@session[:rrclustername],mname.MachineName,@session[:ttdate1]]) %>
+		
+							<td  align=center><%=@machines%>&nbsp;</td>
+							<% @tot = @tot + @machines %>
+							
+							
+							
+	<% end %>
+	<td><%= @tot%>&nbsp;</td>
+	
+
+
+
+</tr>
+</table>
+
+</div>
+
+
+<br />
+<!--</fieldset>-->
+</td></tr></table>
+
+
+
+</td></tr></table>
+
+
+<!--</div>-->
+</body>
+</html>

@@ -1,0 +1,42 @@
+<%= error_messages_for 'group' %>
+
+<!--[form:group]-->
+<p><label for="group_CompanyID">CompanyID</label><br/>
+<% @shop=Shop.find(:all) %>
+
+ <%= collection_select(:group, :ShopID,  @shop,  :ShopID, :ShopID,
+                      {:prompt   => "Please select ShopID"},
+                      {:onchange => "#{remote_function(:url  => { :action => "getShopName"},
+                                                       :with => "'ShopID='+value")}"}) %>
+ 
+
+
+</p>
+
+<p><label for="group_CompanyName">Company Name</label><br/>
+
+<div id="shopnamediv">
+<%= render :partial => 'shopname' %>
+</p>
+</div>
+	
+	<p><label for="group_Key1">Key1</label>	
+<input type="checkbox" id="group_Key1" name="group[Key1]" value=1 >
+<input name="group[Key1]" type=hidden value=0>
+
+<label for="group_Key2">Key2</label>
+<input type="checkbox" id="group_Key2" name="group[Key2]" value=1 onclick="check();">
+		<input name="group[Key2]" type=hidden value=0>
+
+
+<label for="group_Key3">Key3</label>
+<input type="checkbox" id="group_Key3" name="group[Key3]" value=1 >
+		<input name="group[Key3]" type=hidden value=0>
+
+
+<label for="group_Key4">Key4</label>
+
+<input type="checkbox" id="group_Key4" name="group[Key4]" value=1 ><input name="group[Key4]" type=hidden value=0>
+</br>
+</br>
+<!--[eoform:group]-->
